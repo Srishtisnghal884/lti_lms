@@ -10,13 +10,13 @@ import { Timetable } from './Timetable';
 
 const StudentDashboard = () => {
   const { classId } = useParams(); // Retrieve classId from the URL parameters
-
+  const isLoading = false;
   // Query hook for fetching studentData
-  const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery(classId);
+  // const { data, isLoading, isSuccess, isError, error } =
+  //   useGetStudentDataQuery(classId);
 
   // Filtering Data from API response
-  const { miscellaneousInfo } = data || {};
+  // const { miscellaneousInfo } = data || {}; 
 
   let content;
 
@@ -24,18 +24,17 @@ const StudentDashboard = () => {
     content = <Loading open={isLoading} />; // Show loading state while fetching data
   }
   // Render the staff container if data is successfully fetched
-  else if (isSuccess) {
+  // else if (isSuccess) {
     content = (
       <Box sx={{ mt: 2 }}>
-        <SummaryBox data={miscellaneousInfo} />
-        {/* <Timetable /> */}
+        <SummaryBox /> 
       </Box>
     );
-  }
+  // }
   // Show error message if there's an error fetching data
-  else if (isError) {
-    content = <Error error={error} />;
-  }
+  // else if (isError) {
+  //   content = <Error error={error} />;
+  // }
   return content;
 };
 

@@ -8,17 +8,18 @@ export const SummaryBox = ({ data }) => {
 
   // Updating Progress
   const updatedCardsData = CardsInfo.map((card) => {
-    const progressItem = data?.find((item) =>
-      item.title.toLowerCase().includes(card.title.toLowerCase())
-    );
+    // const progressItem = data?.find((item) =>
+    //   item.title.toLowerCase().includes(card.title.toLowerCase())
+    // );
 
-    const progress = progressItem ? progressItem.progress : 0;
+    // const progress = progressItem ? progressItem.progress : 0;
 
     return {
       ...card,
-      progress: progress,
+      // progress: progress,
     };
   });
+console.log("updatedCardsData", updatedCardsData);
 
   return (
     <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
