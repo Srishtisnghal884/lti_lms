@@ -74,7 +74,7 @@ const DashboardRoutes = () => {
             element={<EmployabilityPage />}
           />
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
-          <Route path='student/:classId' element={<StudentDashboard />} />
+          <Route path='/' element={<StudentDashboard />} />
           {/* <Route
             path='student/:classId/assignments'
             element={<Assignments />}

@@ -75,11 +75,7 @@
 }
 
 .employability-page .visual-area {
-  position: absolute;
-  top: 0;
-  right: 60px; 
   bottom: 0;
-  width: 50%;  
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -88,7 +84,6 @@
 }
 
 .employability-page .laptop-mockup { 
-    width: 450px; 
     position: relative;  
     top: 50px;  
 }
@@ -101,10 +96,10 @@
 }
 
 .employability-page .laptop-screen { 
-    width: 100%; 
-    height: 253px;
+    width: 100%;
+    max-width: 350px; 
+    height: auto;
     margin: 10px;
-    background: linear-gradient(to right, rgba(0,0,0,0.5), #ff8c00);  
     border-radius: 27px;
     overflow: hidden;
     position: relative;  
@@ -151,7 +146,7 @@
   background-color: #ff8c00;  
   transform: skewX(0deg); 
   transform-origin: top left;
-  z-index: 1;  
+  z-index: 9;  
   box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
 } 
 
@@ -239,16 +234,21 @@
     cursor: pointer;
 }
 
+ @media (max-width:1200px) {
+  .employability-page .content-area{
+    padding: 40px 20px 20px 20px !important;
+  }
+ }
  @media (max-width:991px) {
   .employability-page .page-container{
     display: flex;
         padding-top: 70px;
-        flex-direction: column-reverse;
+        flex-direction: column;
   }
   .employability-page .laptop-screen {
-    border-radius: 0px !important;}
+    border-radius: 10px !important;}
   #quickGuideVideo{
-    border-radius: 0px !important;
+    border-radius: 10px !important;
   }
 .employability-page .sidebar-right{
     top: 0;
@@ -277,6 +277,48 @@
   width: 100%;
   right: inherit;
   padding-bottom: 40px;
+  justify-content: start;
+}
+.drawer-container.open ul{
+  margin-top: 60px !important;
+}
+#menulist>li {
+margin-bottom: 20px;
+text-align: left;
+padding: 20px 20px 0;
 }
 
+ .drawer-container.open{ 
+      z-index: 11; 
+    position: fixed;
+    top: 0; 
+    width: 25%;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    background-color:  #f68b1f;
+}
+ }
+ .drawer-container.closed .crossIconContainer{
+  display: none;
+ }
+ 
+ .drawer-container.open{
+  right: 0 !important;
+  width: 100%;
+ }
+ .drawer-container{
+right: -100% !important;
+transition: 0.4s;
+ }
+ @media (min-width:992px) {
+  .drawer-container.open{
+  right: 0 !important;
+  width: 400px;
+ }
+ .drawer-container {
+    right: -100% !important;
+    transition: 0.4s;
+    position: fixed;
+    z-index: -1;
+}
  }

@@ -190,8 +190,8 @@ const LoginFormModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "student123@gmail.com",
+      password: "Student123@#",
     },
     validationSchema: LoginValidationSchema,
     onSubmit: (values) => {

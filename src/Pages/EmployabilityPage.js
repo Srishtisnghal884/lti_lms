@@ -51,7 +51,7 @@ console.log("logout")
       <div className="visual-area">
         <div className="laptop-mockup"> 
           <div className="laptop-screen">
-            <video src="https://uploadmlj.pieinfosystems.com/upload/quick-start-guide-video-0.mp4" id="quickGuideVideo" controls="" autoplay=""></video> 
+            <video src="https://uploadmlj.pieinfosystems.com/upload/quick-start-guide-video-0.mp4" id="quickGuideVideo" controls="" autoplay=""></video>
           </div>
         </div>
       </div>  
@@ -62,7 +62,7 @@ console.log("logout")
           <div className="menu-line"></div>
         </div>
       </div>
-      { openDrawer &&  
+      {/* { openDrawer &&   */}
       <div className={`drawer-container ${drawerClass}`}>
    
       <div onClick={() => setOpenDrawer(false)} class="crossIconContainer"> 
@@ -73,7 +73,7 @@ console.log("logout")
           <li><Link to={"/help"}>Help</Link></li>
           <li onClick={handleLogout}>Logout</li>
       </ul> 
-    </div>}
+    </div>
     </div>
     </div>
   );
