@@ -1,21 +1,21 @@
 [
   {
-    "title": "",
+    "title": "No of Assessment",
     "icon": "Assignment",
     "color": "#f44336"
   },
   {
-    "title": "",
+    "title": "Given Assessament",
     "icon": "LibraryBooks",
     "color": "#03a9f4"
   },
   {
-    "title": "",
+    "title": "Result",
     "icon": "TaskAlt",
     "color": "#4caf50"
   },
   {
-    "title": "",
+    "title": "Students",
     "icon": "LocalLibrary",
     "color": "#e91e63"
   }
