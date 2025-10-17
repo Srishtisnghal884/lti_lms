@@ -75,19 +75,19 @@ const DashboardRoutes = () => {
           />
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
           <Route path='student/:classId' element={<StudentDashboard />} />
-          <Route
+          {/* <Route
             path='student/:classId/assignments'
             element={<Assignments />}
-          />
-          <Route path='student/:classId/timetable' element={<Timetable />} />
-          <Route
+          /> */}
+          {/* <Route path='student/:classId/timetable' element={<Timetable />} /> */}
+          {/* <Route
             path='student/:classId/calendar'
             element={<CalendarContainer />}
-          />
-          <Route
+          /> */}
+          {/* <Route
             path='student/:classId/examinations'
             element={<Examination />}
-          />
+          /> */}
           <Route path='student/:classId/results' element={<Results />} />
         </Route>
       </Route>
