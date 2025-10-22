@@ -1,0 +1,156 @@
+.employability-page .sidebar-right {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 100vh;
+    background-color: #ff9800;
+    transform: skewX(0deg);
+    transform-origin: top left;
+    z-index: 9;
+    box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.employability-page .menu-icon-placeholder {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 3;
+    border: 3px solid white;
+    border-radius: 27px;
+    padding: 3px 8px;
+}
+
+.crossIconContainer {
+    justify-self: center;
+    width: 40px;
+    color: white;
+    margin: 28px 0;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+}
+
+.employability-page .menu-line {
+    width: 22px;
+    height: 3px;
+    background-color: white;
+    margin: 6px 0;
+    border-radius: 1px;
+}
+
+.drawer-container.open {
+    right: 0;
+}
+
+.drawer-container.open {
+    z-index: 11;
+    position: fixed;
+    top: 0;
+    width: 25%;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    background-color: #ff9800;
+}
+
+.drawer-container.closed .crossIconContainer {
+    display: none;
+}
+
+
+.drawer-container.open {
+    right: 0 !important;
+    width: 100%;
+}
+
+.drawer-container {
+    right: -100% !important;
+    transition: 0.4s;
+}
+
+#menulist {
+    list-style: none;
+    padding: 0;
+    color: #182958 !important;
+    margin-top: 10%;
+    transition: 0.3s ease-in-out;
+    font-size: 42px;
+    text-align: center;
+}
+ 
+#menulist li a {
+    color: #182958;
+}
+
+#menulist>li {
+    color: #182958;
+    margin-bottom: 10%;
+    cursor: pointer;
+    transition: .3s ease;
+    font-weight: bold;
+}
+
+#menulist>li:hover {
+    letter-spacing: 5px;
+}
+
+@media (min-width:992px) {
+    .drawer-container.open {
+        right: 0 !important;
+        width: 400px;
+    }
+
+    .drawer-container {
+        right: -100% !important;
+        transition: 0.4s;
+        position: fixed;
+        z-index: -1;
+    }
+}
+
+@media (max-width:991px) {
+    .drawer-container.open {
+        width: 100%;
+    }
+
+    .employability-page .sidebar-right {
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        height: 70px
+    }
+
+    .employability-page .menu-icon-placeholder {
+        top: 20px;
+    }
+
+    .employability-page .page-container {
+        display: flex;
+        padding-top: 70px;
+        flex-direction: column;
+    }
+
+
+    .drawer-container.open {
+        width: 100%;
+    }
+
+    .drawer-container.open ul {
+        margin-top: 60px !important;
+    }
+
+    #menulist>li {
+        margin-bottom: 20px;
+        text-align: left;
+        padding: 20px 20px 0;
+    }
+
+    .drawer-container.open {
+        width: 100%;
+    }
+
+}
