@@ -290,10 +290,8 @@ function Step1({
               aria-pressed={pressed}
               onClick={() => onSelectRole(role)}
               ref={idx === 0 ? firstPillRef : undefined}
-            >
-              <span className="icon" aria-hidden="true">
-                🔹
-              </span>
+            > 
+              <span className="icon" aria-hidden="true">{pressed ? "✅" : "🟠"}</span>
               <span className="label">{role.name}</span>
             </button>
           );
