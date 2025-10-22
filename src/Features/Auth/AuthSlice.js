@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
+import { getAuthDataFromLocalStorage } from '../../common/getDataFromLocal';
 
 const initialState = {
   token: null,
@@ -15,14 +16,7 @@ export const authSlice = createSlice({
 
   reducers: {
     setCredentials: (state, action) => {
-      const { accessToken } = action.payload;
-     const getAuthDataFromLocalStorage = () => { 
-        const storedAuth = localStorage.getItem('userAuth');
-        if (storedAuth) {
-            return JSON.parse(storedAuth);
-        } 
-      };
-
+     const { accessToken } = action.payload;  
      const isAuthenticated =  getAuthDataFromLocalStorage();
     console.log("isAuthenticated", isAuthenticated, "accessToken...", accessToken); 
 

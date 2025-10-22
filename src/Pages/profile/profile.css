@@ -1,0 +1,139 @@
+ .app-container {
+     height: 100vh;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     color: #fff;
+     padding: 16px;
+     font-family: 'Inter', sans-serif;
+     position: relative; 
+ }
+
+ @keyframes float {
+
+     0%,
+     100% {
+         transform: translateY(0px);
+     }
+
+     50% {
+         transform: translateY(-10px);
+     }
+ }
+
+ .profile-card {
+     position: relative;
+     width: 100%;
+     max-width: 360px;
+     background: rgba(255, 255, 255, 0.15);
+     backdrop-filter: blur(15px);
+     border-radius: 25px;
+     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+     overflow: hidden;
+     z-index: 1;
+     animation: float 6s ease-in-out infinite;
+ }
+
+ .profile-banner {
+     height: 100px;
+     background: #ff9800;
+     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+ }
+
+ .profile-img {
+     position: absolute;
+     top: 40px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 120px !important;
+     height: 120px !important;
+     border-radius: 50%;
+     overflow: hidden;
+     border: 5px solid rgba(255, 255, 255, 0.7);
+     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+ }
+
+ .profile-img img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+ }
+
+ .profile-content {
+     padding: 60px 20px 30px;
+     text-align: center;
+     color: #fff;
+ }
+
+ .name {
+     font-size: 1.6rem;
+     font-weight: 600;
+ }
+
+ .title {
+     font-size: 1rem;
+     color: #D1C4FF;
+     margin-top: 4px;
+     margin-bottom: 12px;
+ }
+
+ .bio {
+     font-size: 0.9rem;
+     color: #EDEAFF;
+     line-height: 1.5;
+     margin-bottom: 25px;
+ }
+ 
+
+ .buttons {
+     display: flex;
+     justify-content: center;
+     gap: 10px;
+ }
+
+ .btn {
+     padding: 10px 22px;
+     border-radius: 25px;
+     font-size: 0.9rem;
+     font-weight: 500;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     border: none;
+ }
+
+ .btn.primary {
+     background: #ff9800;
+     color: #fff;
+     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+ }
+
+ .btn.outline {
+     background: transparent;
+     color: #ff9800;
+     border: 1px solid #ff9800;
+ }
+
+ .btn:hover {
+     transform: translateY(-2px);
+     opacity: 0.9;
+ }
+
+ .message-box {
+     position: absolute;
+     top: 32px;
+     background: #fff;
+     color: #4f46e5;
+     padding: 12px;
+     border-radius: 12px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+     z-index: 50;
+     transition: opacity 0.3s ease;
+ }
+
+ @media (max-width: 1024px) {
+     .app-container {
+        padding-top: 80px;
+        height: auto;
+     }  
+ }

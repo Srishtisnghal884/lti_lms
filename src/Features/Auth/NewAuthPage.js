@@ -206,6 +206,7 @@ const LoginFormModal = () => {
       access: {
         role: "student",
         classAssigned: [1],
+        name: "User 1"
       },
       username: credentials.email,
     };

@@ -11,7 +11,8 @@ import { LayoutContainer } from './Components/Layouts/LayoutContainer';
 import AuthRoutes from './Routes/AuthRoutes';
 import Login from './Features/Auth/Login';
 import CareerChoice from './Pages/Assesment'; 
-import ProfilePage from './Pages/ProfilePage';
+import ProfilePage from './Pages/profile/ProfilePage';
+import HelpVideos from './Pages/help/help';
 
 const App = () => { 
   const [mode, setMode] = useState('light');
@@ -41,6 +42,7 @@ const App = () => {
           <Route path='/404' element={<NotFound404 />} />
           <Route path='/career-choice' element={<CareerChoice />} /> 
           <Route path='/user-profile' element={<ProfilePage />} /> 
+           <Route path='/help' element={<HelpVideos />} /> 
           <Route path='*' element={<Navigate replace to='/404' />} />
         </Routes>
       </Paper>

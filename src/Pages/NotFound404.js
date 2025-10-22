@@ -18,7 +18,7 @@ const NotFound404 = () => {
         <img src={ErrorGif} alt='error' />
       </Box>
       <Box>
-        <Typography variant='h5' color='#f68b1f' textAlign='center'>
+        <Typography variant='h5' color='#ff9800' textAlign='center'>
           Oops! Requested resource does not exist
         </Typography>
       </Box>
