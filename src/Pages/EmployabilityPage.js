@@ -90,8 +90,8 @@ const EmployabilityAdvantagePage = () => {
               <div class="video-container" id="video-container">
                 <video
                   src="https://uploadmlj.pieinfosystems.com/upload/quick-start-guide-video-0.mp4"
-                  id="quickGuideVideo"
-                  controls=""
+                  id="quickGuideVideo" 
+                  controls
                   autoplay=""
                 ></video>
               </div> 
