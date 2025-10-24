@@ -10,6 +10,7 @@ import Loading from '../../Components/Loading';
 // import Error from '../../Components/Error';
 import { CardWrapper } from '../../Components/CardWrapper';
 import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
+import { DownloadOutlined } from '@mui/icons-material';
 
 export const Results = () => {
   const { classId } = useParams(); // Retrieve classId from the URL parameters
@@ -25,28 +26,29 @@ export const Results = () => {
 
   // Column for Data-Grid
   const columns = [
-    { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'examType', headerName: 'Examination Name', width: 200 },
+    { field: 'id', headerName: 'S No.', width: 100 },
+    { field: 'name', headerName: 'Examination Name', width: 300 },
     {
-      field: 'description',
-      headerName: 'Description',
-      width: 900,
+      field: 'item',
+      headerName: 'Skill',
+      width: 300, 
       renderCell: (params) => (
         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
           {params.value}
         </div>
       ),
     },
-  ];
-
-  const dummyData = [
-    {id: 1, examType: "Entrance Examination",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    {id: 2, examType: "Entrance Examination",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    {id: 3, examType: "Entrance Examination",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    {id: 4, examType: "Entrance Examination",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-
-  ]
-
+    {
+      field: 'downloadPdf',
+      headerName: 'Download PDF',
+      width: 300, 
+      renderCell: (params) => (
+        <div style={{ justifyContent: 'center', cursor: "pointer" }}>
+           <DownloadOutlined/>
+        </div>
+      ),
+    },
+  ]; 
   // For Searching through Data
   // const filteredData = data?.results?.filter((item) => {
   //   const term = searchTerm ?? '';
@@ -118,3 +120,120 @@ export const Results = () => {
   // }
   return content;
 };
+var dummyData = [
+  {
+    "id": "1",
+    "name": "public",
+    "item": "Administration"
+  },
+  {
+    "id": "2",
+    "name": "public",
+    "item": "Compliance"
+  },
+  {
+    "id": "3",
+    "name": "public",
+    "item": "Citizen Services"
+  },
+  {
+    "id": "4",
+    "name": "retail",
+    "item": "Store Ops"
+  },
+  {
+    "id": "5",
+    "name": "retail",
+    "item": "Visual Merchandising"
+  },
+  {
+    "id": "6",
+    "name": "retail",
+    "item": "E‑commerce"
+  },
+  {
+    "id": "7",
+    "name": "digital",
+    "item": "SEO"
+  },
+  {
+    "id": "8",
+    "name": "digital",
+    "item": "Performance Ads"
+  },
+  {
+    "id": "9",
+    "name": "digital",
+    "item": "Content / Social"
+  },
+  {
+    "id": "10",
+    "name": "digital",
+    "item": "Automation"
+  },
+  {
+    "id": "11",
+    "name": "hr",
+    "item": "Recruitment"
+  },
+  {
+    "id": "12",
+    "name": "hr",
+    "item": "Payroll"
+  },
+  {
+    "id": "13",
+    "name": "hr",
+    "item": "L&D"
+  },
+  {
+    "id": "14",
+    "name": "hr",
+    "item": "HR Analytics"
+  },
+  {
+    "id": "15",
+    "name": "education",
+    "item": "Teaching"
+  },
+  {
+    "id": "16",
+    "name": "education",
+    "item": "Curriculum"
+  },
+  {
+    "id": "17",
+    "name": "education",
+    "item": "EdTech"
+  },
+  {
+    "id": "18",
+    "name": "project",
+    "item": "PMO"
+  },
+  {
+    "id": "19",
+    "name": "project",
+    "item": "Agile / Scrum"
+  },
+  {
+    "id": "20",
+    "name": "project",
+    "item": "Delivery"
+  },
+  {
+    "id": "21",
+    "name": "sales",
+    "item": "B2B"
+  },
+  {
+    "id": "22",
+    "name": "sales",
+    "item": "Inside Sales"
+  },
+  {
+    "id": "23",
+    "name": "sales",
+    "item": "Account Mgmt"
+  }
+];

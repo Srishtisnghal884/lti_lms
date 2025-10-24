@@ -97,8 +97,8 @@ export default function CareerChoice() {
 
   const startQuickCheck = () => {
     const role = DATA.find((r) => r.id === modalCat) || DATA[0];
-    setModalOpen(false);
-    alert(`Starting quick Skills Check for\n${role.name} → ${modalSkill}`);
+    setModalOpen(false); 
+     window.location.replace("/user-result")
   };
 
   return (
