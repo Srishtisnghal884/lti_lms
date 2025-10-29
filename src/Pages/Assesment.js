@@ -389,11 +389,11 @@ function Step1({
               aria-pressed={pressed}
               onClick={() => onSelectRole(role)}
               ref={idx === 0 ? firstPillRef : undefined}   
-              style={{ justifyContent: 'space-between' }}
+              style={{alignItems:"center"}}
             >    
-              <span className="icon" aria-hidden="true">{pressed ? "✅" : "🟠"}</span>
+              <span className="icon" aria-hidden="true" sx={{mt:0}}>{pressed ? "✅" : "🟠"}</span>
               <span className="label">{role.name}</span> 
-              <span className="label">
+              <span className="label ml-auto-imp" style={{width:'30px'}}>
               {pressed && <CancelRounded style={{ position: 'relative', zIndex: 1 , }}
                 onClick={(e) => {
                   e.stopPropagation();  
@@ -448,7 +448,7 @@ function Step2({
       </div>
 
       <div className="search">
-        <inputonToggleSkill
+        <input onToggleSkill
           type="search"
           placeholder="Search skills within this role…"
           value={search}
@@ -467,12 +467,12 @@ function Step2({
                 className="pill"
                 aria-pressed={pressed}
                 onClick={() => onToggleSkill(skill)}
-                ref={idx === 0 ? firstPillRef : undefined}
-                style={{ justifyContent: 'space-between' }}
+                ref={idx === 0 ? firstPillRef : undefined} 
+                style={{alignItems:"center"}}
               >
-                <span className="icon" aria-hidden="true">{pressed ? "✅" : "🟠"}</span>
+                <span className="icon" aria-hidden="true" sx={{mt:0}}>{pressed ? "✅" : "🟠"}</span>
                 <span className="label">{skill}</span>
-                <span className="label">
+                <span className="label ml-auto-imp" style={{width:'30px'}}>
                 {pressed && <CancelRounded style={{ position: 'relative', zIndex: 1 }}
                 onClick={(e) => {
                   e.stopPropagation();  
