@@ -1,2 +1,1 @@
-export const API = ""; 
-// 'https://student-teacher-admin-dashboard-app.onrender.com';
+export const API = "http://103.186.184.179:8010/v1/";  

@@ -29,6 +29,7 @@ const DashboardRoutes = () => {
       <Route element={<PersistLogin />}>
         {/* --------- Admin Routes ------- */}
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Admin} />}>
+          <Route path='/' element={<StudentDashboard />} />
           <Route path='admin/users' element={<UsersData />} />
           <Route path='admin/:classId/timetable' element={<AdminTimeTable />} />
           <Route
@@ -73,10 +74,11 @@ const DashboardRoutes = () => {
             path='/employability'
             element={<EmployabilityPage />}
           />
+          <Route path='/results' element={<Results />} />
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
-          <Route path='/' element={<StudentDashboard />} /> 
-          <Route path='student/:classId/results' element={<Results />} />
+          <Route path='/' element={<StudentDashboard />} />   
         </Route>
+          {/* <Route path='/dashboard/results' element={<Results />} /> */}
       </Route>
     </Routes>
   );

@@ -15,8 +15,6 @@ import { drawerWidth, fullDrawerWidth } from './DrawerWidth';
 import DashboardRoutes from '../../Routes/DashboardRoutes';
 import { selectCurrentRole, setCredentials } from '../../Features/Auth/AuthSlice';
 import { LandingPage } from './LandingPage';
-import { useEffect } from 'react';
-import { getAuthDataFromLocalStorage } from '../../common/getDataFromLocal';
  
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'openWide' && prop !== 'isFullScreen', 
@@ -50,27 +48,20 @@ const Main = styled('main', {
   }), 
 }));
 
-export const LayoutContainer = () => {
-  const dispatch = useDispatch(); 
-  const isAuthenticated = getAuthDataFromLocalStorage(); 
-  
-  useEffect(() => { 
-    dispatch(setCredentials(isAuthenticated)) 
-  }, [isAuthenticated]) 
+export const LayoutContainer = () => { 
 
   const role = useSelector(selectCurrentRole);
   const open = useSelector(selectMobView);
-  const openWide = useSelector(selectLgView);  
+  const openWide = useSelector(selectLgView);
 
   const location = useLocation(); 
   const isFullScreenRoute = 
     location.pathname.includes('/employability') || 
     location.pathname.includes('/career-choice');
-    console.log("isFullScreenRoute", isFullScreenRoute);
 
   return (
     <>
-      {isAuthenticated?.access?.role ? (
+      {!!role ? (
         <>
          {!isFullScreenRoute && <NavBar />}
           {!isFullScreenRoute && <SidebarWrapper />}

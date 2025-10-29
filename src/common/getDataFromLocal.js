@@ -4,3 +4,10 @@ export const getAuthDataFromLocalStorage = () => {
             return JSON.parse(storedAuth);
         } 
   } 
+
+export const getUserDataFromLocalStorage = () => { 
+    const storedAuth = localStorage.getItem('userDate');
+    if (storedAuth) {
+            return JSON.parse(storedAuth);
+    } 
+} 

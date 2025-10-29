@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as icons from '@mui/icons-material';
-import { useTheme } from '@emotion/react';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import * as icons from "@mui/icons-material";
+import { useTheme } from "@emotion/react";
 
 import {
   Divider,
@@ -11,67 +11,68 @@ import {
   ListItemText,
   ListSubheader,
   ListItemIcon,
-} from '@mui/material';
-import styled from '@emotion/styled';
+  Typography,
+} from "@mui/material";
+import styled from "@emotion/styled";
 
-import NavbarLinks from '../../Data/Sidebar.json';
+import NavbarLinks from "../../Data/Sidebar.json";
 import {
   selectCurrentClassId,
   selectCurrentRole,
-} from '../../Features/Auth/AuthSlice';
-import { selectMobView } from '../../Features/ToggleSideBar/ToggleSidebarSlice';
+} from "../../Features/Auth/AuthSlice";
+import { selectMobView } from "../../Features/ToggleSideBar/ToggleSidebarSlice";
 
-export const SideNavLinks = () => {
+export const SideNavLinks = ({ openWide }) => {
   const role = useSelector(selectCurrentRole);
   const classId = useSelector(selectCurrentClassId);
   const mobScreenView = useSelector(selectMobView);
   const theme = useTheme();
 
+  const location = useLocation() 
+  const [focusedItem, setFocusedItem] = useState(location.pathname);
+  
+  useEffect(() => {
+    setFocusedItem(location.pathname)
+  }, [location.pathname])
+
+
   const StyledListItemButton = styled(ListItemButton)(({ focused }) => ({
-    flexDirection: mobScreenView ? 'column' : 'row',
-    justifyContent: mobScreenView ? 'center' : 'initial',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor:
-        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
-    },
-    '&:focus': {
-      borderRight: `3px solid ${theme.palette.primary[500]}`,
-      backgroundColor:
-        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
-      color: theme.palette.primary.main,
-      outline: 'none',
-    },
-    '&:active': {
-      borderRight: `3px solid ${theme.palette.primary[500]}`,
-      backgroundColor:
-        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
-      color: theme.palette.primary.main,
-    },
+    flexDirection: mobScreenView ? "column" : "row",
+    justifyContent: mobScreenView ? "center" : "initial",
+    borderRadius: "10px",
+    margin: "5px",
+    "&:hover": {
+      color: "#ffff !important",
+      backgroundColor: "#f25d2c",
+      borderRadius: "10px",
+      margin: "5px", 
+      // Target nested elements on hover
+      "& .MuiListItemIcon-root, & .MuiTypography-root": {
+        color: "#ffff",
+      }, 
+    }, 
     ...(focused && {
-      borderRight: `3px solid ${theme.palette.primary[500]}`,
-      backgroundColor:
-        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
-      color: theme.palette.primary.main,
+      color: "#ffff !important",
+      backgroundColor: "#f25d2c",
+      borderRadius: "10px",
+      margin: "5px",
+      "& .MuiListItemIcon-root, & .MuiTypography-root": {
+        color: "#ffff",
+      }, 
     }),
   }));
-
-  const StyledListItemIcon = styled(ListItemIcon)(() => ({
-    justifyContent: mobScreenView ? 'center' : 'initial',
-    color: theme.palette.primary[500],
-  }));
-
-  const [focusedItem, setFocusedItem] = useState(null);
-
-  const handleItemClick = (item) => {
-    setFocusedItem(item);
+  
+ const handleItemClick = (item) => {
+   setFocusedItem(item);
   };
+  console.log("location....", location, "focusedItem", focusedItem);
+
   const NavLinks = NavbarLinks.filter((user) => user.type === `${role}`);
 
   // Replace placeholders in URL with actual values
   const replaceUrlPlaceholders = (url, classId, userRoles) => {
-    let updatedUrl = url.replace(':classId', classId);
-    updatedUrl = updatedUrl.replace(':userRoles', userRoles);
+    let updatedUrl = url.replace(":classId", classId);
+    updatedUrl = updatedUrl.replace(":userRoles", userRoles);
     return updatedUrl;
   };
 
@@ -81,52 +82,64 @@ export const SideNavLinks = () => {
         data.content.map((item) => (
           <div key={item.division}>
             <List
+            sx={{paddingTop: '30px'}}
               key={item.division}
-              component='nav'
-              aria-labelledby='nested-list-subheader'
-              subheader={
-                <ListSubheader
-                  component='div'
-                  id='nested-list-subheader'
-                  sx={{
-                    backgroundColor: 'inherit',
-                    color: theme.palette.text.disabled,
-                  }}
-                >
-                  {item.division}
-                </ListSubheader>
-              }
+              component="nav"
+              aria-labelledby="nested-list-subheader"
             >
               {item.section.map((navLinks) => {
                 const Icon = icons[navLinks.icon];
-                const to = replaceUrlPlaceholders(navLinks.to, classId, role);
-                const isFocused = focusedItem === navLinks.title; 
+                const to = replaceUrlPlaceholders(navLinks.to, classId, role); 
+                const isFocused = focusedItem == navLinks.title; 
                 return (
                   <StyledListItemButton
-                  key={navLinks.title}
-                  variant='sidenav'
-                  component={Link}
-                  focused={isFocused}
-                  to={to}
-                  onClick={() => handleItemClick(navLinks.title)}
-                  > 
-                    <StyledListItemIcon>
-                      {<Icon sx={{ fontSize: '1.3rem' }}>{navLinks.icon}</Icon>}
-                    </StyledListItemIcon>
-                    <ListItemText
-                      primary={navLinks.title}
-                      primaryTypographyProps={{
-                        fontSize: 13,
-                        fontWeight: 'medium',
-                        lineHeight: '20px',
-                        mb: '2px',
+                    key={navLinks.title}
+                    variant="sidenav"
+                    component={Link}
+                    focused={isFocused}
+                    to={to}
+                    onClick={() => handleItemClick(navLinks.title)}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        justifyContent: "center",
+                        color: "#a0a5b9",
+                        
+                        "&:hover": {
+                          color: "#ffff !important",
+                        },
+                        ...(isFocused && {
+                          color: "#ffff !important",
+                        }),
                       }}
-                    />
+                    > 
+                        <Icon sx={{ fontSize: "1.3rem" }}>{navLinks.icon}</Icon>
+                     
+                    </ListItemIcon>
+                      {openWide && (
+                    <Typography 
+                      sx={{
+                        fontSize: "14px !important",
+                        fontWeight: "100",
+                        lineHeight: "10px",
+                        color: "#a0a5b9",
+                        mb: "2px",
+                        "&:hover": {
+                          color: "#ffff !important",
+                        },
+                        ...(isFocused && {
+                          color: "#ffff !important",
+                        }),
+                      }}
+                    >
+                      {navLinks.title}
+                    </Typography>  
+                      )}
                   </StyledListItemButton>
                 );
               })}
             </List>
-            <Divider variant='middle' />
+            <Divider variant="middle" />
           </div>
         ))
       )}

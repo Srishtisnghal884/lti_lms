@@ -8,16 +8,11 @@ export const CardWrapper = ({ title, children }) => {
     <Box sx={{ mt: 3 }}>
       <Paper
         sx={{
-          backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1a2027',
+          backgroundColor: '#fff',//theme.palette.mode === 'light' ? '#fff' : '#1a2027',
           pb: 1,
         }}
       >
-        <Box>
-          <Typography
-            sx={{ p: 2, fontSize: '1rem', color: '#4e73df', fontWeight: '700' }}
-          >
-            {title}
-          </Typography>
+        <Box> 
           <Divider />
         </Box>
         <Box sx={{ m: 2 }}>{children}</Box>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Divider, Drawer, Fab, Hidden } from '@mui/material';
+import { Box, Divider, Drawer, Fab, Hidden, Typography } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import MuiDrawer from '@mui/material/Drawer';
@@ -14,6 +14,7 @@ import {
 import Logo from '../../Assets/Images/logo512.png';
 import { SideNavLinks } from './SideNavLinks';
 import { drawerWidth, fullDrawerWidth } from './DrawerWidth';
+import { useTheme } from '@emotion/react';
 
 const StyledBox = styled(Box)(() => ({
   textAlign: 'center',
@@ -72,6 +73,7 @@ export const SidebarWrapper = () => {
   const dispatch = useDispatch();
   const open = useSelector(selectMobView);
   const openWide = useSelector(selectLgView);
+  // const theme = useTheme()
 
   const handleDrawer = () => {
     dispatch(toggleLgView());
@@ -81,7 +83,7 @@ export const SidebarWrapper = () => {
   return (
     <>
       {/* ---- Side Drawer for mob screens ---- */}
-      <Hidden smUp>
+      {/* <Hidden smUp>
         <Drawer
           sx={{
             width: drawerWidth, 
@@ -91,6 +93,7 @@ export const SidebarWrapper = () => {
               boxSizing: 'border-box',
               boxShadow: 3,
               borderRight: 'none',
+              background: "green"
             },
           }}
           variant='persistent'
@@ -103,12 +106,10 @@ export const SidebarWrapper = () => {
             </div>
           </DrawerHeader>
 
-          <Divider variant='middle' />
-
-          {/* --- Nav Links--- */}
+          <Divider variant='middle' /> 
           <SideNavLinks />
         </Drawer>
-      </Hidden>
+      </Hidden> */}
 
       {/* --- Side drawer for tab and desktop screens --- */}
       <Hidden smDown>
@@ -118,19 +119,38 @@ export const SidebarWrapper = () => {
           PaperProps={{
             sx: {
               borderRight: 'none',
+              background: 'white' //'#ebebebff'
             },
           }}
         >
           <DrawerHeader> 
-            <div>
+            {/* <Typography
+              variant="h6"
+              component="h4"
+              sx={{
+                color: "black",
+                fontWeight: 500,
+                textAlign: "center",
+                width: "100%",
+                maxWidth: "400px",
+                mt: 2,
+                whiteSpace: "break-spaces",
+                "@media (max-width: 900px)": {
+                  textAlign: "center",
+                },
+              }}
+            >
+              Employability  Advantage
+            </Typography> */}
+            {/* <div>
               <img src={"/ECAIcon.png"} alt='logo' height='32' width='32' />
-            </div>
+            </div> */}
           </DrawerHeader>
 
           <Divider variant='middle' />
 
           {/* --- Nav Links--- */}
-          <SideNavLinks />
+          <SideNavLinks openWide={openWide}/>
 
           {/* ----- Side bar Toggle Arrow Button -----  */}
           <Box
@@ -142,11 +162,11 @@ export const SidebarWrapper = () => {
           >
             <StyledBox onClick={handleDrawer}>
               {openWide ? (
-                <Fab color='primary' size='small'>
+                <Fab sx={{backgroundColor: "#f25d2c"}} size='small'>
                   <KeyboardArrowLeft />
                 </Fab>
               ) : (
-                <Fab color='primary' size='small'>
+                <Fab sx={{backgroundColor: "#f25d2c"}}  size='small'>
                   <KeyboardArrowRight />
                 </Fab>
               )}

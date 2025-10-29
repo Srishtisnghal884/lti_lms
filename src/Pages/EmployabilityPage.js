@@ -26,7 +26,7 @@ const EmployabilityAdvantagePage = () => {
           <h1 className="welcome-heading">
             Let's get started,{" "}
             <span className="user-name">
-              {localData.username.split("@")[0]}{" "}
+              {localData?.username?.split("@")[0]}{" "}
             </span>
           </h1>
           <div class="para-video-section text-light">

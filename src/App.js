@@ -14,13 +14,17 @@ import CareerChoice from './Pages/Assesment';
 import ProfilePage from './Pages/profile/ProfilePage';
 import HelpVideos from './Pages/help/help';
 import ResultPage from './Pages/result/ResultPage';  
+import { selectCurrentRole } from './Features/Auth/AuthSlice';
+import { PublicRoute } from './Features/Auth/PublicRoute';
+import DiagnosticAssessment from './Pages/diagnosticAssessment/diagnosticAssessment';
 
 const App = () => { 
   const [mode, setMode] = useState('light');
   const darkMode = useSelector(selectTheme);
 
   const memoizedDarkMode = useMemo(() => darkMode, [darkMode]);
-
+  const role = useSelector(selectCurrentRole);
+  const isAuthenticated = !!role;  
   useEffect(() => {
     memoizedDarkMode ? setMode('dark') : setMode('light');
   }, [memoizedDarkMode]);
@@ -37,14 +41,18 @@ const App = () => {
         elevation={0}
       >
         <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/auth/*' element={<AuthRoutes />} />
+          <Route element={<PublicRoute redirectTo="/result" />}>
+            <Route path='/auth/*' element={<AuthRoutes />} />
+            <Route path='/' element={<Login />} /> 
+          </Route>
           <Route path='/dashboard/*' element={<LayoutContainer />} />
           <Route path='/404' element={<NotFound404 />} />
-          <Route path='/career-choice' element={<CareerChoice />} /> 
+          <Route path='/dashboard/career-choice' element={<CareerChoice />} /> 
           <Route path='/user-profile' element={<ProfilePage />} /> 
           <Route path='/user-result' element={<ResultPage />} /> 
            <Route path='/help' element={<HelpVideos />} /> 
+           <Route path='/diagnostic-assessment' element={<DiagnosticAssessment />} /> 
+
           <Route path='*' element={<Navigate replace to='/404' />} />
         </Routes>
       </Paper>

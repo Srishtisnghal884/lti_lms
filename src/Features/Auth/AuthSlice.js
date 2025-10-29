@@ -2,13 +2,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
 import { getAuthDataFromLocalStorage } from '../../common/getDataFromLocal';
 
-const initialState = {
-  token: null,
-  role: null,
-  user: null,
-  classAssigned: null,
-  classId: 0,
+const setAuthDataInLocalStorage = (token, role) => {
+  localStorage.setItem('accessToken', token);
+  localStorage.setItem('userRole', role);
 };
+
+const getInitialAuthState = () => {
+  const token = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('userRole');
+  
+  // NOTE: You might want to add token expiration check here
+  
+  return {
+    token: token || null,
+    role: role || null,
+    user: null, // User details might need to be retrieved or decoded too
+    classAssigned: null, 
+  };
+};
+
+const initialState = getInitialAuthState()
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -16,21 +29,24 @@ export const authSlice = createSlice({
 
   reducers: {
     setCredentials: (state, action) => {
-     const { accessToken } = action.payload;  
-     const isAuthenticated =  getAuthDataFromLocalStorage();
-    console.log("isAuthenticated", isAuthenticated, "accessToken...", accessToken); 
+      console.log("action,,,,,", action)
+     const { token } = action.payload;  
+    //  const isAuthenticated =  getAuthDataFromLocalStorage();
+    console.log( "token...", token); 
 
-      const token = accessToken;
-      // const decodeToken = jwtDecode(token);
-      const decodeToken = isAuthenticated;
-      const role = decodeToken.access.role;
-      const classAssigned = decodeToken.access.classAssigned;
-      const user = decodeToken.username;
+      const accessToken = token;
+      const decodeToken = jwtDecode(accessToken);
+      console.log("decodeToken --->>>>>>>>", decodeToken)
+      // const decodeToken = isAuthenticated;
+      const role = decodeToken.roleId;
+      // const classAssigned = decodeToken.access.classAssigned;
+      const user = decodeToken.userId;
 
-      state.token = token;
+      state.token = accessToken;
       state.role = role;
       state.user = user;
-      state.classAssigned = classAssigned;
+      // state.classAssigned = classAssigned;
+      setAuthDataInLocalStorage(accessToken, role);
     },
     setClass: (state, action) => {
       const classId = action.payload;
@@ -42,6 +58,9 @@ export const authSlice = createSlice({
       state.user = null;
       state.classAssigned = null;
       state.classId = 0;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userRole');
     },
   },
 });

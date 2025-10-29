@@ -7,12 +7,13 @@ const RequireAuth = ({ allowedRoles }) => {
   // Retrieving from Redux Store
   const token = useSelector(selectCurrentToken);
   const role = useSelector(selectCurrentRole);
+// console.log("RequireAuth token",token, "role", role, "allowedRoles....", typeof allowedRoles);
 
-  return role === allowedRoles ? (
+  return role == allowedRoles ? (
     //  If allowed roles exist, render the nested routes
     <Outlet />
   ) : // else if token exists  navigate to notfound page
-  token ? (
+  !!token ? (
     <Navigate to='/404' />
   ) : (
     // If token does not exist , navigate to login page

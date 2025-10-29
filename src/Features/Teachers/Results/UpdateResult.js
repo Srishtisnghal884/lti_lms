@@ -64,8 +64,7 @@ export const UpdateResults = ({ data, id }) => {
       description: data?.description,
     },
     validationSchema: ResultsValidationSchema,
-    onSubmit: (values) => {
-      // console.log('onResultUpload', values);
+    onSubmit: (values) => { 
       updateRslt(values);
     },
   });

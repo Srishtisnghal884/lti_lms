@@ -70,8 +70,7 @@ export const UpdateStudent = ({ data, id }) => {
       contactInfo: data?.contactInfo,
     },
     validationSchema: ValidationSchema,
-    onSubmit: (values) => {
-      // console.log('onUpdate', values);
+    onSubmit: (values) => { 
       UpdateStdnt(values); // Call updateStudent fn to handle form submission
     },
   });
