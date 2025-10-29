@@ -193,9 +193,10 @@ const LoginFormModal = () => {
 
   // Auth Login Function
   const loginUser = (credentials) => { 
+    console.log("credentials.....", credentials)
     const urlencoded = new URLSearchParams();
-    urlencoded.append("email", "admin@gmail.com");
-    urlencoded.append("password", "admin@1234"); 
+    urlencoded.append("email", credentials.email);
+    urlencoded.append("password", credentials.password); 
     console.log("credentials.....", urlencoded);
     
     login(urlencoded)

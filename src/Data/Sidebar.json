@@ -1,76 +1,26 @@
 [
   {
-    "type": "3",
+    "type": "2",
     "content": [
       {
         "division": "Dashboard",
         "section": [
           {
-            "title": "Dashboard",
+            "title": "Students",
             "icon": "DashboardOutlined",
             "to": ":userRoles/:classId/"
-          }
-        ]
-      },
-      {
-        "division": "Class Info",
-        "section": [
-          {
-            "title": "Students",
-            "icon": "GroupsOutlined",
-            "to": ":userRoles/:classId/students"
           },
           {
-            "title": "Assignments",
-            "icon": "AssignmentOutlined",
-            "to": ":userRoles/:classId/assignment"
-          },
-          {
-            "title": "Time Table",
-            "icon": "TableChartOutlined",
-            "to": ":userRoles/:classId/timetable/"
-          },
-          {
-            "title": "Calendar",
-            "icon": "CalendarMonthOutlined",
-            "to": ":userRoles/:classId/calendar"
-          },
-          {
-            "title": "Examinations",
-            "icon": "QuizOutlined",
-            "to": ":userRoles/:classId/examinations"
-          },
-          {
-            "title": "Results",
+            "title": "Courses",
             "icon": "AssessmentOutlined",
-            "to": ":userRoles/:classId/results/"
-          }
+            "to": "students"
+          } 
         ]
-      },
-      {
-        "division": "Add ons",
-        "section": [
-          {
-            "title": "Attendance",
-            "icon": "HowToRegOutlined",
-            "to": ":userRoles/:classId/attendance"
-          }
-        ]
-      },
-      {
-        "division": "Miscellaneous",
-        "section": [
-          {
-            "title": "Other Class Info",
-            "icon": "InfoOutlined",
-            "to": ":userRoles/:classId/miscellaneous"
-          }
-        ]
-      }
+      } 
     ]
   },
   {
-    "type": "1",
+    "type": "3",
     "content": [ 
       {
         "division": "Addons",
@@ -90,7 +40,7 @@
     ]
   },
   {
-    "type": "2",
+    "type": "1",
     "content": [
       {
         "division": "Dashboard",
