@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import './Assesment.css';   
+import { CancelRounded } from "@mui/icons-material"; 
+import LandingLayoutPage from "../Components/LandingPageLayout";
+import { Button, Typography } from "@mui/material";
  
 const DATA = [
   {
@@ -54,12 +57,6 @@ export default function CareerChoice() {
   const stepDots = useMemo(() => [1, 2].map((n) => n === step), [step]);
  
   useEffect(() => {
-    if (firstPillRef.current) {
-      firstPillRef.current.focus();
-    }
-  }, [step, search, selectedRole]);
- 
-  useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Enter" && step === 1) {
         setStep(2);
@@ -72,12 +69,12 @@ export default function CareerChoice() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [step]);
-
  
+
   const filteredRoles = useMemo(() => {
     const q = (search || "").toLowerCase();
     return DATA.filter((r) => r.name.toLowerCase().includes(q));
-  }, [search]);
+  }, [search]); 
 
   const activeRole = selectedRole ?? DATA[0];
   const filteredSkills = useMemo(() => {
@@ -90,159 +87,261 @@ export default function CareerChoice() {
     setModalSkill((prev) => (role.items.includes(prev) ? prev : role.items[0]));
   }, [modalCat]);
 
+  const [confirmStartAssessment, setOpenConfirmStartAssessment] = useState(false)
+
   const startAssessment = (roleName, skillName) => {
     // Keep the original behavior
-    alert(`Starting assessment for \nRole: ${roleName}\nSkill: ${skillName}`);
+    setOpenConfirmStartAssessment(true)
+    // alert(`Starting assessment for \nRole: ${roleName}\nSkill: ${skillName}`);
   };
 
   const startQuickCheck = () => {
     const role = DATA.find((r) => r.id === modalCat) || DATA[0];
     setModalOpen(false); 
-     window.location.replace("/user-result")
+    //  window.location.replace("/user-result")
+    setOpenConfirmStartAssessment(true)
   };
 
+  const categoryOptions = DATA?.map(r => ({
+      label: r?.name,
+      value: r?.id
+  }));
   return (
-    <div className="assessment-box"> 
+     <LandingLayoutPage>
+      <div className="assessment-box">  
+        <main className="app rc-wrap">
+          <section className="card" id="widget">
+            <header>
+              <div className="brand"> 
+                {/* <img src="/ECAIcon.png" width={40} height={40} alt="logo"/>  */}
+                <h1>Employability Advantage</h1>
+              </div>
+              <nav className="stepper" aria-label="Progress">
+                <div className={`dot ${stepDots[0] ? "active" : ""}`} data-step-dot>
+                  1
+                </div>
+                <div className="line" />
+                <div className={`dot ${stepDots[1] ? "active" : ""}`} data-step-dot>
+                  2
+                </div>
+              </nav>
+            </header>
 
-      <main className="app rc-wrap">
-        <section className="card" id="widget">
-          <header>
-            <div className="brand"> 
-              <img src="/ECAIcon.png" width={40} height={40} alt="logo"/> 
-              <h1>Employability Advantage</h1>
+            <div className="content" id="content">
+              {step === 1 ? (
+                <Step1
+                  search={search}
+                  onSearch={setSearch}
+                  filteredRoles={filteredRoles}
+                  selectedRole={selectedRole}
+                  onSelectRole={(role) => {
+                    setSelectedRole(role);
+                    setSelectedSkill(null);
+                  }}
+                  onContinue={() => {
+                    setStep(2);
+                    setSearch('')
+                  }}
+                  openModal={() => setModalOpen(true)}
+                  firstPillRef={firstPillRef}
+                />
+              ) : (
+                <Step2
+                  role={activeRole}
+                  search={search}
+                  onSearch={(value) => { 
+                    setSearch(value) 
+                  }}
+                  selectedSkill={selectedSkill}
+                  onToggleSkill={(skill) =>
+                    setSelectedSkill((prev) => (prev === skill ? null : skill))
+                  }
+                  onBack={() => {
+                    setStep(1);
+                    setSearch("");
+                  }}
+                  onStart={() =>
+                    selectedSkill && startAssessment(activeRole.name, selectedSkill)
+                  }
+                  openModal={() => setModalOpen(true)}
+                  firstPillRef={firstPillRef}
+                />
+              )}
+            </div> 
+          </section>
+  
+          <section
+            className={`modal ${modalOpen ? "open" : ""}`}
+            id="skillsModal"
+            aria-hidden={!modalOpen}
+            role="dialog"
+            aria-labelledby="mTitle"
+            onClick={(e) => {
+              if ((e.target).classList?.contains("backdrop")) setModalOpen(false);
+            }}
+          >
+            <div className="backdrop" />
+            <div className="dialog" role="document">
+              <header>
+                <h3 id="mTitle">Skills Check</h3>
+                <button
+                  className="close"
+                  type="button"
+                  title="Close"
+                  aria-label="Close"
+                  onClick={() => setModalOpen(false)}
+                >
+                  ✕
+                </button>
+              </header>
+              <div className="body">
+                <div className="two">
+                  <div className="field">  
+                    <SearchableSelect
+                      label="Major Section"
+                      options={categoryOptions}
+                      value={modalCat}
+                      onChange={setModalCat} // setModalCat is the setter for modalCat state
+                    />
+                  </div>
+                  <div className="field"> 
+                      <SearchableSelect
+                      label="Specific Skill"
+                      options={(DATA.find((r) => r.id === modalCat) || DATA[0]).items.map(s => ({
+                        label: s,
+                        value: s  
+                      }))}
+                      value={modalSkill}
+                      onChange={setModalSkill}  
+                    />
+                  </div>
+                </div>
+                <p className="help">
+                  Pick a major section, then choose a specific skill to start an assessment.
+                </p>
+              </div>
+              <footer>
+                <button
+                  className="btn btn-outline"
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-primary" type="button" id="mStart" onClick={startQuickCheck}>
+                  Start Check
+                </button>
+              </footer>
             </div>
-            <nav className="stepper" aria-label="Progress">
-              <div className={`dot ${stepDots[0] ? "active" : ""}`} data-step-dot>
-                1
-              </div>
-              <div className="line" />
-              <div className={`dot ${stepDots[1] ? "active" : ""}`} data-step-dot>
-                2
-              </div>
-            </nav>
-          </header>
+          </section>
 
-          <div className="content" id="content">
-            {step === 1 ? (
-              <Step1
-                search={search}
-                onSearch={setSearch}
-                filteredRoles={filteredRoles}
-                selectedRole={selectedRole}
-                onSelectRole={(role) => {
-                  setSelectedRole(role);
-                  setSelectedSkill(null);
-                }}
-                onContinue={() => {
-                  setStep(2);
-                }}
-                openModal={() => setModalOpen(true)}
-                firstPillRef={firstPillRef}
-              />
-            ) : (
-              <Step2
-                role={activeRole}
-                search={search}
-                onSearch={setSearch}
-                selectedSkill={selectedSkill}
-                onToggleSkill={(skill) =>
-                  setSelectedSkill((prev) => (prev === skill ? null : skill))
-                }
-                onBack={() => {
-                  setStep(1);
-                  setSearch("");
-                }}
-                onStart={() =>
-                  selectedSkill && startAssessment(activeRole.name, selectedSkill)
-                }
-                openModal={() => setModalOpen(true)}
-                firstPillRef={firstPillRef}
-              />
-            )}
-          </div> 
-        </section>
- 
-        <section
-          className={`modal ${modalOpen ? "open" : ""}`}
-          id="skillsModal"
-          aria-hidden={!modalOpen}
-          role="dialog"
-          aria-labelledby="mTitle"
-          onClick={(e) => {
-            if ((e.target).classList?.contains("backdrop")) setModalOpen(false);
-          }}
-        >
+          <section
+            className={`modal ${confirmStartAssessment ? "open" : ""}`}
+            id="skillsModal"
+            aria-hidden={!confirmStartAssessment}
+            role="dialog"
+            aria-labelledby="mTitle"
+            onClick={(e) => {
+              if ((e.target).classList?.contains("backdrop")) setOpenConfirmStartAssessment(false);
+            }}
+          >
           <div className="backdrop" />
           <div className="dialog" role="document">
             <header>
-              <h3 id="mTitle">Skills Check</h3>
+              <h3 id="mTitle">Important</h3>
               <button
                 className="close"
                 type="button"
                 title="Close"
                 aria-label="Close"
-                onClick={() => setModalOpen(false)}
+                onClick={() => setOpenConfirmStartAssessment(false)}
               >
-                ✕
+              ✕
               </button>
             </header>
-            <div className="body">
-              <div className="two">
-                <div className="field">
-                  <label className="label" htmlFor="mCategory">
-                    Major Section
-                  </label>
-                  <select
-                    id="mCategory"
-                    value={modalCat}
-                    onChange={(e) => setModalCat(e.target.value)}
-                  >
-                    {DATA.map((r) => (
-                      <option key={r.id} value={r.id}>
-                        {r.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field">
-                  <label className="label" htmlFor="mSkill">
-                    Specific Skill
-                  </label>
-                  <select
-                    id="mSkill"
-                    value={modalSkill}
-                    onChange={(e) => setModalSkill(e.target.value)}
-                  >
-                    {(DATA.find((r) => r.id === modalCat) || DATA[0]).items.map(
-                      (s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      )
-                    )}
-                  </select>
-                </div>
+             <div className="body">
+              <Typography variant="inherit">Please enable pop-ups in your browser to ensure all features of this application work smoothly. The assessment cannot be paused once started; you must complete it in one go. If paused midway, the assessment will be marked incomplete, and your score will only reflect the parts you've completed. The length of the assessment varies, ranging from 10 to 40 minutes</Typography>
               </div>
-              <p className="help">
-                Pick a major section, then choose a specific skill to start a fast
-                assessment.
-              </p>
-            </div>
-            <footer>
-              <button
-                className="btn btn-outline"
-                type="button"
-                onClick={() => setModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button className="btn btn-primary" type="button" id="mStart" onClick={startQuickCheck}>
-                Start Check
-              </button>
-            </footer>
+              <footer className="go-btn">
+                <Button  variant="contained" onClick={() => {
+                  setOpenConfirmStartAssessment(false)
+                  // window.location.replace("/diagnostic-assessment")
+                }}>
+                  Go
+                </Button>
+              </footer>
           </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
+     </LandingLayoutPage>
+  );
+}
+
+
+function SearchableSelect({ label, options, value, onChange }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+  
+  // Find the currently selected item object to display its name/label
+  const selectedItem = options.find(opt => opt.value === value);
+
+  // Filter options based on the search term
+  const filteredOptions = useMemo(() => {
+    const q = searchTerm.toLowerCase();
+    return options.filter(opt => opt.label.toLowerCase().includes(q));
+  }, [searchTerm, options]);
+
+  // Handle clicks outside the component to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
+  // Utility function to handle selection
+  const handleSelect = (option) => {
+      onChange(option.value);
+      setSearchTerm(''); 
+      setIsOpen(false);  
+  };
+
+  return (
+    <div className="field" ref={containerRef}>
+      <label className="label">{label}</label> 
+      <input
+        type="text"
+        placeholder="Search categories..." 
+        value={isOpen ? searchTerm : (selectedItem ? selectedItem.label : '')} 
+        onFocus={() => setIsOpen(true)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setIsOpen(true); // Ensure it stays open while typing
+        }}
+      />
+       
+      {isOpen && (
+        <div className="custom-dropdown">
+          {filteredOptions.length > 0 ? (
+            filteredOptions.map((option) => (
+              <div
+                key={option.value}
+                className={`dropdown-item ${option.value === value ? 'selected' : ''}`}
+                onClick={() => handleSelect(option)}
+              >
+                {option.label}
+              </div>
+            ))
+          ) : (
+            <div className="dropdown-item disabled">No matches found</div>
+          )}
+        </div>
+      )} 
     </div>
   );
 }
@@ -262,7 +361,7 @@ function Step1({
     <>
       <div className="title pop">
         <div>
-          <h2>My Career Choice</h2>
+          <h2 className="career-title">My Career Choice</h2>
           <p className="subtitle">Choose a Role to explore or jump into a Skills Check</p>
         </div>
         <div className="badges">
@@ -289,32 +388,37 @@ function Step1({
               role="button"
               aria-pressed={pressed}
               onClick={() => onSelectRole(role)}
-              ref={idx === 0 ? firstPillRef : undefined}
-            > 
+              ref={idx === 0 ? firstPillRef : undefined}   
+              style={{ justifyContent: 'space-between' }}
+            >    
               <span className="icon" aria-hidden="true">{pressed ? "✅" : "🟠"}</span>
-              <span className="label">{role.name}</span>
+              <span className="label">{role.name}</span> 
+              <span className="label">
+              {pressed && <CancelRounded style={{ position: 'relative', zIndex: 1 , }}
+                onClick={(e) => {
+                  e.stopPropagation();  
+                  onSelectRole(null); 
+                }}/>} 
+
+               </span>
+              
             </button>
           );
         })}
       </div>
 
       <div className="cta">
-        <div></div>
-      
+        <div> 
+       </div> 
        <div className="btn-container">
-         <button className="btn btn-contained" onClick={() => window.history.back()}>
-          ← Back
-        </button>
         <button className="btn btn-primary" disabled={!selectedRole} onClick={onContinue}>
           Continue →
         </button>
        </div>
-      </div>
-       <div>
-        <button className="btn btn-outline" onClick={openModal}>
-          ⚙️ Skills Check
-        </button>
-       </div>
+      </div> 
+      <button className="btn btn-outline skill-check-cta" onClick={openModal}>
+        ⚙️ Skills Check
+      </button>
     </>
   );
 }
@@ -344,7 +448,7 @@ function Step2({
       </div>
 
       <div className="search">
-        <input
+        <inputonToggleSkill
           type="search"
           placeholder="Search skills within this role…"
           value={search}
@@ -364,9 +468,17 @@ function Step2({
                 aria-pressed={pressed}
                 onClick={() => onToggleSkill(skill)}
                 ref={idx === 0 ? firstPillRef : undefined}
+                style={{ justifyContent: 'space-between' }}
               >
                 <span className="icon" aria-hidden="true">{pressed ? "✅" : "🟠"}</span>
                 <span className="label">{skill}</span>
+                <span className="label">
+                {pressed && <CancelRounded style={{ position: 'relative', zIndex: 1 }}
+                onClick={(e) => {
+                  e.stopPropagation();  
+                  onToggleSkill(null);  
+                }}/>}
+                </span>
               </button>
             );
           })}
@@ -383,7 +495,7 @@ function Step2({
         </div>
       </div>
       <div>
-        <button className="btn btn-outline" onClick={openModal}>
+        <button className="btn btn-outline skill-check-cta" onClick={openModal}>
         ⚙️ Skills Check
         </button>
       </div>

@@ -4,12 +4,13 @@ import { setCredentials } from '../../Features/Auth/AuthSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API,
-  credentials: 'include',
+  // credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
-    }
+    } 
+    headers.set("Content-Type", "application/x-www-form-urlencoded");
     return headers;
   },
 });

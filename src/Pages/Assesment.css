@@ -2,9 +2,9 @@
      --bg: #0e1325;
      --card: #121939;
      --muted: #7b86a9;
-     --text: #e8edff;
+     --text: #171a24;
      --pill: #1b2347;
-     --pill-hover: #222c5e;
+     --pill-hover: #ced0df;
      --accent: #ff8a3d;
      --accent-strong: #ff6d06;
      --ring: #3e54ff;
@@ -13,7 +13,7 @@
      --radius-xl: 22px;
      --radius-pill: 999px;
  }
-
+ 
  html,
  body,
  #root .assessment-box {
@@ -29,12 +29,17 @@
  .assessment-box .app {
      width: min(1050px, 100%) !important;
  } 
+ .career-title{
+    color: var(--text);
+ }
 
  .assessment-box .card {
-    background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .01)), #121939;
+    background: #ebebebff;
+    /* linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .01)), #121939; */
     border: 1px solid rgba(255, 255, 255, .06);
     border-radius: 22px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    box-shadow: 0 8px 23px rgb(0 0 0 / 42%);
+    /* 0 20px 60px rgba(0,0,0,.35); */
     overflow: hidden;
     place-self: center;
     width: 75%;
@@ -46,7 +51,8 @@
      margin: 0;
      background: radial-gradient(1200px 600px at 85% -10%, rgba(62, 84, 255, .18), transparent), radial-gradient(900px 500px at -5% 110%, rgba(255, 138, 61, .12), transparent), var(--bg);
      color: var(--text);
-     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+     font-family: 'Gotham';
+     /* Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; */
      display: contents;
      place-items: center;
      padding: 24px
@@ -85,7 +91,7 @@
  .assessment-box .brand h1 {
      font-size: clamp(18px, 2vw, 22px);
      margin: 0;
-     font-weight: 800;
+     font-weight: 500;
      letter-spacing: .2px
  }
 
@@ -103,7 +109,8 @@
      border-radius: 50%;
      display: grid;
      place-items: center;
-     background: #141c3e;
+     background: white;
+     /* #141c3e; */
      border: 1px solid rgba(255, 255, 255, .08)
  }
 
@@ -123,11 +130,12 @@
      display: grid;
      grid-template-columns: 1fr;
      gap: 18px;
-     padding: 26px
+     padding: 3px 27px;
  }
 
  .assessment-box .title {
      display: flex;
+     flex-direction: column;
      align-items: baseline;
      justify-content: space-between;
      gap: 12px
@@ -135,9 +143,10 @@
 
  .assessment-box .title h2 {
      margin: 0;
-     font-weight: 800;
+     font-weight: 500;
      letter-spacing: .3px;
-     font-size: clamp(20px, 2.2vw, 26px)
+     font-size: clamp(20px, 2.2vw, 26px);
+     color: var(--text);
  }
 
  .assessment-box .subtitle {
@@ -153,12 +162,14 @@
  .assessment-box .search input {
      width: 100%;
      padding: 13px 44px;
-     background: #1b2347;
-     color: #e8edff;
+     background: #f4f4f5;
+     color: #7b86a9;
      border: 1px solid transparent;
      outline: none;
      border-radius: 14px;
-     font: 500 14px/1 Inter
+     /* font: 500 14px/1 Inter */
+     font-size: 12px;
+     font-weight: 400;
  }
 
  .assessment-box .grid {
@@ -172,10 +183,11 @@
      display: flex;
      align-items: center;
      gap: 10px;
-     padding: 14px 16px;
-     background: var(--pill);
+     padding: 7px 12px;
+     background: #ebebebff;
+      /* var(--pill); */
      border-radius: 30px;
-     border: 1px solid rgba(255, 255, 255, .06);
+     border: 1px solid #f7630c24;  /* rgba(27, 16, 16, 0.901); */
      cursor: pointer;
      user-select: none;
      transition: .18s ease;
@@ -190,7 +202,8 @@
  .assessment-box .pill[aria-pressed="true"] {
      outline: 2px solid rgba(255, 255, 255, .0);
      border-color: rgba(255, 255, 255, .18);
-     background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02)), #1d2a59
+     background: var(--pill-hover);
+     /* linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02)), #1d2a59 */
  }
 
  .assessment-box .pill .icon {
@@ -203,7 +216,7 @@
  }
 
  .assessment-box .pill .label {
-     font-weight: 600
+     font-weight: 400
  }
 
  .assessment-box .cta {
@@ -214,18 +227,26 @@
      padding-top: 6px
  }
 
- .assessment-box    .btn {
+ .assessment-box .btn {
      border: none;
      border-radius: 14px;
      padding: 14px 18px;
-     font: 700 14px/1 Inter;
+     /* font: 700 14px/1 ; */
+     font-size: 14px;
+     font-weight: 500;
      letter-spacing: .3px;
      cursor: pointer;
      display: inline-flex;
      align-items: center;
      gap: 10px;
      transition: .18s ease;
-     box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .2)
+     box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .2);
+    }
+    
+.assessment-box .skill-check-cta{
+     justify-content: center;
+     width: 100%;
+     margin-bottom: 10px;
  }
 
  .btn-primary {
@@ -239,7 +260,7 @@
  
 
  .btn-outline {
-     background: transparent;
+     background: white;
      color: var(--text);
      border: 1px solid rgba(255, 255, 255, .16)
  }
@@ -273,12 +294,14 @@
  }
 
  .badge {
-     font: 700 11px/1 Inter;
+     /* font: 700 11px/1 Inter; */
+     font-size: 10px;
+     font-weight: 400;
      padding: 8px 10px;
      border-radius: 999px;
-     background: #151d41;
+     background: white;  
      border: 1px dashed rgba(255, 255, 255, .12);
-     color: #a8b3da
+     color: var(--text) 
  }
 
  @keyframes pop {
@@ -299,7 +322,7 @@
 
  @media (max-width:600px) {
      .assessment-box header {
-         padding: 18px
+         padding: 80px 18px 5px 18px;
      }
 
     .assessment-box .content {
@@ -339,7 +362,8 @@
      border-radius: 22px;
      overflow: hidden;
      box-shadow: var(--shadow);
-     background: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .02)), #0f1636;
+     background: #ebebebff;
+     /* linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .02)), #0f1636; */
      border: 1px solid rgba(255, 255, 255, .08)
  }
 
@@ -348,15 +372,16 @@
      align-items: center;
      justify-content: space-between;
      padding: 18px 20px;
-     background: linear-gradient(180deg, rgba(255, 138, 61, .18), rgba(255, 138, 61, .12));
+     background: #ebebebff;
+     /* linear-gradient(180deg, rgba(255, 138, 61, .18), rgba(255, 138, 61, .12)); */
      border-bottom: 1px solid rgba(255, 255, 255, .08)
  }
 
 .assessment-box .dialog header h3 {
      margin: 0;
      font-size: 16px;
-     font-weight: 800;
-     color: #fff
+     font-weight: 500;
+     color: var(--text)
  }
 
 .assessment-box .dialog header .close {
@@ -389,16 +414,18 @@
 
  .label {
      font-size: 12px;
-     color: #fff;
-     font-weight: 700;
-     letter-spacing: .3px
+     color: var(--text);
+     font-weight: 400;
+     letter-spacing: .3px;
+     margin: 0 !important;
  }
 
  select,
  .fake-input {
      width: 100%;
      padding: 14px 12px;
-     background: var(--pill);
+     background: white; 
+     /* var(--pill); */
      color: var(--text);
      border: 1px solid rgba(255, 255, 255, .12);
      border-radius: 14px;
@@ -410,6 +437,8 @@
      grid-template-columns: 1fr 1fr;
      gap: 12px
  }
+
+
 
  @media (max-width:991px) {
     .assessment-box .card{
@@ -429,7 +458,67 @@
      padding: 16px 20px 20px
  }
 
+.go-btn{
+    justify-content: center !important;
+ }
+ .go-btn button{
+    border-radius: 50%;
+    padding: 10px;
+    border: 7px solid white;
+ }
+
  .help {
      font-size: 12px;
      color: var(--muted)
  }
+
+ .field {
+    position: relative; /* Essential for positioning the dropdown */
+}
+
+/* Style for the dropdown list container */
+.custom-dropdown {
+    position: absolute;
+    top: 100%; /* Position right below the input/label */
+    left: 0;
+    right: 0;
+    max-height: 150px; /* Limits the height */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: white;
+    z-index: 10; /* Ensure it's above other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for each item in the dropdown list */
+.dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: white;
+}
+
+/* Hover effect */
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Style for the currently selected item */
+.dropdown-item.selected {
+    background-color: #e0f7fa; /* Light blue background */
+    font-weight: 400;
+}
+
+/* Optional: Adjust the input within the field to match the native select height/look */
+.field input[type="text"] {
+    /* Example adjustment to match your existing select styles */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: transparent;
+    color:  var(--text);
+    font-weight: 400 !important;
+    /* You might need to adjust this to fit your existing theme */
+}

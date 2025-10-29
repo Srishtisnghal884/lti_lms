@@ -6,7 +6,7 @@
      align-items: center;
      color: #fff;
      padding: 16px;
-     font-family: 'Inter', sans-serif;
+     font-family: 'Gotham'; 
      position: relative; 
  }
 
@@ -63,17 +63,18 @@
  .profile-content {
      padding: 60px 20px 30px;
      text-align: center;
-     color: #fff;
+     /* color: #fff; */
  }
 
  .name {
      font-size: 1.6rem;
      font-weight: 600;
+     color: #565364;
  }
 
- .title {
+ .title, span {
      font-size: 1rem;
-     color: #D1C4FF;
+     color: #565364;
      margin-top: 4px;
      margin-bottom: 12px;
  }

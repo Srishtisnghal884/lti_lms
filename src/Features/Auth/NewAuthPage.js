@@ -6,8 +6,8 @@ import {
   Grid,
   InputAdornment,
   IconButton,
-} from "@mui/material"; 
-import { useState } from "react";
+} from "@mui/material";
+import { useCallback, useState } from "react";
 import { Tabs, Tab, TextField, Link, Divider } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +22,12 @@ import NewSignUpPage from "./NewSignUp";
 import Loading from "../../Components/Loading";
 import GImag from "../../Assets/Images/google-icon.svg";
 import FVImag from "../../Assets/Images/fv.svg";
-import MicrosoftImag from "../../Assets/Images/microsoft-icon.svg";
- 
+import MicrosoftImag from "../../Assets/Images/microsoft-icon.svg"; 
+// import {
+//   LoginSocialFacebook,
+//   LoginSocialMicrosoft,
+// } from "reactjs-social-login";
+// import { LoginSocialGoogle } from "reactjs-social-login";
 
 const HIGH_FIVE_IMAGE =
   "https://portal.employabilityadvantage.com/assets/images/highFive.png";
@@ -59,7 +63,7 @@ const AuthPage = () => {
           component="h3"
           sx={{
             color: "white",
-            fontWeight: 700,
+            fontWeight: 500,
             textAlign: "left",
             width: "100%",
             maxWidth: "400px",
@@ -71,7 +75,7 @@ const AuthPage = () => {
         >
           Employability Advantage
         </Typography>
-        <Paper elevation={3}>
+        <Paper sx={{backgroundColor: "#182958"}} elevation={3}>
           <LoginFormModal />
         </Paper>
       </Box>
@@ -144,14 +148,7 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
-const StyledTypography = styled(Typography)(() => ({
-  color: "red",
-  wordWrap: "break-word",
-  maxWidth: "250px",
-  fontSize: "0.75rem",
-}));
-
+ 
 const LoginValidationSchema = yup.object({
   email: yup
     .string()
@@ -183,56 +180,39 @@ const LoginFormModal = () => {
     setTabValue(newValue);
   };
 
-  const handleSocialLogin = (platform) => {
-    console.log(`Logging in with ${platform}`);
-    // Implement your social login logic here
-  };
-
   const formik = useFormik({
     initialValues: {
       email: "student123@gmail.com",
       password: "Student123@#",
     },
     validationSchema: LoginValidationSchema,
-    onSubmit: (values) => {
-      // console.log('onLogin', values);
+    onSubmit: (values) => { 
       loginUser(values); // Call updateStaff function to handle form submission
     },
   });
 
   // Auth Login Function
-  const loginUser = (credentials) => {
-    const clientAuthData = {
-      access: {
-        role: "student",
-        classAssigned: [1],
-        name: "User 1"
-      },
-      username: credentials.email,
-    };
-
-    try {
-      localStorage.setItem("userAuth", JSON.stringify(clientAuthData));
-      dispatch(setCredentials(clientAuthData));
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Client-Side Login Failed:", error);
-    }
-    // // Call the Login mutation with the email and password
-    // login(credentials)
-    //   .unwrap()
-    //   .then((data) => {
-    //     console.log("Server-Side Login Successful:", data);
-    //     dispatch(setCredentials(data))
-    //   })
-    //   .then(() => navigate('/dashboard'))
-    //   .catch((error) => {
-    //     const errorMessage =
-    //       error?.error?.message ||
-    //       error?.data?.error?.message ||
-    //       'An error occurred.';
-    //     toast.error(errorMessage); // Show error message using toast
-    //   });
+  const loginUser = (credentials) => { 
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("email", "admin@gmail.com");
+    urlencoded.append("password", "admin@1234"); 
+    console.log("credentials.....", urlencoded);
+    
+    login(urlencoded)
+      .unwrap()
+      .then((data) => { 
+        console.log("Server-Side Login Successful:", data);
+         localStorage.setItem('userData', JSON.stringify(data.user));
+        dispatch(setCredentials(data.tokens.access))
+      })
+      .then(() => navigate('/dashboard/career-choice'))
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
 
   //   For viewing or hiding password input field
@@ -241,6 +221,57 @@ const LoginFormModal = () => {
     event.preventDefault();
   };
 
+  const handleSuccess = (credentialResponse) => {
+    const idToken = credentialResponse.credential;
+    console.log("Login Success:", idToken);
+  };
+
+  const handleError = () => {
+    console.log("Login Failed");
+  };
+
+  // const handleSocialLogin = (platform) => {
+  //   console.log(`Logging in with ${platform}`);
+  //   if(platform === "Google"){
+  //   }
+  // };
+
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: handleSuccess,
+  //   onError: handleError,
+  //   // Add any necessary scopes if you need more than the default profile/email
+  //   // scope: 'openid profile email'
+  // });
+
+  const handleSocialLogin = (user) => {
+    console.log("Login Success:", user);
+    // 'user' object typically contains:
+    // { provider: 'facebook', profile: { ... }, token: '...' }
+
+    // TODO: Send the token to your backend for final authentication/session creation.
+  };
+
+  // 2. Function to handle a failed login
+  const handleSocialLoginFailure = (err) => {
+    console.error("Login Failure:", err);
+  };
+
+  const onResolve = useCallback((response) => {
+    // This is where you get the user data and credentials
+    console.log("Google Login Success:", response);
+
+    // The token is usually in response.data.access_token or response.data.id_token
+    // You should send this token to your backend for verification and user sign-in.
+    const token = response.data.access_token;
+    // ... your logic to sign in on your server
+  }, []);
+
+  const onReject = useCallback((error) => {
+    console.error("Google Login Failure:", error);
+  }, []);
+
+  console.log("formik..........", formik)
+
   return (
     <div style={{ width: 400, maxWidth: "90vw" }}>
       <Tabs
@@ -248,11 +279,13 @@ const LoginFormModal = () => {
         onChange={handleTabChange}
         aria-label="login signup tabs"
         variant="fullWidth"
-        sx={{ borderBottom: 1, borderColor: "divider" }}
+        sx={{ borderBottom: 1, borderColor: "divider" , 
+          '& .MuiTabs-indicator': {
+          margin: '0 !important',
+        }}}
       >
         <Tab label="Sign up" {...a11yProps(0)} />
-        <Tab label="Log in" {...a11yProps(1)} />
-        sasa
+        <Tab label="Log in" {...a11yProps(1)} /> 
       </Tabs>
 
       <TabPanel value={tabValue} index={1}>
@@ -269,25 +302,52 @@ const LoginFormModal = () => {
                   flexWrap: "wrap",
                 }}
               >
-                <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
-                  <img
-                    className="login-signup-sso-options-microsoft-icon"
-                    width={"20"}
-                    height={"20"}
-                    src={MicrosoftImag}
-                    alt=""
-                  />
+                <Box
+                  sx={{ marginRight: "15px", cursor: "pointer"  }}
+                  onClick={() => handleSocialLogin("Facebook")}
+                >
+                  {/* <LoginSocialMicrosoft
+                    client_id={"MICROSOFT_CLIENT_ID"}
+                    scope="openid profile email"
+                    // NOTE: For Microsoft, you may also need a 'redirect_uri'
+                    // if the default one used by the library doesn't match your Azure setup.
+                    // redirect_uri="http://localhost:3000"
+                    onResolve={onResolve}
+                    onReject={onReject}
+                  >
+                  </LoginSocialMicrosoft> */}
+                    <img
+                      className="login-signup-sso-options-microsoft-icon"
+                      width={"20"}
+                      height={"20"}
+                      src={MicrosoftImag}
+                      alt=""
+                    />
                 </Box>
-                <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
-                  <img
-                    className="login-signup-sso-options-facebook-icon"
-                    width={"20"}
-                    height={"20"}
-                    src={GImag}
-                    alt=""
-                  />
+                <Box
+                  sx={{ marginRight: "15px", cursor: "pointer" }} 
+                >
+                  {/* <LoginSocialGoogle
+                    client_id={
+                      "296440107125-1nchm9de4teqb3tuct4qkuc4gps93ntj.apps.googleusercontent.com"
+                    }
+                    scope="openid profile email"
+                    onResolve={onResolve}
+                    onReject={onReject}
+                  >
+                  </LoginSocialGoogle> */}
+                    <img
+                      className="login-signup-sso-options-facebook-icon"
+                      width={"20"}
+                      height={"20"}
+                      src={GImag}
+                      alt=""
+                    />
                 </Box>
-                <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
+                <Box
+                  sx={{ marginRight: "15px", cursor: "pointer"  }}
+                  onClick={() => handleSocialLogin("Google")}
+                >
                   <img
                     className="login-signup-sso-options-microsoft-icon"
                     width={"20"}
@@ -295,6 +355,14 @@ const LoginFormModal = () => {
                     src={FVImag}
                     alt=""
                   />
+                  {/* <LoginSocialFacebook
+                    provider="facebook"
+                    appId="826964239782619"
+                    scope="public_profile,email"
+                    callback={handleSocialLogin}
+                    onFailure={handleSocialLoginFailure}
+                  >
+                  </LoginSocialFacebook> */}
                 </Box>
               </Box>
 
@@ -307,9 +375,9 @@ const LoginFormModal = () => {
               {/* Email and Password Form */}
               <Box
                 component="form"
-                onSubmit={() => {
-                  console.log("formik.handleSubmit");
-                  formik.handleSubmit();
+                onSubmit={(e) => {
+                  console.log("formik.handleSubmit", e);
+                  formik.handleSubmit(e);
                 }}
                 sx={{ mt: 2 }}
               >
@@ -392,33 +460,42 @@ const LoginFormModal = () => {
               flexWrap: "wrap",
             }}
           >
-            <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
-                  <img
-                    className="login-signup-sso-options-microsoft-icon"
-                    width={"20"}
-                    height={"20"}
-                    src={MicrosoftImag}
-                    alt=""
-                  />
-                </Box>
-                <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
-                  <img
-                    className="login-signup-sso-options-facebook-icon"
-                    width={"20"}
-                    height={"20"}
-                    src={GImag}
-                    alt=""
-                  />
-                </Box>
-                <Box sx={{marginRight: "15px"}} onClick={() => handleSocialLogin("Google")}>
-                  <img
-                    className="login-signup-sso-options-microsoft-icon"
-                    width={"20"}
-                    height={"20"}
-                    src={FVImag}
-                    alt=""
-                  />
-                </Box>
+            <Box
+              sx={{ marginRight: "15px" }}
+              onClick={() => handleSocialLogin("Google")}
+            >
+              <img
+                className="login-signup-sso-options-microsoft-icon"
+                width={"20"}
+                height={"20"}
+                src={MicrosoftImag}
+                alt=""
+              />
+            </Box>
+            <Box
+              sx={{ marginRight: "15px" }}
+              onClick={() => handleSocialLogin("Google")}
+            >
+              <img
+                className="login-signup-sso-options-facebook-icon"
+                width={"20"}
+                height={"20"}
+                src={GImag}
+                alt=""
+              />
+            </Box>
+            <Box
+              sx={{ marginRight: "15px" }}
+              onClick={() => handleSocialLogin("Google")}
+            >
+              <img
+                className="login-signup-sso-options-microsoft-icon"
+                width={"20"}
+                height={"20"}
+                src={FVImag}
+                alt=""
+              />
+            </Box>
           </Box>
 
           {/* OR Divider */}

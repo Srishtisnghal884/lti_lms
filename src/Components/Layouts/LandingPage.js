@@ -66,11 +66,11 @@ export const LandingPage = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          marginBottom: 0,
         }}
       > 
           <PageTitle title={`Welcome`} /> 
-      </Box>
-      <Divider />
+      </Box> 
     </>
   );
 };

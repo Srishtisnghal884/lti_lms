@@ -32,6 +32,8 @@ import { UserProfile } from './UserProfile';
 import { Notifications } from './Notifications';
 import { Messages } from './Messages';
 import { selectCurrentUser } from '../../Features/Auth/AuthSlice';
+import zIndex from '@mui/material/styles/zIndex';
+import { useTheme } from '@emotion/react';
 
 const MenuIcon = ({ onClick }) => (
   <Hidden smUp>
@@ -63,13 +65,14 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   [theme.breakpoints.up('sm')]: {
-    marginLeft: `${drawerWidth}px`,
-    width: `calc(100% - ${drawerWidth}px)`,
+    // marginLeft: `${drawerWidth}px`,
+    zIndex: zIndex.drawer + 1,
+    // width: `calc(100% - ${drawerWidth}px)`,
   },
   backgroundColor: theme.palette.background.default,
   ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
+    // width: `calc(100% - ${drawerWidth}px)`,
+    // marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -86,6 +89,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export const NavBar = () => {
+    const theme = useTheme();
   const dispatch = useDispatch();
   const open = useSelector(selectMobView);
   const darkMode = useSelector(selectTheme);
@@ -101,14 +105,32 @@ export const NavBar = () => {
   }, [dispatch]);
 
   return (
-    <AppBar position='fixed' color='inherit' elevation={0} open={open}>
-      <Toolbar>
+    <AppBar position='fixed' sx={{background: "#ffff"}} elevation={0} open={open}> 
+      <Toolbar> 
         <MenuIcon onClick={handleDrawer} />
-        <Box sx={{ flexGrow: 1 }} />
+        {/* <Box sx={{ flexGrow: 1 }} />  */}
 
-         
+          <Typography
+              variant="h6"
+              component="h4"
+              sx={{
+                color: theme.palette.grey[700] ,
+                fontWeight: 500,
+                textAlign: "left",
+                width: "100%",
+                maxWidth: "400px",
+                mr:'auto',
+                mt: 2,
+                whiteSpace: "break-spaces",
+                "@media (max-width: 900px)": {
+                  textAlign: "left",
+                },
+              }}
+            >
+              Employability <br/> Advantage
+            </Typography>
 
-        <Box sx={{ flexGrow: 1 }} /> 
+        {/* <Box sx={{ flexGrow: 1 }} />  */}
 
         <Divider orientation='vertical' variant='middle' flexItem />
 
@@ -126,7 +148,7 @@ export const NavBar = () => {
               sx={{
                 width: 32,
                 height: 32,
-                color: 'inherit',
+                color: '#f25d2c',
                 backgroundColor: 'inherit',
               }}
             />

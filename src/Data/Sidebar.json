@@ -1,6 +1,6 @@
 [
   {
-    "type": "teacher",
+    "type": "3",
     "content": [
       {
         "division": "Dashboard",
@@ -70,37 +70,27 @@
     ]
   },
   {
-    "type": "student",
-    "content": [
-      {
-        "division": "Dashboard",
-        "section": [
-          {
-            "title": "Dashboard",
-            "icon": "DashboardOutlined",
-            "to": ""
-          }
-        ]
-      },
+    "type": "1",
+    "content": [ 
       {
         "division": "Addons",
         "section": [ 
           {
-            "title": "Assessment",
-            "icon": "AssignmentOutlined",
-           "to": "employability"
-          }, 
-          {
             "title": "Results",
             "icon": "AssessmentOutlined",
-            "to": ":userRoles/:classId/results"
+            "to": "results"
+          },
+          {
+            "title": "Assessment",
+            "icon": "AssignmentOutlined",
+            "to": "career-choice"
           }
         ]
       }
     ]
   },
   {
-    "type": "admin",
+    "type": "2",
     "content": [
       {
         "division": "Dashboard",

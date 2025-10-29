@@ -6,11 +6,11 @@ export const PageTitle = ({ title }) => {
   const theme = useTheme();
   return (
     // Page Title
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ my: 2 }}>
       <Typography
         variant='h4'
-        fontWeight='bold'
-        sx={{ color: theme.palette.grey[500] }}
+        fontWeight='500'
+        sx={{ color: theme.palette.grey[700] }}
       >
         {title}
       </Typography>

@@ -78,7 +78,7 @@ const HelpVideos = () => {
             <main className="content-container">
             <section className="main-video-section">
                 <header className="page-header">
-                    <img className='logo-image' src='/ECAIcon.png' width={"25px"} height={"25px"} />
+                    {/* <img className='logo-image' src='/ECAIcon.png' width={"25px"} height={"25px"} /> */}
                     <div className="logo-text">Employability Advantage</div> 
                 </header>
                 <div className="video-player-container">

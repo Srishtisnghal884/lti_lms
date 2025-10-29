@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 import "./index.css";
+import { logout } from "../../Features/Auth/AuthSlice";
+import { useDispatch } from "react-redux";
 
 const LandingLayoutPage = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false); 
+  const dispatch = useDispatch();
 
   const handleOpenDrawer = () => {
     setOpenDrawer(!openDrawer);
@@ -14,6 +17,7 @@ const LandingLayoutPage = ({ children }) => {
 
   const handleLogout = () => { 
     window.location.replace('/')
+     dispatch(logout());
   };
  
   return (
@@ -38,14 +42,14 @@ const LandingLayoutPage = ({ children }) => {
             />
           </div>
           <ul class="text-center fs-1" id="menulist">
-            <li>
+            {/* <li>
               <Link
                 to={"/dashboard/employability"}>
                 Home
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link to={"/dashboard"}>Dashboard</Link>
+              <Link to={"/dashboard/results"}>Result</Link>
             </li>
             <li>
               <Link to={"/user-profile"}>Profile</Link>
@@ -53,7 +57,7 @@ const LandingLayoutPage = ({ children }) => {
             <li>
               <Link to={"/help"}>Help</Link>
             </li>
-            <li onClick={handleLogout}>Logout</li>
+            {/* <li onClick={handleLogout}>Logout</li> */}
           </ul>
         </div>
       </div>

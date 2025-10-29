@@ -1,3 +1,27 @@
+@font-face {
+    font-family: "Gotham";
+    src: url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.eot");
+    src: url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/bd317adf74e5e7e564eb61ce9926cc6d.svg#Gotham")format("svg");
+}
+@font-face {
+    font-family: "Gotham-Medium";
+    src: url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.eot");
+    src: url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/3a47f5f06b5484abfeee9eac90348a9c.svg#Gotham-Medium")format("svg");
+} 
+
+p,h1,h2,h3,h4,h5,h6,span,div,b,strong,label, button, small,input,
+body {
+    font-family: 'Gotham-Medium';
+} 
+
 .App{
   display: flex;
 }

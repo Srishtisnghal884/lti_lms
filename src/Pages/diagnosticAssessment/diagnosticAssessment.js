@@ -1,7 +1,7 @@
 import React from "react";
-import "./result.css";
-import LandingLayoutPage from "../../Components/LandingPageLayout";
-import { Download } from "@mui/icons-material";
+import "./diagnosticAssessment.css";
+import LandingLayoutPage from "../../Components/LandingPageLayout"; 
+import { Button } from "@mui/material";
 
 const DescriptionIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -115,7 +115,7 @@ const PeopleIcon = ({ size = 24, className = "" }) => (
     />
   </svg>
 );
-  
+
 const ToolCard = ({ icon: Icon, title, subtitle, locked }) => (
   <div className="tool-card">
     <div className="tool-card-icon-wrapper">
@@ -124,63 +124,8 @@ const ToolCard = ({ icon: Icon, title, subtitle, locked }) => (
     <p className="tool-card-title">{title}</p>
   </div>
 );
-
-const ScoreCard = ({ score, category }) => {
-  const percentage = score; 
-  const radius = 60;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference; 
-
-  return (
-    <div className="score-card">
-      <h3 className="score-card-header">Your Diagnostic Score</h3>
-
-      <div className="score-card-progress-container">
-        <div className="score-card-progress-circle">
-          <svg width="150" height="150" viewBox="0 0 150 150">
-            {/* Background Circle */}
-            <circle
-              cx="75"
-              cy="75"
-              r={radius}
-              fill="none"
-              stroke="#e5e7eb"
-              strokeWidth="10"
-            />
-            {/* Progress Circle (using stroke-dashoffset to show progress) */}
-            <circle
-              cx="75"
-              cy="75"
-              r={radius}
-              fill="none"
-              stroke="var(--color-secondary)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              style={{
-                strokeDasharray: circumference,
-                strokeDashoffset: offset,
-                transform: "rotate(-90deg)",
-                transformOrigin: "75px 75px",
-                transition: "stroke-dashoffset 0.5s ease",
-              }}
-            />
-          </svg>
-        </div>
-        <div className="score-card-score-text">{score.toFixed(2)}</div>
-      </div> 
-      <div style={{color: "black", textAlign: "center", display: 'flex', gap: '5px', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
-        <Download fontSize="small" size="small" onClick={() => {console.log("fdfdfsd") }}/>
-        <p className="" style={{color: "black", textAlign: "center"}}>  Download Result</p>
-      </div>
-      <p className="score-card-category">Highest Deficiency: {category}</p> 
-     <button className="change-cta">Change</button>
-    </div>
-  );
-};
-
-// --- Main Application Component ---
-
-const ResultPage = () => {
+ 
+const DiagnosticAssessment = () => {
   const tools = [
     {
       icon: DescriptionIcon,
@@ -208,17 +153,12 @@ const ResultPage = () => {
 
   return (
     <LandingLayoutPage>
-      <div className="result-layout min-h-screen bg-primary relative overflow-hidden"> 
+      <div className="result-layout min-h-screen bg-primary relative overflow-hidden">
         <div class="Content-container">
           <div id="menu-and-logo-container">
-            <div className="header-logo">
-              {/* <img src="/ECAIcon.png" alt="logo" width="30px" height="30px" />{" "} */}
-              Employability{" "}
-                <br />
-                Advantage
-              {/* <span className="logo-accent">
-                {" "}
-              </span> */}
+            <div className="header-logo"> 
+              Employability <br />
+              Advantage 
             </div>
           </div>
         </div>
@@ -233,28 +173,17 @@ const ResultPage = () => {
 
                 <div className="space-y-4">
                   <h2 className="text-2xl font-semibold text-primary-foreground">
-                    Let's see how you fared!
+                    Why do I need to take this assessment?
                   </h2>
 
                   <p className="text-primary-foreground-90 text-lg leading-relaxed">
-                    Got your score? You know what areas you're good at and what
-                    areas you need to work on to improve your employability.
-                  </p>
-
-                  <div className="flex items-center gap-3 bg-success-20 border-success-30 rounded-xl p-4">
-                    <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center flex-shrink-0">
-                      <span className="text-success-foreground font-bold text-sm">
-                        B
-                      </span>
-                    </div>
-                    <p className="text-primary-foreground font-semibold"> 
-                      You now have access to new unlocked areas
-                    </p>
-                  </div>
-
-                  <p className="text-primary-foreground-90 text-lg">
-                    Start today. Gain skills. Build resume value.
-                  </p>
+                    Completing the diagnostic tool evaluates your current
+                    technical skills in your chosen field of study as well as
+                    your soft skills. This assessment is for you to check what
+                    your strengths are, and better understand your skill gaps.
+                    This, then allows you to focus on areas to develop. So, GO,
+                    complete the assessment to unlock other services.
+                  </p> 
                 </div>
               </div>
 
@@ -277,10 +206,21 @@ const ResultPage = () => {
               </div>
             </div>
 
-            {/* Right Content - Score Card */}
-            <div className="lg-sticky score-container lg-top-28">
-              <ScoreCard score={76.0} category="Negotiation" />
-            </div>
+            {/* Right Content */}
+              <div className="right-container"> 
+                <button className="community-cta">Community Management</button>
+                <p className="score-card-category">
+                  Change
+                </p>
+              <div className="go-btn">
+               <Button variant="contained" onClick={() => {
+                //   setOpenConfirmStartAssessment(false)
+                  window.location.replace("/user-result")
+                }}>
+                  Go
+                </Button>
+              </div>
+              </div> 
           </div>
         </main>
       </div>
@@ -288,4 +228,4 @@ const ResultPage = () => {
   );
 };
 
-export default ResultPage;
+export default DiagnosticAssessment;

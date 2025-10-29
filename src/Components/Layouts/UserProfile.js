@@ -8,12 +8,14 @@ import {
   selectCurrentUser,
 } from '../../Features/Auth/AuthSlice';
 import dayjs from 'dayjs';
+import { getUserDataFromLocalStorage } from '../../common/getDataFromLocal';
 
 export const UserProfile = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
-  const role = useSelector(selectCurrentRole);
+  const role = useSelector(selectCurrentRole); 
+  const localData = getUserDataFromLocalStorage()
 
   const getGreeting = useMemo(() => {
     const currentTime = dayjs();
@@ -44,8 +46,8 @@ export const UserProfile = () => {
           <Typography
             variant='h6'
             sx={{
-              fontWeight: 'bold',
-              color: theme.palette.primary.main,
+              fontWeight: '500',
+              color: '#f25d2c' // theme.palette.primary.main,
             }}
           >
             {getGreeting} 
@@ -53,18 +55,19 @@ export const UserProfile = () => {
         </Grid>
         <Grid item xs={12}>
           <Box>
-            <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
-              {user}
+            <Typography variant='subtitle1' sx={{ fontWeight: '500', color: '#f25d2c' }}>
+              {localData?.name}
             </Typography>
           </Box>
-          <Box>
+          {/* <Box>
             <Typography
               variant='body2'
-              sx={{ color: theme.palette.text.secondary }}
+              sx={{ color: '#f25d2c' }}
+              // sx={{ color: theme.palette.text.secondary }}
             >
-              {role}
+              {localData?.email}
             </Typography>
-          </Box>
+          </Box> */}
         </Grid>
       </Grid>
 
@@ -75,7 +78,8 @@ export const UserProfile = () => {
           <Button
             variant='contained'
             color='primary'
-            sx={{ color: theme.palette.primary.contrastText }}
+             sx={{ color: '#ffff', backgroundColor: '#f25d2c' }}
+            // sx={{ color: theme.palette.primary.contrastText }}
             onClick={handleLogout}
           >
             Logout
