@@ -6,7 +6,7 @@ export const getAuthDataFromLocalStorage = () => {
   } 
 
 export const getUserDataFromLocalStorage = () => { 
-    const storedAuth = localStorage.getItem('userDate');
+    const storedAuth = localStorage.getItem('userData');
     if (storedAuth) {
             return JSON.parse(storedAuth);
     } 
