@@ -37,24 +37,7 @@ Note: Ensure that you have Node.js and npm installed on your machine before proc
 1. Launch the React Admin Teacher Dashboard by following the installation steps mentioned above.
 
 2. On the login screen, enter your credentials based on your assigned role (student, teacher, or admin).
-
-### Demo Credentials
-#### Admin Credentials
-``` 
-```
-
-#### Teacher Credentials
-```
-email:teacher123@gmail.com
-password:Teacher123@#
-```
-
-#### Student Credentials
-```
-email:student123@gmail.com
-password:Student123@#
-```
-
+ 
 3. Explore the various features and functionalities available in the dashboard based on your role and permissions.(only class 9 data available)
 
 4. Perform administrative tasks such as managing students, teachers, courses, and attendance as needed.
