@@ -112,12 +112,12 @@ export const Results = () => {
             to={`${CLOUDINARY_URL}/${params?.row?.["result_info.pdf_url"]}`}
             target="_blank"
           >
-            <PictureAsPdf color="success" style={{ cursor: "pointer", marginRight: 2 }} />
+            <PictureAsPdf titleAccess="Download PDF" color="success" style={{ cursor: "pointer", marginRight: 2 }} />
           </Link>
           <Link
             to={`/user-result?assessment=${params?.row?.["assessment_info.name"]}`}
           >
-            <VisibilityRounded color="info" style={{ cursor: "pointer", marginLeft: 2 }} />
+            <VisibilityRounded titleAccess="View" color="info" style={{ cursor: "pointer", marginLeft: 2 }} />
           </Link>
         </div>
       ),
