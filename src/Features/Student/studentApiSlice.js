@@ -6,6 +6,12 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       query: (classId) => `dashboard/student/${classId}`,
     }),
   }),
+   endpoints: (builder) => ({
+    getStudentResult: builder.query({
+      query: ({ email, page = 1, pageSize = 10 }) => `assessments/getResult/${email}/${page}/${pageSize}`,
+    }),
+  }),
 });
 
-export const { useGetStudentDataQuery } = studentApiSlice;
+export const { useGetStudentDataQuery, 
+  useGetStudentResultQuery } = studentApiSlice;

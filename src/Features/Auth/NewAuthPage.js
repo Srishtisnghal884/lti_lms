@@ -182,7 +182,7 @@ const LoginFormModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "student123@gmail.com",
+      email: "srishtisinghal884@gmail.com",
       password: "Student123@#",
     },
     validationSchema: LoginValidationSchema,
@@ -192,18 +192,15 @@ const LoginFormModal = () => {
   });
 
   // Auth Login Function
-  const loginUser = (credentials) => { 
-    console.log("credentials.....", credentials)
+  const loginUser = (credentials) => {  
     const urlencoded = new URLSearchParams();
     urlencoded.append("email", credentials.email);
-    urlencoded.append("password", credentials.password); 
-    console.log("credentials.....", urlencoded);
+    urlencoded.append("password", credentials.password);  
     
     login(urlencoded)
       .unwrap()
-      .then((data) => { 
-        console.log("Server-Side Login Successful:", data);
-         localStorage.setItem('userData', JSON.stringify(data.user));
+      .then((data) => {  
+        localStorage.setItem('userData', JSON.stringify(data.user));
         dispatch(setCredentials(data.tokens.access))
       })
       .then(() => navigate('/dashboard/career-choice'))
@@ -247,8 +244,7 @@ const LoginFormModal = () => {
   const handleSocialLogin = (user) => {
     console.log("Login Success:", user);
     // 'user' object typically contains:
-    // { provider: 'facebook', profile: { ... }, token: '...' }
-
+    // { provider: 'facebook', profile: { ... }, token: '...' } 
     // TODO: Send the token to your backend for final authentication/session creation.
   };
 
