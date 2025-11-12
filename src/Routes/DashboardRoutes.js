@@ -22,6 +22,8 @@ import { AdminTimeTable } from '../Features/Admin/Timetable/AdminTimetable';
 import { StaffContainer } from '../Features/Admin/StaffTable/AdminStaffContainer';
 import { CalendarContainer } from '../Features/Student/CalendarContainer'; 
 import EmployabilityPage from '../Pages/EmployabilityPage';
+import { Courses } from '../Features/Teachers/Course';
+import { StudentList } from '../Features/Teachers/StudentList';
 
 const DashboardRoutes = () => {
   return (
@@ -75,6 +77,8 @@ const DashboardRoutes = () => {
             element={<EmployabilityPage />}
           />
           <Route path='/results' element={<Results />} />
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/students' element={<StudentList />} />
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
           <Route path='/' element={<StudentDashboard />} />   
         </Route>

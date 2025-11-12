@@ -10,7 +10,7 @@ const EmployabilityAdvantagePage = () => {
   return (
     <>
     <LandingPageLayout>  
-      <div class="Content-container">
+      <div className="Content-container">
         <div id="menu-and-logo-container">
           <div className="header-logo">
             <img src="/ECAIcon.png" alt="logo" width={"30px"} height={"30px"} />{" "}
@@ -29,9 +29,9 @@ const EmployabilityAdvantagePage = () => {
               {localData?.username?.split("@")[0]}{" "}
             </span>
           </h1>
-          <div class="para-video-section text-light">
+          <div className="para-video-section text-light">
             <div className="text-section">
-              <section class="para-head-1">
+              <section className="para-head-1">
                 <span className="bold-headings">
                   We're really glad you're here.
                 </span>
@@ -41,8 +41,8 @@ const EmployabilityAdvantagePage = () => {
                   interviews, get it all done in one place.
                 </p>
               </section>
-              <section class="para-head-2">
-                <span class="bold-headings lh-1">
+              <section className="para-head-2">
+                <span className="bold-headings lh-1">
                   Watch our, " How it works"
                   <br />
                   video, then test your skills.
@@ -59,8 +59,8 @@ const EmployabilityAdvantagePage = () => {
                 </Link>
               </div>
             </div>
-            <div class="video-section">
-              <div class="video-container" id="video-container">
+            <div className="video-section">
+              <div className="video-container" id="video-container">
                 <video
                   src="https://uploadmlj.pieinfosystems.com/upload/quick-start-guide-video-0.mp4"
                   id="quickGuideVideo"

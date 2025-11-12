@@ -61,6 +61,7 @@ export const authSlice = createSlice({
 
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userRole');
+      localStorage.removeItem('userData');
     },
   },
 });

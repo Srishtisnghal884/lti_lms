@@ -6,12 +6,12 @@
         "division": "Dashboard",
         "section": [
           {
-            "title": "Students",
+            "title": "Courses",
             "icon": "DashboardOutlined",
-            "to": ":userRoles/:classId/"
+            "to": "courses"
           },
           {
-            "title": "Courses",
+            "title": "Students",
             "icon": "AssessmentOutlined",
             "to": "students"
           } 
@@ -38,7 +38,7 @@
         ]
       }
     ]
-  },
+  }, 
   {
     "type": "1",
     "content": [

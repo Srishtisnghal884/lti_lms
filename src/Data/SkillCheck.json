@@ -1,0 +1,516 @@
+[
+    {
+        "id": "communication",
+        "name": "Communication",
+        "items": [
+            {
+                "name": "Business Communication",
+                "assessment_name": "SC_COM_Business Communication"
+            },
+            {
+                "name": "Negotiation",
+                "assessment_name": "SC_COM_Negotiation"
+            },
+            {
+                "name": "Verbal Reasoning",
+                "assessment_name": "SC_COM_Verbal Reasoning"
+            },
+            {
+                "name": "Communication (Intermediate)",
+                "assessment_name": "SC_COM_Communictaion (Intermediate)"
+            }
+        ]
+    },
+    {
+        "id": "marketing",
+        "name": "Marketing",
+        "items": [
+            {
+                "name": "Social Media Management",
+                "assessment_name": "SC_MAR_Social Media Management"
+            },
+            {
+                "name": "SM Community Management",
+                "assessment_name": "SC_MAR_Community Management"
+            },
+            {
+                "name": "Meta Marketing",
+                "assessment_name": "SC_MAR_Meta Marketing"
+            },
+            {
+                "name": "Tik Tok Marketing",
+                "assessment_name": "SC_MAR_TikTok Marketing"
+            },
+            {
+                "name": "Instagram Marketing",
+                "assessment_name": "SC_MAR_Instagram Marketing"
+            },
+            {
+                "name": "Email Marketing",
+                "assessment_name": "SC_MAR_Email Marketing"
+            },
+            {
+                "name": "SEO Outreach",
+                "assessment_name": "SC_MAR_SEO Outreach"
+            },
+            {
+                "name": "SEO Copy",
+                "assessment_name": "SC_MAR_SEO Copy"
+            },
+            {
+                "name": "Technical SEO",
+                "assessment_name": "SC_MAR_Technical SEO"
+            },
+            {
+                "name": "Google Ads",
+                "assessment_name": "SC_MAR_Google Ads"
+            },
+            {
+                "name": "Growth Marketing",
+                "assessment_name": "SC_MAR_Growth Marketing"
+            },
+            {
+                "name": "Affiliate Marketing",
+                "assessment_name": "SC_MAR_Affiliate Marketing"
+            },
+            {
+                "name": "Marketing Analytics",
+                "assessment_name": "SC_MAR_Marketing Analytics"
+            },
+            {
+                "name": "PPC Advertising",
+                "assessment_name": "SC_MAR_PPC Advertising"
+            },
+            {
+                "name": "E Commerce Analytics",
+                "assessment_name": "SC_MAR_E Commerce Analytics"
+            },
+            {
+                "name": "Content Strategy",
+                "assessment_name": "SC_MAR_Content Strategy"
+            },
+            {
+                "name": "Shopify",
+                "assessment_name": "SC_MAR_Shopify"
+            },
+            {
+                "name": "Adobe Indesign",
+                "assessment_name": "SC_MAR_Indesign"
+            },
+            {
+                "name": "Adobe Illustrator",
+                "assessment_name": "SC_MAR_Illustrator"
+            },
+            {
+                "name": "Adobe Photoshop",
+                "assessment_name": "SC_MAR_Photoshop"
+            }
+        ]
+    },
+    {
+        "id": "finance",
+        "name": "Finance",
+        "items": [
+            {
+                "name": "Financial Math",
+                "assessment_name": "SC_FIN_Financial Math"
+            },
+            {
+                "name": "Costing product and services",
+                "assessment_name": "SC_FIN_Costing product and services"
+            },
+            {
+                "name": "Advanced Accounting (IFRS)",
+                "assessment_name": "SC_FIN_Advanced Accounting (IFRS)"
+            },
+            {
+                "name": "Financial Management",
+                "assessment_name": "SC_FIN_Financial Management"
+            },
+            {
+                "name": "Decentralised Finance (Defi)",
+                "assessment_name": "SC_FIN_Decentralised Finance (Defi)"
+            },
+            {
+                "name": "Internal Audit",
+                "assessment_name": "SC_FIN_Internal Audit"
+            },
+            {
+                "name": "XERO",
+                "assessment_name": "SC_FIN_XERO"
+            },
+            {
+                "name": "Financial modelling in Excel",
+                "assessment_name": "SC_FIN_Financial modelling in Excel"
+            },
+            {
+                "name": "International Standards on Auditing",
+                "assessment_name": "SC_FIN_International Standards on Auditing"
+            },
+            {
+                "name": "Accounts Receivable",
+                "assessment_name": "SC_FIN_Accounts Receivable"
+            },
+            {
+                "name": "Accounts Payable",
+                "assessment_name": "SC_FIN_Accounts Payable"
+            }
+        ]
+    },
+    {
+        "id": "health_and_effectiveness",
+        "name": "Health and Effectiveness",
+        "items": [
+            {
+                "name": "Work Health and Safety",
+                "assessment_name": "SC_WHS_Work health and Safety"
+            },
+            {
+                "name": "Time Management",
+                "assessment_name": "SC_WHS_Time Management"
+            }
+        ]
+    },
+    {
+        "id": "human_resources",
+        "name": "Human Resources",
+        "items": [
+            {
+                "name": "HR Management",
+                "assessment_name": "SC_HRM_HR Management"
+            },
+            {
+                "name": "Talent Acquisition",
+                "assessment_name": "SC_HRM_Talent Acquisition"
+            },
+            {
+                "name": "Remote Team Management",
+                "assessment_name": "SC_HRM_Remote Team Management"
+            },
+            {
+                "name": "Strategic Coaching",
+                "assessment_name": "SC_HRM_Strategic Coaching"
+            },
+            {
+                "name": "Conducting Interviews",
+                "assessment_name": "SC_HRM_Conducting Interviews"
+            },
+            {
+                "name": "Performance Management",
+                "assessment_name": "SC_HRM_Performance Management"
+            },
+            {
+                "name": "DISC",
+                "assessment_name": "SC_HRM_DISC"
+            },
+            {
+                "name": "Training and Development",
+                "assessment_name": "SC_HRM_Training and Development"
+            },
+            {
+                "name": "Data Storytelling",
+                "assessment_name": "SC_HRM_Data Storytelling"
+            }
+        ]
+    },
+    {
+        "id": "leadership",
+        "name": "Leadership",
+        "items": [
+            {
+                "name": "Leadership and people management",
+                "assessment_name": "SC_LDR_Leadership and people management"
+            },
+            {
+                "name": "Problem Solving",
+                "assessment_name": "SC_LDR_Problem Solving"
+            },
+            {
+                "name": "Design Thinking",
+                "assessment_name": "SC_LDR_Design Thinking"
+            },
+            {
+                "name": "Digital Agility",
+                "assessment_name": "SC_LDR_Digital Agility"
+            },
+            {
+                "name": "Business Judgement,",
+                "assessment_name": "SC_LDR_Business Judgement"
+            },
+            {
+                "name": "Critical Thinking",
+                "assessment_name": "SC_LDR_Critical Thinking"
+            },
+            {
+                "name": "Branding Strategy",
+                "assessment_name": "SC_LDR_Branding Strategy"
+            },
+            {
+                "name": "Public Relations Strategy",
+                "assessment_name": "SC_LDR_Public Relations Strategy"
+            },
+            {
+                "name": "Data Driven Decision Making",
+                "assessment_name": "SC_LDR_Data Driven Decision Making"
+            }
+        ]
+    },
+    {
+        "id": "project_management",
+        "name": "Project Management",
+        "items": [
+            {
+                "name": "Project Management",
+                "assessment_name": "SC_PRJ_Project Management"
+            },
+            {
+                "name": "Program Management",
+                "assessment_name": "SC_PRJ_Program Management"
+            },
+            {
+                "name": "Scrum Master",
+                "assessment_name": "SC_PRJ_ScrumMaster"
+            },
+            {
+                "name": "Risk Management",
+                "assessment_name": "SC_PRJ_Risk Management"
+            }
+        ]
+    },
+    {
+        "id": "sales",
+        "name": "Sales",
+        "items": [
+            {
+                "name": "Sales Aptitude",
+                "assessment_name": "SC_SAL_Sales Aptitude"
+            },
+            {
+                "name": "B2B Sales Management",
+                "assessment_name": "SC_SAL_B2B Sales Management"
+            },
+            {
+                "name": "Account Management",
+                "assessment_name": "SC_SAL_Account Management"
+            },
+            {
+                "name": "CRM Hubspot",
+                "assessment_name": "SC_SAL_CRM_Hubspot"
+            },
+            {
+                "name": "CRM Zoho",
+                "assessment_name": "SC_SAL_CRM_Zoho"
+            },
+            {
+                "name": "CRM Salesforce",
+                "assessment_name": "SC_SAL_CRM_Salesforce"
+            }
+        ]
+    },
+    {
+        "id": "information_technology",
+        "name": "Information Technology",
+        "items": [
+            {
+                "name": "Working with Generative AI",
+                "assessment_name": "SC_IT_Working with Generative AI"
+            },
+            {
+                "name": "Power BI",
+                "assessment_name": "SC_IT_Power BI"
+            },
+            {
+                "name": "Tableau",
+                "assessment_name": "SC_IT_Tableau"
+            },
+            {
+                "name": "UX/UI Design",
+                "assessment_name": "SC_IT_UX/UI Design"
+            },
+            {
+                "name": "Exploratory Data Analysis",
+                "assessment_name": "SC_IT_Exploratory Data Analysis"
+            },
+            {
+                "name": "Data Analytics in Excel",
+                "assessment_name": "SC_IT_Data Analytics in Excel"
+            },
+            {
+                "name": "Cybersecurity",
+                "assessment_name": "SC_IT_Cybersecurity"
+            },
+            {
+                "name": "Microsoft Visio",
+                "assessment_name": "SC_IT_Microsoft Visio"
+            },
+            {
+                "name": "SQL",
+                "assessment_name": "SC_IT_SQL"
+            },
+            {
+                "name": "Java",
+                "assessment_name": "SC_IT_Java"
+            },
+            {
+                "name": ".NET/.NET Core",
+                "assessment_name": "SC_IT_.NET/.NET Core"
+            },
+            {
+                "name": "PHP",
+                "assessment_name": "SC_IT_PHP"
+            },
+            {
+                "name": "Business Analysis",
+                "assessment_name": "SC_IT_Business Analysis"
+            },
+            {
+                "name": "Oracle",
+                "assessment_name": "SC_IT_Oracle"
+            },
+            {
+                "name": "MEAN Stack",
+                "assessment_name": "SC_IT_MEAN Stack"
+            },
+            {
+                "name": "React Native",
+                "assessment_name": "SC_IT_React Native"
+            },
+            {
+                "name": "Node.js",
+                "assessment_name": "SC_IT_Node.js"
+            },
+            {
+                "name": "Angular",
+                "assessment_name": "SC_IT_Angular"
+            },
+            {
+                "name": "HTML, CSS, Next js",
+                "assessment_name": "SC_IT_HTML, CSS, Next js"
+            },
+            {
+                "name": "Sharepoint",
+                "assessment_name": "SC_IT_Sharepoint"
+            },
+            {
+                "name": "Drupal",
+                "assessment_name": "SC_IT_Drupal"
+            },
+            {
+                "name": "IT Product Management",
+                "assessment_name": "SC_IT_IT Product Management"
+            },
+            {
+                "name": "AWS",
+                "assessment_name": "SC_IT_AWS"
+            },
+            {
+                "name": "DevOps",
+                "assessment_name": "SC_IT_DevOps"
+            },
+            {
+                "name": "Machine Learning",
+                "assessment_name": "SC_IT_Machine Learning"
+            },
+            {
+                "name": "IT Security",
+                "assessment_name": "SC_IT_IT Security"
+            },
+            {
+                "name": "Penetration testing",
+                "assessment_name": "SC_IT_Penetration testing"
+            },
+            {
+                "name": "Python",
+                "assessment_name": "SC_IT_Python"
+            },
+            {
+                "name": "ReACT JS",
+                "assessment_name": "SC_IT_ReACT JS"
+            },
+            {
+                "name": "Flutter",
+                "assessment_name": "SC_IT_Flutter"
+            },
+            {
+                "name": "Cloud System Admin",
+                "assessment_name": "SC_IT_Cloud System Admin"
+            },
+            {
+                "name": "Windows Server Admin",
+                "assessment_name": "SC_IT_Windows Server Admin"
+            },
+            {
+                "name": "Ansible",
+                "assessment_name": "SC_IT_Ansible"
+            },
+            {
+                "name": "Pyspark - Big Data",
+                "assessment_name": "SC_IT_Pyspark - Big Data"
+            },
+            {
+                "name": "Apache Spark - Big Data",
+                "assessment_name": "SC_IT_Apache Spark - Big Data"
+            },
+            {
+                "name": "DBA",
+                "assessment_name": "SC_IT_Database Administration"
+            },
+            {
+                "name": "MERN Stack",
+                "assessment_name": "SC_IT_MERN Stack"
+            },
+            {
+                "name": "Android",
+                "assessment_name": "SC_IT_Android"
+            },
+            {
+                "name": "Web Accessibility",
+                "assessment_name": "SC_IT_Web Accessibility"
+            },
+            {
+                "name": "Data modelling",
+                "assessment_name": "SC_IT_Data modelling"
+            },
+            {
+                "name": "Ruby on rails",
+                "assessment_name": "SC_IT_Ruby on rails"
+            },
+            {
+                "name": "C/C++",
+                "assessment_name": "SC_IT_C/C++"
+            },
+            {
+                "name": "Rest API",
+                "assessment_name": "SC_IT_Rest API"
+            },
+            {
+                "name": "Artificial Intelligence",
+                "assessment_name": "SC_IT_Artificial Intelligence"
+            },
+            {
+                "name": "Azure",
+                "assessment_name": "SC_IT_Azure"
+            },
+            {
+                "name": "Qandac",
+                "assessment_name": "SC_IT_Qandac"
+            },
+            {
+                "name": "Data Analysis using R",
+                "assessment_name": "SC_IT_Data Analysis using R"
+            },
+            {
+                "name": "MATPLOTLIB",
+                "assessment_name": "SC_IT_MATPLOTLIB"
+            },
+            {
+                "name": "Jenkins",
+                "assessment_name": "SC_IT_Jenkins"
+            },
+            {
+                "name": "Postgre SQL",
+                "assessment_name": "SC_IT_Postgre SQL"
+            }
+        ]
+    }
+]

@@ -154,7 +154,7 @@ const DiagnosticAssessment = () => {
   return (
     <LandingLayoutPage>
       <div className="result-layout min-h-screen bg-primary relative overflow-hidden">
-        <div class="Content-container">
+        <div className="Content-container">
           <div id="menu-and-logo-container">
             <div className="header-logo"> 
               Employability <br />

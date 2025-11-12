@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./result.css";
 import LandingLayoutPage from "../../Components/LandingPageLayout";
 import { Download } from "@mui/icons-material";
+import {  useFetchAssessmentDetailsResultInPdfMutation} from "../../Features/CareerChoice/AuthSlice";
+import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
+import { Link, useSearchParams } from "react-router-dom";
+import Loading from "../../Components/Loading";
 
 const DescriptionIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -115,7 +119,7 @@ const PeopleIcon = ({ size = 24, className = "" }) => (
     />
   </svg>
 );
-  
+
 const ToolCard = ({ icon: Icon, title, subtitle, locked }) => (
   <div className="tool-card">
     <div className="tool-card-icon-wrapper">
@@ -126,7 +130,7 @@ const ToolCard = ({ icon: Icon, title, subtitle, locked }) => (
 );
 
 const ScoreCard = ({ score, category }) => {
-  const percentage = score; 
+  const percentage = Number(score?.score);
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference; 
@@ -134,7 +138,6 @@ const ScoreCard = ({ score, category }) => {
   return (
     <div className="score-card">
       <h3 className="score-card-header">Your Diagnostic Score</h3>
-
       <div className="score-card-progress-container">
         <div className="score-card-progress-circle">
           <svg width="150" height="150" viewBox="0 0 150 150">
@@ -166,14 +169,26 @@ const ScoreCard = ({ score, category }) => {
             />
           </svg>
         </div>
-        <div className="score-card-score-text">{score.toFixed(2)}</div>
-      </div> 
-      <div style={{color: "black", textAlign: "center", display: 'flex', gap: '5px', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
-        <Download fontSize="small" size="small" onClick={() => {console.log("fdfdfsd") }}/>
-        <p className="" style={{color: "black", textAlign: "center"}}>  Download Result</p>
+        <div className="score-card-score-text">{score?.score?.toFixed(2)}</div>
       </div>
-      <p className="score-card-category">Highest Deficiency: {category}</p> 
-     <button className="change-cta">Change</button>
+      <a href={score?.file_path} target="_blank">
+        <div
+          style={{
+            color: "black",
+            textAlign: "center",
+            display: "flex",
+            gap: "5px",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+        >
+          <Download fontSize="small" size="small" />
+          <p style={{ color: "black", textAlign: "center" }}> 
+            Download Result
+          </p>
+        </div>
+      </a> 
     </div>
   );
 };
@@ -181,6 +196,8 @@ const ScoreCard = ({ score, category }) => {
 // --- Main Application Component ---
 
 const ResultPage = () => {
+  const [searchParams] = useSearchParams();
+   const assessment = searchParams.get("assessment");
   const tools = [
     {
       icon: DescriptionIcon,
@@ -205,20 +222,38 @@ const ResultPage = () => {
       locked: false,
     },
   ];
+  const [scoreData, setScoreData] = useState(null) 
+  const [fetchAssessmentDetailsResultInPdf, { isLoading }] =
+  useFetchAssessmentDetailsResultInPdfMutation(); 
+  const localData = getUserDataFromLocalStorage();
 
+  const downloadAssessmentDetailsPdf = async () => {
+    const payload = {
+      email: localData?.email,
+      assessment: assessment  
+    };
+    const assessmentDetails = await fetchAssessmentDetailsResultInPdf(
+      payload
+    ).unwrap(); 
+    console.log("check log 4", assessmentDetails);
+    if(assessmentDetails?.data){
+      setScoreData(assessmentDetails?.data)
+    }
+  };
+
+  useEffect(() => {
+    downloadAssessmentDetailsPdf();
+  }, []);
+  
+  if (isLoading) return <Loading open={isLoading} />;
   return (
     <LandingLayoutPage>
-      <div className="result-layout min-h-screen bg-primary relative overflow-hidden"> 
-        <div class="Content-container">
+      <div className="result-layout min-h-screen bg-primary relative overflow-hidden">
+        <div className="Content-container">
           <div id="menu-and-logo-container">
-            <div className="header-logo">
-              {/* <img src="/ECAIcon.png" alt="logo" width="30px" height="30px" />{" "} */}
-              Employability{" "}
-                <br />
-                Advantage
-              {/* <span className="logo-accent">
-                {" "}
-              </span> */}
+            <div className="header-logo"> 
+              Employability <br />
+              Advantage
             </div>
           </div>
         </div>
@@ -227,10 +262,9 @@ const ResultPage = () => {
           <div className="lg-grid-cols-2 gap-12 items-start max-w-7xl mx-auto result-container">
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6">
-                  Diagnostic Assessment
-                </h1>
-
+                <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6"> 
+                  {scoreData?.assessment}
+                </h1>  
                 <div className="space-y-4">
                   <h2 className="text-2xl font-semibold text-primary-foreground">
                     Let's see how you fared!
@@ -247,7 +281,7 @@ const ResultPage = () => {
                         B
                       </span>
                     </div>
-                    <p className="text-primary-foreground font-semibold"> 
+                    <p className="text-primary-foreground font-semibold">
                       You now have access to new unlocked areas
                     </p>
                   </div>
@@ -279,7 +313,7 @@ const ResultPage = () => {
 
             {/* Right Content - Score Card */}
             <div className="lg-sticky score-container lg-top-28">
-              <ScoreCard score={76.0} category="Negotiation" />
+              <ScoreCard score={scoreData} category="Negotiation" />
             </div>
           </div>
         </main>

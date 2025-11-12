@@ -1,44 +1,58 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-
-// import { useGetStudentDataQuery } from './studentApiSlice';
-import { setSearchTerm } from "../Search/Searchslice";
 import Loading from "../../Components/Loading";
-// import Error from '../../Components/Error';
+import Error from "../../Components/Error";
 import { CardWrapper } from "../../Components/CardWrapper";
 import { CustomNoRowsOverlay } from "../../Components/NoRowsOverlay";
-import { DownloadOutlined } from "@mui/icons-material";
+import {
+  DownloadOutlined,
+  PictureAsPdf,
+  Visibility,
+  VisibilityRounded,
+} from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
+import { useGetStudentResultQuery } from "./studentApiSlice";
+import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
+import { useState } from "react";
+import { CLOUDINARY_URL } from "../../Global";
 
 export const Results = () => {
-    const theme = useTheme();
-  // const { classId } = useParams(); // Retrieve classId from the URL parameters
-  // Query hook for fetching studentData
-  // const { data, isLoading, isSuccess, isError, error } =
-  // useGetStudentDataQuery(classId);
-  let isSuccess = true;
-  let isLoading = false;
+  const theme = useTheme();
+  const localData = getUserDataFromLocalStorage();
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetStudentResultQuery({
+      email: localData?.email,
+      page: paginationModel.page + 1,
+      pageSize: paginationModel.pageSize,
+    });
 
-  //  Importing values of Search from AppBar Search
-  //  Retrieving Search Term from Redux Store
-  const { searchTerm } = useSelector(setSearchTerm);
+  const totalCount = data?.data?.totalCount;
+
+  const rows = data?.data?.map((row, index) => ({
+    ...row,
+    serialNo: paginationModel.page * paginationModel.pageSize + index + 1,
+    id: row?.id ?? index,
+  }));
 
   // Column for Data-Grid
   const columns = [
     {
-      field: "id",
+      field: "serialNo",
       headerName: "S No.",
       width: 100,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
     {
-      field: "date",
+      field: "started_at",
       headerName: "Date",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <div
           style={{
@@ -48,41 +62,23 @@ export const Results = () => {
             fontWeight: "100",
           }}
         >
-          {new Date().toLocaleDateString()}
+          {new Date(params?.row?.started_at).toLocaleDateString()}
         </div>
       ),
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
     {
-      field: "name",
+      field: "assessment_info.name",
       headerName: "Assessment",
-      width: 200,
+      width: 350,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
     {
-      field: "item",
-      headerName: "Skill",
-      width: 200,
-      renderCell: (params) => (
-        <div
-          style={{
-            maxHeight: "100px",
-            overflowY: "auto",
-            fontSize: "12px", 
-          }}
-        >
-          {params.value}
-        </div>
-      ),
-      headerClassName: "super-app-theme--header",
-      cellClassName: "super-app-theme--cell",
-    },
-    {
-      field: "score",
+      field: "result_info.score",
       headerName: "Score",
-      width: 200,
+      width: 100,
       renderCell: (params) => (
         <div
           style={{
@@ -92,65 +88,49 @@ export const Results = () => {
             fontWeight: "100",
           }}
         >
-          {params.value}
+          {params?.row?.["result_info.score"]}
         </div>
       ),
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
+    },
+    {
+      field: "result_info.percentile",
+      headerName: "Percentile",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+      renderCell: (params) => <>{params?.row?.["result_info.percentile"]}%</>,
     },
     {
       field: "downloadPdf",
       headerName: "Download PDF",
-      width: 150,
+      with: "22%", 
       renderCell: (params) => (
-        <div style={{ justifyContent: "center", cursor: "pointer" }}>
-          <DownloadOutlined />
+        <div>
+          <Link
+            to={`${CLOUDINARY_URL}/${params?.row?.["result_info.pdf_url"]}`}
+            target="_blank"
+          >
+            <PictureAsPdf color="success" style={{ cursor: "pointer", marginRight: 2 }} />
+          </Link>
+          <Link
+            to={`/user-result?assessment=${params?.row?.["assessment_info.name"]}`}
+          >
+            <VisibilityRounded color="info" style={{ cursor: "pointer", marginLeft: 2 }} />
+          </Link>
         </div>
       ),
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
   ];
-  // For Searching through Data
-  // const filteredData = data?.results?.filter((item) => {
-  //   const term = searchTerm ?? '';
-  //   if (term.trim() === '') return true;
-  //   return (
-  //     item.id?.toLowerCase().includes(term) ||
-  //     item.examType?.toLowerCase().includes(term) ||
-  //     item.description?.toLowerCase().includes(term)
-  //   );
-  // });
 
   let content;
+  if (isLoading) return <Loading open={isLoading} />;
+  if (isError) return <Error error={error} />;
 
-  // content = (
-  //     <CardWrapper title='Results'>
-  //       <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
-  //         <DataGrid
-  //           style={{ padding: '20px' }}
-  //           rows={dummyData}
-  //           columns={columns}
-  //           autoHeight
-  //           pageSizeOptions={[10]}
-  //           initialState={{
-  //             pagination: {
-  //               paginationModel: {
-  //                 pageSize: 10,
-  //               },
-  //             },
-  //           }}
-  //           slots={{
-  //             noRowsOverlay: CustomNoRowsOverlay,
-  //           }}
-  //         />
-  //       </Box>
-  //     </CardWrapper>
-  //   );
-  if (isLoading) {
-    content = <Loading open={isLoading} />; // Show loading state while fetching data
-  }
-  // Render the staff container if data is successfully fetched
+  // Render the result container if data is successfully fetched
   else if (isSuccess) {
     content = (
       <CardWrapper title="Results">
@@ -158,16 +138,16 @@ export const Results = () => {
           sx={{
             height: "100%",
             width: "100%",
-            marginTop: "20px", 
+            marginTop: "20px",
             "& .super-app-theme--header": {
               fontWeight: "bold",
               fontSize: "16px",
-              color: theme.palette.grey[700] 
+              color: theme.palette.grey[700],
             },
             "& .super-app-theme--cell": {
               fontWeight: "100",
               fontSize: "14px",
-              color: theme.palette.grey[600]  
+              color: theme.palette.grey[600],
             },
             "& .MuiDataGrid-root": {
               fontSize: "14px",
@@ -175,18 +155,38 @@ export const Results = () => {
           }}
         >
           <DataGrid
-            sx={{ 
-            padding: "20px",
-            color: "black", 
-            border: "none",
-            "& .MuiTablePagination-displayedRows": {
-            color: theme.palette.grey[600]
-            }
-           }}
-            rows={dummyData}
+            sx={{
+              padding: "20px",
+              color: "black",
+              border: "none",
+              textAlign: "center",
+              "& .MuiDataGrid-columnHeaderTitleContainer": {
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              "& .MuiDataGrid-cell": {
+                justifyContent: "center",
+              },
+              "& .MuiTablePagination-displayedRows": {
+                color: theme.palette.grey[600],
+              },
+              "& .MuiTablePagination-root *": {
+                color: theme.palette.grey[600], // example: change text color
+                fontSize: "14px",
+              },
+              "& .MuiTablePagination-root svg": {
+                fill: theme.palette.grey[600],
+                 
+              },
+            }}
+            rows={rows}
             columns={columns}
             autoHeight
-            pageSizeOptions={[10]}
+            rowCount={totalCount}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            paginationMode="server"
+            pageSizeOptions={[2, 3, 10, 20, 50]}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -202,149 +202,5 @@ export const Results = () => {
       </CardWrapper>
     );
   }
-  // Show error message if there's an error fetching data
-  // else if (isError) {
-  //   content = <Error error={error} />;
-  // }
   return content;
 };
-var dummyData = [
-  {
-    id: "1",
-    name: "public",
-    item: "Administration",
-    score: 75,
-  },
-  {
-    id: "2",
-    name: "public",
-    item: "Compliance",
-    score: 75,
-  },
-  {
-    id: "3",
-    name: "public",
-    item: "Citizen Services",
-    score: 75,
-  },
-  {
-    id: "4",
-    name: "retail",
-    item: "Store Ops",
-    score: 75,
-  },
-  {
-    id: "5",
-    name: "retail",
-    item: "Visual Merchandising",
-    score: 75,
-  },
-  {
-    id: "6",
-    name: "retail",
-    item: "E‑commerce",
-    score: 75,
-  },
-  {
-    id: "7",
-    name: "digital",
-    item: "SEO",
-    score: 75,
-  },
-  {
-    id: "8",
-    name: "digital",
-    item: "Performance Ads",
-    score: 75,
-  },
-  {
-    id: "9",
-    name: "digital",
-    item: "Content / Social",
-    score: 75,
-  },
-  {
-    id: "10",
-    name: "digital",
-    item: "Automation",
-    score: 75,
-  },
-  {
-    id: "11",
-    name: "hr",
-    item: "Recruitment",
-    score: 75,
-  },
-  {
-    id: "12",
-    name: "hr",
-    item: "Payroll",
-    score: 75,
-  },
-  {
-    id: "13",
-    name: "hr",
-    item: "L&D",
-    score: 75,
-  },
-  {
-    id: "14",
-    name: "hr",
-    item: "HR Analytics",
-    score: 75,
-  },
-  {
-    id: "15",
-    name: "education",
-    item: "Teaching",
-    score: 75,
-  },
-  {
-    id: "16",
-    name: "education",
-    item: "Curriculum",
-    score: 75,
-  },
-  {
-    id: "17",
-    name: "education",
-    item: "EdTech",
-    score: 75,
-  },
-  {
-    id: "18",
-    name: "project",
-    item: "PMO",
-    score: 75,
-  },
-  {
-    id: "19",
-    name: "project",
-    item: "Agile / Scrum",
-    score: 75,
-  },
-  {
-    id: "20",
-    name: "project",
-    item: "Delivery",
-    score: 75,
-  },
-  {
-    id: "21",
-    name: "sales",
-    item: "B2B",
-    score: 75,
-  },
-  {
-    id: "22",
-    name: "sales",
-    item: "Inside Sales",
-    score: 75,
-  },
-  {
-    id: "23",
-    name: "sales",
-    item: "Account Mgmt",
-    score: 75,
-  },
-];

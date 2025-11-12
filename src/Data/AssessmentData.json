@@ -1,0 +1,370 @@
+[
+  {
+    "id": "tech",
+    "name": "Technology (IT)",
+    "items": [
+      {
+        "name": "Data Insights",
+        "assessment_name": "TE_Data Insights"
+      },
+      {
+        "name": "Business Analyst",
+        "assessment_name": "TE_Business Analyst"
+      },
+      {
+        "name": "UX/Ui Design",
+        "assessment_name": "TE_UX/Ui Design"
+      },
+      {
+        "name": "Cybersecurity",
+        "assessment_name": "TE_Cybersecurity"
+      },
+      {
+        "name": "IT Product Management",
+        "assessment_name": "TE_IT Product Management"
+      }
+    ]
+  },
+  {
+    "id": "business",
+    "name": "Business Management",
+    "items": [
+      {
+        "name": "Leadership & People Management",
+        "assessment_name": "BM_Leadership & People Management"
+      },
+      {
+        "name": "Human Resources",
+        "assessment_name": "BM_Human Resources"
+      },
+      {
+        "name": "Strategy/ Consulting",
+        "assessment_name": "BM_Strategy/ Consulting"
+      },
+      {
+        "name": "Financial Management",
+        "assessment_name": "BM_Financial Management"
+      },
+      {
+        "name": "Operations Management",
+        "assessment_name": "BM_Operations Management"
+      },
+      {
+        "name": "Marketing Management",
+        "assessment_name": "BM_Marketing Management"
+      },
+      {
+        "name": "Business Development",
+        "assessment_name": "BM_Business Development"
+      },
+      {
+        "name": "Risk Management",
+        "assessment_name": "BM_Risk Management"
+      },
+      {
+        "name": "Administrative Management",
+        "assessment_name": "BM_Administrative Management"
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "name": "Finance",
+    "items": [
+      {
+        "name": "Accountancy",
+        "assessment_name": "FI_Accountancy"
+      },
+      {
+        "name": "Internal Audit",
+        "assessment_name": "FI_Internal Audit"
+      },
+      {
+        "name": "Risk Analyst",
+        "assessment_name": "FI_Risk Analyst"
+      }
+    ]
+  },
+  {
+    "id": "logistics",
+    "name": "Logistics",
+    "items": [
+      {
+        "name": "Operations Management",
+        "assessment_name": "LO_Operations Management"
+      },
+      {
+        "name": "Supply Chain",
+        "assessment_name": "LO_Supply Chain"
+      },
+      {
+        "name": "Warehousing",
+        "assessment_name": "LO_Warehousing"
+      },
+      {
+        "name": "Procurement",
+        "assessment_name": "LO_Procurement"
+      },
+      {
+        "name": "Order Fulfilment",
+        "assessment_name": "LO_Order Fulfilment"
+      }
+    ]
+  },
+  {
+    "id": "public",
+    "name": "Public Sector",
+    "items": [
+      {
+        "name": "Data Analyst",
+        "assessment_name": "PS_R_Data Analyst"
+      },
+      {
+        "name": "Leadership - Public Sector",
+        "assessment_name": "PS_Leadership"
+      },
+      {
+        "name": "HR Management",
+        "assessment_name": "PS_HR Management"
+      },
+      {
+        "name": "Stratregy - Public Sector",
+        "assessment_name": "PS_Strategy"
+      }
+    ]
+  },
+  {
+    "id": "retail",
+    "name": "Retail",
+    "items": [
+      {
+        "name": "E Commerce",
+        "assessment_name": "RE_E Commerce"
+      },
+      {
+        "name": "Data Analyst",
+        "assessment_name": "PS_R_Data Analyst"
+      },
+      {
+        "name": "Retail Sales",
+        "assessment_name": "RE_Retail Sales"
+      },
+      {
+        "name": "Store Operations",
+        "assessment_name": "RE_Store Operations"
+      },
+      {
+        "name": "Customer Service",
+        "assessment_name": "RE_Customer Service"
+      }
+    ]
+  },
+  {
+    "id": "digital",
+    "name": "Digital Marketing",
+    "items": [
+      {
+        "name": "Social Media",
+        "assessment_name": "DM_Social Media"
+      },
+      {
+        "name": "SEO",
+        "assessment_name": "DM_SEO"
+      },
+      {
+        "name": "Content Marketing",
+        "assessment_name": "DM_Content Marketing"
+      },
+      {
+        "name": "Email Marketing",
+        "assessment_name": "DM_Email Marketing"
+      },
+      {
+        "name": "Pay Per Click Advertising",
+        "assessment_name": "DM_Pay Per Click Advertising"
+      },
+      {
+        "name": "Affiliate Marketing",
+        "assessment_name": "DM_Affiliate Marketing"
+      } 
+    ]
+  },
+  {
+    "id": "hr",
+    "name": "Human Resources",
+    "items": [
+      {
+        "name": "Talent Acquisition",
+        "assessment_name": "HR_Talent Acquisition"
+      },
+      {
+        "name": "Training and Development",
+        "assessment_name": "HR_Training and Development"
+      },
+      {
+        "name": "Organisational Development",
+        "assessment_name": "HR_Organisational Development"
+      },
+      {
+        "name": "HR Generalist",
+        "assessment_name": "HR_HR Generalist"
+      },
+      {
+        "name": "Work Health and Safety",
+        "assessment_name": "HR_WHS"
+      } 
+    ]
+  },
+  {
+    "id": "education",
+    "name": "Education",
+    "items": [
+      {
+        "name": "Teaching and Instruction",
+        "assessment_name": "ED_Teaching and Instruction"
+      },
+      {
+        "name": "Educational Administration",
+        "assessment_name": "ED_Educational Administrator"
+      },
+      {
+        "name": "Student Support Services",
+        "assessment_name": "ED_Student Support Services"
+      } 
+    ]
+  },
+  {
+    "id": "project",
+    "name": "Project Management",
+    "items": [
+      "Project Manager",
+      "Program Manager",
+      {
+        "name": "Project Manager",
+        "assessment_name": "PM_Project Manager"
+      },
+      {
+        "name": "Program Manager",
+        "assessment_name": "PM_Program Manager"
+      }
+    ]
+  },
+  {
+    "id": "sales",
+    "name": "Sales",
+    "items": [
+      {
+        "name": "Customer Success",
+        "assessment_name": "SA_Customer Success"
+      },
+      {
+        "name": "Channel Sales",
+        "assessment_name": "SA_Channel Sales"
+      },
+      {
+        "name": "Customer Relationship",
+        "assessment_name": "SA_Customer Relationship"
+      },
+      {
+        "name": "Business Development",
+        "assessment_name": "SA_Business Development"
+      } 
+    ]
+  },
+  {
+    "id": "hospitality",
+    "name": "Hospitality",
+    "items": [
+      {
+        "name": "Hospitality (Excl Restaurants)",
+        "assessment_name": "H_Hospitality (Excl Restaurants)"
+      },
+      {
+        "name": "Hospitality (Incl Restaurants)",
+        "assessment_name": "H_Hospitality (Incl Restaurants)"
+      },
+      {
+        "name": "Restaurant Managemen",
+        "assessment_name": "H_Restaurant Management"
+      },
+      {
+        "name": "Front Desk Reception",
+        "assessment_name": "H_Front Desk Reception"
+      },
+      {
+        "name": "Customer Service (Immersive)",
+        "assessment_name": "H_Customer Service (Immersive)"
+      },
+      {
+        "name": "English A2 (Elementary)",
+        "assessment_name": "H_English A2 (Elementary)"
+      },
+      {
+        "name": "English B1 (Intermediate)",
+        "assessment_name": "H_English B1 (Intermediate)"
+      },
+      {
+        "name": "English B2 (Upper Intermediate)",
+        "assessment_name": "H_English B2 (Upper Intermediate)"
+      },
+      {
+        "name": "English C1 (Advanced)",
+        "assessment_name": "H_English C1 (Advanced)"
+      },
+      {
+        "name": "English C2 (Proficient)",
+        "assessment_name": "H_English C2 (Proficient)"
+      }
+    ]
+  },
+  {
+    "id": "skill_check",
+    "name": "Skill Check",
+    "items": [
+      {
+        "name": "Communication",
+        "assessment_name": "Communication"
+      },
+      {
+        "name": "Digital Marketing",
+        "assessment_name": "Digital Marketing"
+      },
+      {
+        "name": "Finance",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Health and Effectiveness",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Human Resources",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Leadership and Strategy",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Project Management",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Public Sector",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Sales",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Information Technology",
+        "assessment_name": "H_English C2 (Proficient)"
+      },
+      {
+        "name": "Training",
+        "assessment_name": "H_English C2 (Proficient)"
+      }
+    ]
+  }
+]

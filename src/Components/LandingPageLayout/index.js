@@ -35,13 +35,13 @@ const LandingLayoutPage = ({ children }) => {
           </div>
         </div> 
         <div className={`drawer-container ${drawerClass}`}>
-          <div onClick={() => setOpenDrawer(false)} class="crossIconContainer">
+          <div onClick={() => setOpenDrawer(false)} className="crossIconContainer">
             <ClearIcon
               fontSize="medium"
               sx={{ marginTop: "6px", fontWeight: "bold" }}
             />
           </div>
-          <ul class="text-center fs-1" id="menulist">
+          <ul className="text-center fs-1" id="menulist">
             {/* <li>
               <Link
                 to={"/dashboard/employability"}>
@@ -51,12 +51,12 @@ const LandingLayoutPage = ({ children }) => {
             <li>
               <Link to={"/dashboard/results"}>Result</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to={"/user-profile"}>Profile</Link>
             </li>
             <li>
               <Link to={"/help"}>Help</Link>
-            </li>
+            </li> */}
             {/* <li onClick={handleLogout}>Logout</li> */}
           </ul>
         </div>

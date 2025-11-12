@@ -11,11 +11,11 @@ export const CardWrapper = ({ title, children }) => {
           backgroundColor: '#fff',//theme.palette.mode === 'light' ? '#fff' : '#1a2027',
           pb: 1,
         }}
-      >
-        <Box> 
-          <Divider />
-        </Box>
-        <Box sx={{ m: 2 }}>{children}</Box>
+      > 
+      <Typography variant='h6' sx={{ px: 4, pt: 2, fontWeight: 600 , color: "#616161"}}>
+         {title}
+      </Typography> 
+        <Box sx={{ mx: 2 }}>{children}</Box>
       </Paper>
     </Box>
   );
