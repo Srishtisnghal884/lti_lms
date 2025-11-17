@@ -1,7 +1,10 @@
 import { apiSlice } from '../../App/api/apiSlice'; 
 
 export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: (builder) => ({ 
+    authentication: builder.query({
+      query: ({auth}) => `/auth/lti/dashboard?auth=${auth}`,
+    }),
     checkCandidateEligibility: builder.mutation({
       query: (credentials) => ({
         url: "assessments/checkCandidateEligibility",
@@ -46,6 +49,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { 
+  useAuthenticationQuery,
   useCheckCandidateEligibilityMutation, 
   useInviteCandidateMutation, 
   useCheckExamMutation, 

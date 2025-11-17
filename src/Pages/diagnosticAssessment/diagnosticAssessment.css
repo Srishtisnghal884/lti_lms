@@ -227,7 +227,7 @@ p {
 
 /* ToolCard Styling */
 .tool-card {
-  background-color: #ff9800;
+  background-color: #f15c2d;
   border-radius: var(--border-radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-xl);
@@ -313,7 +313,7 @@ p {
 }
 
 .community-cta{
-   background-color: #ff9800;
+   background-color: #f15c2d;
    color: var(--color-primary);
    padding: 15px;
    font-size: 14px;
@@ -330,12 +330,12 @@ p {
  .go-btn button{
     border-radius: 50%;
     padding: 10px;
-    border: 7px solid #ff9800;
+    border: 7px solid #f15c2d;
     text-align: center;
     background: #fcf7f7;
  }
   .go-btn button:hover{
-    border: 8px solid #ff9800;
+    border: 8px solid #f15c2d;
   
     background: #fcf7f7;
     box-shadow: var(--shadow-xl);

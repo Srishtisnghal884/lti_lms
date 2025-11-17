@@ -5,8 +5,8 @@
      --text: #171a24;
      --pill: #1b2347;
      --pill-hover: #ced0df;
-     --accent: #ff8a3d;
-     --accent-strong: #ff6d06;
+     --accent: #f15c2d;
+     --accent-strong: #f15c2d;
      --ring: #3e54ff;
      --success: #56d364;
      --shadow: 0 20px 60px rgba(0, 0, 0, .35);
@@ -120,7 +120,7 @@
  }
 
  .assessment-box .stepper .dot.active {
-     background: #ff8a3d;
+     background: #f15c2d;
      color: #05070f;
      border-color: transparent
  }
@@ -407,7 +407,7 @@
  }
 
  .dialog .body {
-     padding: 20px;
+     padding: 0 20px;
      display: grid;
      gap: 14px
  }

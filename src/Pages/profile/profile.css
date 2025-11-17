@@ -37,7 +37,7 @@
 
  .profile-banner {
      height: 100px;
-     background: #ff9800;
+     background: #f15c2d;
      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
  }
 
@@ -104,15 +104,15 @@
  }
 
  .btn.primary {
-     background: #ff9800;
+     background: #f15c2d;
      color: #fff;
      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
  }
 
  .btn.outline {
      background: transparent;
-     color: #ff9800;
-     border: 1px solid #ff9800;
+     color: #f15c2d;
+     border: 1px solid #f15c2d;
  }
 
  .btn:hover {

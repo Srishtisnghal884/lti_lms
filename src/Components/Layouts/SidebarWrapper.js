@@ -73,7 +73,7 @@ export const SidebarWrapper = () => {
   const dispatch = useDispatch();
   const open = useSelector(selectMobView);
   const openWide = useSelector(selectLgView);
-  // const theme = useTheme()
+  const theme = useTheme()
 
   const handleDrawer = () => {
     dispatch(toggleLgView());
@@ -162,11 +162,11 @@ export const SidebarWrapper = () => {
           >
             <StyledBox onClick={handleDrawer}>
               {openWide ? (
-                <Fab sx={{backgroundColor: "#f25d2c"}} size='small'>
+                <Fab sx={{backgroundColor: theme.palette.primary.main}} size='small'>
                   <KeyboardArrowLeft />
                 </Fab>
               ) : (
-                <Fab sx={{backgroundColor: "#f25d2c"}}  size='small'>
+                <Fab sx={{backgroundColor: theme.palette.primary.main}}  size='small'>
                   <KeyboardArrowRight />
                 </Fab>
               )}

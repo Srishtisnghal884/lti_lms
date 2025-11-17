@@ -284,16 +284,8 @@
         "assessment_name": "H_Hospitality (Incl Restaurants)"
       },
       {
-        "name": "Restaurant Managemen",
-        "assessment_name": "H_Restaurant Management"
-      },
-      {
         "name": "Front Desk Reception",
         "assessment_name": "H_Front Desk Reception"
-      },
-      {
-        "name": "Customer Service (Immersive)",
-        "assessment_name": "H_Customer Service (Immersive)"
       },
       {
         "name": "English A2 (Elementary)",
@@ -316,55 +308,5 @@
         "assessment_name": "H_English C2 (Proficient)"
       }
     ]
-  },
-  {
-    "id": "skill_check",
-    "name": "Skill Check",
-    "items": [
-      {
-        "name": "Communication",
-        "assessment_name": "Communication"
-      },
-      {
-        "name": "Digital Marketing",
-        "assessment_name": "Digital Marketing"
-      },
-      {
-        "name": "Finance",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Health and Effectiveness",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Human Resources",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Leadership and Strategy",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Project Management",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Public Sector",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Sales",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Information Technology",
-        "assessment_name": "H_English C2 (Proficient)"
-      },
-      {
-        "name": "Training",
-        "assessment_name": "H_English C2 (Proficient)"
-      }
-    ]
-  }
+  } 
 ]

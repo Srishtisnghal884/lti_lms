@@ -1,8 +1,30 @@
 import { Box, Paper, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useAuthenticationQuery } from "../CareerChoice/AuthSlice";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "./AuthSlice";
 const HIGH_FIVE_IMAGE =
   "https://portal.employabilityadvantage.com/assets/images/highFive.png";
 
 const MainLandingPage = () => {
+  const [searchParams] = useSearchParams();
+  const authToken = searchParams.get("auth");
+  console.log("auth....", authToken);
+  const dispatch = useDispatch();
+
+  const { data, isLoading, isSuccess, isError, error } = useAuthenticationQuery(
+    { auth: authToken }
+  );
+
+  useEffect(() => {
+    console.log("auth data...", data); 
+    if (!!data?.tokens?.access?.token) {
+      localStorage.setItem("userData", JSON.stringify(data?.user));
+      dispatch(setCredentials(data?.tokens?.access));
+    }
+  }, [data]);
+
   return (
     <>
       <Box

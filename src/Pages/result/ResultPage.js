@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./result.css";
 import LandingLayoutPage from "../../Components/LandingPageLayout";
 import { Download } from "@mui/icons-material";
-import {  useFetchAssessmentDetailsResultInPdfMutation} from "../../Features/CareerChoice/AuthSlice";
+import { useFetchAssessmentDetailsResultInPdfMutation } from "../../Features/CareerChoice/AuthSlice";
 import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
 import { Link, useSearchParams } from "react-router-dom";
 import Loading from "../../Components/Loading";
+import { Skeleton } from "@mui/material";
 
 const DescriptionIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -27,7 +28,7 @@ const DescriptionIcon = ({ size = 24, className = "" }) => (
       fill="none"
       stroke="#182958"
       stroke-width="1.2"
-      stroke-linecap="round"
+      strokeLinecap="round"
       stroke-linejoin="round"
     />
     <rect
@@ -69,7 +70,7 @@ const CodeIcon = ({ size = 24, className = "" }) => (
     fill="none"
     stroke="#182958"
     stroke-width="20"
-    stroke-linecap="round"
+    strokeLinecap="round"
     stroke-linejoin="round"
   >
     <path d="M256 64c-88 0-160 72-160 160 0 56 32 104 80 128v48h160v-48c48-24 80-72 80-128 0-88-72-160-160-160z" />
@@ -129,48 +130,53 @@ const ToolCard = ({ icon: Icon, title, subtitle, locked }) => (
   </div>
 );
 
-const ScoreCard = ({ score, category }) => {
+const ScoreCard = ({ score, category, isLoading }) => {
   const percentage = Number(score?.score);
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference; 
+  const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="score-card">
+    <div className="score-card" style={{ textAlign: "center" }}>
       <h3 className="score-card-header">Your Diagnostic Score</h3>
       <div className="score-card-progress-container">
-        <div className="score-card-progress-circle">
-          <svg width="150" height="150" viewBox="0 0 150 150">
-            {/* Background Circle */}
-            <circle
-              cx="75"
-              cy="75"
-              r={radius}
-              fill="none"
-              stroke="#e5e7eb"
-              strokeWidth="10"
-            />
-            {/* Progress Circle (using stroke-dashoffset to show progress) */}
-            <circle
-              cx="75"
-              cy="75"
-              r={radius}
-              fill="none"
-              stroke="var(--color-secondary)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              style={{
-                strokeDasharray: circumference,
-                strokeDashoffset: offset,
-                transform: "rotate(-90deg)",
-                transformOrigin: "75px 75px",
-                transition: "stroke-dashoffset 0.5s ease",
-              }}
-            />
-          </svg>
-        </div>
-        <div className="score-card-score-text">{score?.score?.toFixed(2)}</div>
+        {isLoading && score?.score ? (
+          <Skeleton />
+        ) : (
+          <div className="score-card-progress-circle">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              {/* Background Circle */}
+              <circle
+                cx="75"
+                cy="75"
+                r={radius}
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="10"
+              />
+              {/* Progress Circle (using stroke-dashoffset to show progress) */}
+              <circle
+                cx="75"
+                cy="75"
+                r={radius}
+                fill="none"
+                stroke="var(--color-secondary)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                style={{
+                  strokeDasharray: circumference,
+                  strokeDashoffset: offset,
+                  transform: "rotate(-90deg)",
+                  transformOrigin: "75px 75px",
+                  transition: "stroke-dashoffset 0.5s ease",
+                }}
+              />
+            </svg>
+          </div>
+        )}
+        <div className="score-card-score-text">{score?.score ?? 0}</div>
       </div>
+
       <a href={score?.file_path} target="_blank">
         <div
           style={{
@@ -184,11 +190,9 @@ const ScoreCard = ({ score, category }) => {
           }}
         >
           <Download fontSize="small" size="small" />
-          <p style={{ color: "black", textAlign: "center" }}> 
-            Download Result
-          </p>
+          <p style={{ color: "black", textAlign: "center" }}>Download Result</p>
         </div>
-      </a> 
+      </a>
     </div>
   );
 };
@@ -197,7 +201,7 @@ const ScoreCard = ({ score, category }) => {
 
 const ResultPage = () => {
   const [searchParams] = useSearchParams();
-   const assessment = searchParams.get("assessment");
+  const assessment = searchParams.get("assessment");
   const tools = [
     {
       icon: DescriptionIcon,
@@ -222,36 +226,49 @@ const ResultPage = () => {
       locked: false,
     },
   ];
-  const [scoreData, setScoreData] = useState(null) 
+  const [scoreData, setScoreData] = useState(null);
   const [fetchAssessmentDetailsResultInPdf, { isLoading }] =
-  useFetchAssessmentDetailsResultInPdfMutation(); 
+    useFetchAssessmentDetailsResultInPdfMutation();
+  const [checkFinalStarted, setCheckFinalStarted] = useState(false);
   const localData = getUserDataFromLocalStorage();
 
   const downloadAssessmentDetailsPdf = async () => {
     const payload = {
       email: localData?.email,
-      assessment: assessment  
+      assessment: assessment,
     };
-    const assessmentDetails = await fetchAssessmentDetailsResultInPdf(
-      payload
-    ).unwrap(); 
-    console.log("check log 4", assessmentDetails);
-    if(assessmentDetails?.data){
-      setScoreData(assessmentDetails?.data)
+    try {
+      if (!checkFinalStarted) {
+        const assessmentDetails = await fetchAssessmentDetailsResultInPdf(
+          payload
+        ).unwrap();
+
+        setCheckFinalStarted(true);
+        const { data, status } = assessmentDetails;
+        console.log(data, ".... assessment data", status);
+        if (status === 200) {
+          setScoreData(data);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch assessment PDF:", error);
+      setScoreData(null);
+    } finally {
+      setCheckFinalStarted(false);
     }
   };
 
   useEffect(() => {
     downloadAssessmentDetailsPdf();
-  }, []);
-  
-  if (isLoading) return <Loading open={isLoading} />;
+  }, [assessment]);
+
+  if (isLoading) return <Loading open={true} />;
   return (
     <LandingLayoutPage>
       <div className="result-layout min-h-screen bg-primary relative overflow-hidden">
         <div className="Content-container">
           <div id="menu-and-logo-container">
-            <div className="header-logo"> 
+            <div className="header-logo">
               Employability <br />
               Advantage
             </div>
@@ -262,9 +279,9 @@ const ResultPage = () => {
           <div className="lg-grid-cols-2 gap-12 items-start max-w-7xl mx-auto result-container">
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6"> 
+                <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6">
                   {scoreData?.assessment}
-                </h1>  
+                </h1>
                 <div className="space-y-4">
                   <h2 className="text-2xl font-semibold text-primary-foreground">
                     Let's see how you fared!
@@ -313,7 +330,11 @@ const ResultPage = () => {
 
             {/* Right Content - Score Card */}
             <div className="lg-sticky score-container lg-top-28">
-              <ScoreCard score={scoreData} category="Negotiation" />
+              <ScoreCard
+                isLoading={isLoading}
+                score={scoreData}
+                category="Negotiation"
+              />
             </div>
           </div>
         </main>

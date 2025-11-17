@@ -1,8 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Assesment.css";
-import { CancelRounded } from "@mui/icons-material";
 import LandingLayoutPage from "../../Components/LandingPageLayout";
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 import AssessmentData from "../../Data/AssessmentData.json";
 import SkillCheck from "../../Data/SkillCheck.json";
 import {
@@ -15,6 +20,9 @@ import {
 import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
 import Loading from "../../Components/Loading";
 import { SearchableSelect } from "./SearchableSelect";
+import { useTheme } from "@emotion/react";
+import { Step1 } from "./Step1";
+import { Step2 } from "./Step2";
 
 export default function CareerChoice() {
   const [step, setStep] = useState(1);
@@ -36,6 +44,11 @@ export default function CareerChoice() {
   const [confirmStartAssessment, setOpenConfirmStartAssessment] =
     useState(false);
   const localData = getUserDataFromLocalStorage();
+  const theme = useTheme();
+  const [candidateEligibilityData, setCandidateEligibilityData] =
+    useState(null);
+  const [loader, setLoader] = useState(false);
+  const [breakExamExecution, setBreakExamExecution] = useState(false)
 
   let newWindow = null;
   const firstPillRef = useRef(null);
@@ -70,65 +83,123 @@ export default function CareerChoice() {
   };
 
   //1. check candidate already invite for assessments
-  const startAssessment = async (roleName, skillName) => { 
+  const startAssessment = async (roleName, skillName) => {
     const payload = {
       email: localData?.email,
       assessment: skillName,
     };
 
     const result = await checkCandidateEligibility(payload);
-    console.log(
-      "check log  1",
-      result );
-    if(result?.data?.data?.attempts == 1) {
-      console.log("check log  delete", result);
+    console.log("check log checkCandidateEligibility", result);
+    setCandidateEligibilityData(result);
+    if (result?.data?.data?.attempts == 1) {
       const deleteC = await deleteCandidate({
         email: localData?.email,
         assessment: skillName,
-      })
-      console.log("check log result", deleteC);
+      });
+      console.log("check log delete...", deleteC);
+      if (deleteC?.error?.data) {
+        console.log("check log result", deleteC?.error?.data?.message);
+      }
     }
     setOpenConfirmStartAssessment(true);
   };
 
   //2. Invite Candidate for exam
   const handleClickGo = async () => {
-    const result = await inviteCandidate({
-      email: localData?.email,
-      first_name: localData?.name,
-      last_name: "Test",
-      full_name: `${localData?.name} t`,
-      assessment: selectedSkill,
-    });
-    console.log("check log  2", result);
-    if (result?.data) {
-      newWindow = window.open(
-        result?.data?.data?.inviteUrl,
-        "_blank",
-        "width=800,height=600"
-      );
-      if (newWindow) {
-        startWindowCheckPolling();
+    try {
+      const result = await inviteCandidate({
+        email: localData?.email,
+        first_name: localData?.name,
+        last_name: "Test",
+        full_name: `${localData?.name} t`,
+        assessment: selectedSkill,
+      });
+      const { data } = result;
+      console.log("check log inviteCandidate", data);
+      if (!!data?.status) {
+        newWindow = window.open("", "_blank", "width=800,height=600");
+        console.log("check log checkCandidateEligibility", result);
+        newWindow.location.href = data.data.inviteUrl;
+        if (newWindow) {
+          newWindow.focus();
+          setLoader(true);
+          startWindowCheckPolling();
+        } else {
+          alert(
+            "Popup blocked! Please allow popups to attemp the asseessment."
+          );
+          document.getElementById("popupBlockedMessage").style.display =
+            "block";
+          document.getElementById("mainContent").style.display = "none";
+        }
       }
+    } catch (error) {
+      console.log("error....", error);
     }
   };
 
-  function startWindowCheckPolling() {
-    const timer = setInterval(() => {
-      console.log("check exam is open ", newWindow);
-      checkExamStatus();
-      if (newWindow && newWindow.closed) {
-        console.log("New examwindow has been closed."); 
-        clearInterval(timer);
-      } else if (!newWindow) {
-        // This case handles potential blockers if newWindow couldn't open
-        clearInterval(timer);
-        console.log(
-          "New examwindow reference is null. Could not start tracking."
-        );
-      }
-    }, 10000);
-  }
+  const pollingRef = useRef(null);
+function startWindowCheckPolling() {
+  setLoader(true); 
+  pollingRef.current = setInterval(async () => {
+    setLoader(true);
+
+    if (!breakExamExecution) {
+      await checkExamStatus();
+    } else {
+      console.log("Exam completed → Polling stopped");
+      clearInterval(pollingRef.current);
+      return;
+    }
+
+    if (newWindow && newWindow.closed) {
+      setLoader(false);
+      clearInterval(pollingRef.current);
+    } else if (!newWindow) {
+      setLoader(false);
+      clearInterval(pollingRef.current);
+    }
+  }, 5000);
+}
+
+  // function startWindowCheckPolling() {
+  //   setLoader(true);
+  //   const timer = setInterval(async () => {
+  //     setLoader(true);
+  //     console.log("check exam is open ", breakExamExecution);
+  //     if( !breakExamExecution && !isLoadingResult ){
+  //     console.log("check exam status  ", breakExamExecution);
+  //       const examRes = await checkExamStatus();
+  //       const {status , assessmentName} = examRes;
+  //       console.log(status ,"status , assessmentName" ,assessmentName);
+  //     }
+      
+  //     if (newWindow && newWindow.closed) {
+  //       // if (status === "completed" && !!newWindow.closed) { 
+  //       //   console.log(status ,"...................", assessmentName, "New examwindow has been closed.", examRes);
+          
+  //       //   debugger
+  //       //   await fetchAssessmentDetailsResultInPdf({
+  //       //     email: localData?.email,
+  //       //     assessment: assessmentName,
+  //       //   }).unwrap();;
+  //       //   window.location.replace(
+  //       //     `/user-result?assessment=${assessmentName}`
+  //       //   );
+  //       // }
+  //       setLoader(false);
+  //       clearInterval(timer);
+  //     } else if (!newWindow) {
+  //       setLoader(false);
+  //       // This case handles potential blockers if newWindow couldn't open
+  //       clearInterval(timer);
+  //       console.log(
+  //         "New examwindow reference is null. Could not start tracking."
+  //       );
+  //     }
+  //   }, 5000);
+  // }
 
   //3. Frequently check exam done or not when user want to try to attempt exam (candidate details)
   async function checkExamStatus() {
@@ -136,28 +207,63 @@ export default function CareerChoice() {
       email: localData?.email,
       assessment: selectedSkill,
     };
-
+    // setLoader(true)
     // Step 1️⃣: Check Exam Status
-    const examStatus = await checkExam(payloadExam).unwrap();
-    console.log("check log  3", examStatus);
-    const status = examStatus?.data?.assessments_detail[0]?.status;
-    if (status === "completed" && !!newWindow.closed) {
-      await fetchAssessmentDetailsResultInPdf(payloadExam);
-      window.location.replace(`/dashboard/results`);
-    }
+    const examData = await checkExam(payloadExam).unwrap();
+    const { data } = examData;
+    const status = data?.status;
+
+    console.log(
+      data?.status,
+      "check log  examData.......",
+      examData, 
+    ); 
+    if (status === "completed") { //TODO add more checks to verify that test is actually completed
+      setBreakExamExecution(true)
+         // stop polling immediately
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
+
+      await fetchAssessmentDetailsResultInPdf({
+        email: localData?.email,
+        assessment: data?.assessment_name,
+      }).unwrap();
+      window.location.replace(
+        `/user-result?assessment=${data?.assessment_name}`
+      );
+
+    }  
+    return {
+      status: data?.status,
+      assessmentName: examData?.data?.assessment_name,
+    }; 
+  } 
+
+  function getLatestAndPreviousAttempts(dataArray) {
+    if (!Array.isArray(dataArray)) return {};
+    const sorted = [...dataArray].sort(
+      (a, b) => new Date(b.started_at) - new Date(a.started_at)
+    );
+    return {
+      latest: sorted[0] ?? null,
+      previous: sorted[1] ?? null,
+    };
   }
 
-  useEffect(() => {
-    if (!!newWindow?.closed) { 
-      checkExamStatus();
-      window.location.replace(`/dashboard/results`);
-    }
-  }, [!!newWindow?.closed]);
+  const scoreData = getLatestAndPreviousAttempts(
+    candidateEligibilityData?.data?.data?.previousResultData
+  );
 
-  if (isLoading || isLoadingCheckExam || isLoadingInviteCandidate || isLoadingDeleteCandidate){
+  if (
+    isLoadingCheckExam ||
+    isLoadingInviteCandidate ||
+    isLoadingDeleteCandidate ||
+    isLoadingResult ||
+    loader
+  ) {
     return <Loading open={true} />;
   }
-
   return (
     <LandingLayoutPage>
       <div className="assessment-box">
@@ -206,6 +312,7 @@ export default function CareerChoice() {
                 <Step2
                   role={activeRole}
                   search={search}
+                  isLoading={isLoading}
                   onSearch={(value) => {
                     setSearch(value);
                   }}
@@ -228,6 +335,7 @@ export default function CareerChoice() {
             </div>
           </section>
 
+          {/* Dialog for skill check */}
           <section
             className={`modal ${modalOpen ? "open" : ""}`}
             id="skillsModal"
@@ -263,7 +371,7 @@ export default function CareerChoice() {
                       value={modalCat}
                       onChange={(e) => {
                         setModalCat(e);
-                      }} 
+                      }}
                     />
                   </div>
                   <div className="field">
@@ -308,6 +416,7 @@ export default function CareerChoice() {
             </div>
           </section>
 
+          {/* Dialog for take assessment */}
           <section
             className={`modal ${confirmStartAssessment ? "open" : ""}`}
             id="skillsModal"
@@ -322,7 +431,9 @@ export default function CareerChoice() {
             <div className="backdrop" />
             <div className="dialog" role="document">
               <header>
-                <h3 id="mTitle">Important</h3>
+                <h4 className="text-[14px]" style={{ textAlign: "center" }}>
+                  Important
+                </h4>
                 <button
                   className="close"
                   type="button"
@@ -334,206 +445,176 @@ export default function CareerChoice() {
                 </button>
               </header>
               <div className="body">
-                <Typography variant="inherit">
-                  Please enable pop-ups in your browser to ensure all features
-                  of this application work smoothly. The assessment cannot be
-                  paused once started; you must complete it in one go. If paused
-                  midway, the assessment will be marked incomplete, and your
-                  score will only reflect the parts you've completed. The length
-                  of the assessment varies, ranging from 10 to 40 minutes
-                </Typography>
+                {candidateEligibilityData?.data?.data?.attempts === 0 && (
+                  <>
+                    <h4 style={{m: 0}}>
+                      Candidate is eligible to take the test
+                    </h4>
+                    <ul style={{m: 0}}>
+                      <li>
+                        Please enable pop-ups in your browser to ensure all
+                        features of this application work smoothly.
+                      </li>
+                      <li>
+                        The assessment cannot be paused once started; you must
+                        complete it in one go.
+                      </li>
+                      <li>
+                        If paused midway, the assessment will be marked
+                        incomplete, and your score will only reflect the parts
+                        you've completed.
+                      </li>
+                      <li>
+                        The length of the assessment varies, ranging from 10 to
+                        40 minutes
+                      </li>
+                    </ul>
+                  </>
+                )}
+                {candidateEligibilityData?.data?.data?.attempts === 1 && (
+                  <div
+                    style={{
+                      display: "block",
+                      gap: "10px",
+                      justifySelf: "center",
+                    }}
+                  >
+                    <ul style={{m: "0 !important"}}>
+                      <li>
+                        Please enable pop-ups in your browser to ensure all
+                        features of this application work smoothly.
+                      </li>
+                      <li>
+                        The assessment cannot be paused once started; you must
+                        complete it in one go.
+                      </li>
+                      <li>
+                        If paused midway, the assessment will be marked
+                        incomplete, and your score will only reflect the parts
+                        you've completed.
+                      </li>
+                      <li>
+                        The length of the assessment varies, ranging from 10 to
+                        40 minutes
+                      </li>
+                    </ul>
+                    <div className="" style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifySelf: "center",
+                      }}>
+                      {candidateEligibilityData?.data?.data?.previousResultData?.map(
+                        (item) => {
+                          return (
+                            <div
+                              className="scorecard-box"
+                              style={{
+                                width: "250px",
+                                height: "180px",
+                                background: "#fff",
+                                borderRadius: "10px",
+                                justifySelf: "center",
+                              }}
+                            >
+                              <h3
+                                className=" text-[10px]"
+                                style={{ textAlign: "center" }}
+                              >
+                                Last Assesment Score
+                              </h3>
+                              <div
+                                className="result-score"
+                                style={{
+                                  textAlign: "center",
+                                  top: "5px",
+                                  position: "relative",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    color: theme.palette.primary.main,
+                                    fontSize: "40px",
+                                  }}
+                                >
+                                  {item?.["result_info.score"] ?? 0}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                    <Typography variant="inherit" sx={{ py: "10px", textAlign: 'center' }}>
+                      Would you like to take the assessment again?
+                    </Typography>
+                  </div>
+                )}
+                {candidateEligibilityData?.data?.data?.attempts === 2 && (
+                  <> 
+                    <Typography variant="subtitle1">
+                      You have reached the maximum number of attempts
+                    </Typography>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifySelf: "start",
+                      }}
+                    >
+                      {Object.entries(scoreData)?.map(([key = "", value]) => {
+                        console.log(key, "key.....value", value);
+                        return (
+                          <div
+                            className="scorecard-box"
+                            style={{
+                              width: "250px",
+                              height: "180px",
+                              background: "#fff",
+                              borderRadius: "10px",
+                            }}
+                          >
+                            <h3 className="" style={{ textAlign: "center" }}>
+                              {key.replace(/^./, (c) => c.toUpperCase())} Score
+                            </h3>
+                            <div
+                              className="result-score"
+                              style={{
+                                textAlign: "center",
+                                top: "5px",
+                                position: "relative",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  color: theme.palette.primary.main,
+                                  fontSize: "40px",
+                                }}
+                              >
+                                {value?.["result_info.score"] ?? 0}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
               </div>
               <footer className="go-btn">
-                <Button variant="contained" onClick={handleClickGo}>
-                  Go
-                </Button>
+                {candidateEligibilityData?.data?.data?.attempts !== 2 && (
+                  <Button
+                    sx={{ color: theme.palette.primary.main }}
+                    variant="contained"
+                    onClick={handleClickGo}
+                  >
+                    Go
+                  </Button>
+                )}
               </footer>
             </div>
           </section>
         </main>
       </div>
     </LandingLayoutPage>
-  );
-}
-
-function Step1({
-  search,
-  onSearch,
-  filteredRoles,
-  selectedRole,
-  onSelectRole,
-  onContinue,
-  openModal,
-  firstPillRef,
-}) {
-  return (
-    <>
-      <div className="title pop">
-        <div>
-          <h2 className="career-title">My Career Choice</h2>
-          <p className="subtitle">
-            Choose a Role to explore or jump into a Skills Check
-          </p>
-        </div>
-        <div className="badges">
-          <span className="badge">Step 1 of 2</span>
-        </div>
-      </div>
-
-      <div className="search">
-        <input
-          type="search"
-          placeholder="Search roles…"
-          value={search}
-          onChange={(e) => onSearch(e.target.value)}
-        />
-      </div>
-
-      <div className="grid">
-        {filteredRoles
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .map((role, idx) => { 
-            const pressed = selectedRole?.id === role.id;
-            return (
-              <button
-                key={role.id}
-                className="pill"
-                role="button"
-                aria-pressed={pressed}
-                onClick={() => onSelectRole(role)}
-                ref={idx === 0 ? firstPillRef : undefined}
-                style={{ alignItems: "center" }}
-              >
-                <span className="icon" aria-hidden="true" sx={{ mt: 0 }}>
-                  {pressed ? "✅" : "🟠"}
-                </span>
-                <span className="label">{role.name}</span>
-                <span className="label ml-auto-imp" style={{ width: "30px" }}>
-                  {pressed && (
-                    <CancelRounded
-                      style={{ position: "relative", zIndex: 1 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectRole(null);
-                      }}
-                    />
-                  )}
-                </span>
-              </button>
-            );
-          })}
-      </div>
-
-      <div className="cta">
-        <div></div>
-        <div className="btn-container">
-          <button
-            className="btn btn-primary"
-            disabled={!selectedRole}
-            onClick={onContinue}
-          >
-            Continue →
-          </button>
-        </div>
-      </div>
-      <button className="btn btn-outline skill-check-cta" onClick={openModal}>
-        ⚙️ Skills Check
-      </button>
-    </>
-  );
-}
-
-function Step2({
-  role,
-  search,
-  onSearch,
-  selectedSkill,
-  onToggleSkill,
-  onBack,
-  onStart,
-  firstPillRef,
-  openModal,
-}) {
-  return (
-    <>
-      <div className="title pop">
-        <div>
-          <h2>{role.name}</h2>
-          <p className="subtitle">
-            Select a specific skill or sub‑role to assess
-          </p>
-        </div>
-        <div className="badges">
-          <span className="badge">Step 2 of 2</span>
-          <span className="badge">{role.name}</span>
-        </div>
-      </div>
-
-      <div className="search">
-        <input
-          type="search"
-          placeholder="Search skills within this role…"
-          value={search}
-          onChange={(e) => onSearch(e.target.value)}
-        />
-      </div>
-
-      <div className="grid">
-        {role.items
-          .sort((a, b) => a?.name?.localeCompare(b?.name))
-          .filter((s) =>
-            s?.name?.toLowerCase().includes((search || "").toLowerCase())
-          )
-          .map((skill, idx) => { 
-            const pressed = selectedSkill === skill?.assessment_name;
-            return (
-              <button
-                key={skill?.assessment_name}
-                className="pill"
-                aria-pressed={pressed}
-                onClick={() => onToggleSkill(skill?.assessment_name)}
-                ref={idx === 0 ? firstPillRef : undefined}
-                style={{ alignItems: "center" }}
-              >
-                <span className="icon" aria-hidden="true" sx={{ mt: 0 }}>
-                  {pressed ? "✅" : "🟠"}
-                </span>
-                <span className="label">{skill.name}</span>
-                <span className="label ml-auto-imp" style={{ width: "30px" }}>
-                  {pressed && (
-                    <CancelRounded
-                      style={{ position: "relative", zIndex: 1 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleSkill(null);
-                      }}
-                    />
-                  )}
-                </span>
-              </button>
-            );
-          })}
-      </div>
-
-      <div className="cta">
-        <button className="btn btn-outline" onClick={onBack}>
-          ← Back
-        </button>
-        <div>
-          <button
-            className="btn btn-primary"
-            disabled={!selectedSkill}
-            onClick={onStart}
-          >
-            Start Assessment
-          </button>
-        </div>
-      </div>
-      <div>
-        <button className="btn btn-outline skill-check-cta" onClick={openModal}>
-          ⚙️ Skills Check
-        </button>
-      </div>
-    </>
   );
 }

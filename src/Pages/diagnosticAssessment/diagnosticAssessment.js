@@ -23,7 +23,7 @@ const DescriptionIcon = ({ size = 24, className = "" }) => (
       fill="none"
       stroke="#182958"
       stroke-width="1.2"
-      stroke-linecap="round"
+      strokeLinecap="round"
       stroke-linejoin="round"
     />
     <rect
@@ -65,7 +65,7 @@ const CodeIcon = ({ size = 24, className = "" }) => (
     fill="none"
     stroke="#182958"
     stroke-width="20"
-    stroke-linecap="round"
+    strokeLinecap="round"
     stroke-linejoin="round"
   >
     <path d="M256 64c-88 0-160 72-160 160 0 56 32 104 80 128v48h160v-48c48-24 80-72 80-128 0-88-72-160-160-160z" />
@@ -168,7 +168,7 @@ const DiagnosticAssessment = () => {
             <div className="space-y-6">
               <div>
                 <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6">
-                  Diagnostic Assessment
+                  Skill Assessment
                 </h1>
 
                 <div className="space-y-4">

@@ -20,7 +20,7 @@ const Error = ({ error }) => {
       <Box>
         <Typography variant='h5' color='red' textAlign='center'>
           {/* {console.log(error)} */}
-          {error.data.error.message}
+          {error?.data?.error?.message}
         </Typography>
       </Box>
     </Box>

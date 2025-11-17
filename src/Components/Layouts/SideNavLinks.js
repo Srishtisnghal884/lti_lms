@@ -43,7 +43,7 @@ export const SideNavLinks = ({ openWide }) => {
     margin: "5px",
     "&:hover": {
       color: "#ffff !important",
-      backgroundColor: "#f25d2c",
+      backgroundColor: theme.palette.primary.main,
       borderRadius: "10px",
       margin: "5px", 
       // Target nested elements on hover
@@ -53,7 +53,7 @@ export const SideNavLinks = ({ openWide }) => {
     }, 
     ...(focused && {
       color: "#ffff !important",
-      backgroundColor: "#f25d2c",
+      backgroundColor: theme.palette.primary.main,
       borderRadius: "10px",
       margin: "5px",
       "& .MuiListItemIcon-root, & .MuiTypography-root": {
