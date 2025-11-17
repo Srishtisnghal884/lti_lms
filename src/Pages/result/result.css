@@ -227,7 +227,7 @@ p {
 
 /* ToolCard Styling */
 .tool-card {
-  background-color: #ff9800;
+  background-color: #f15c2d;
   border-radius: var(--border-radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-xl);
@@ -333,7 +333,7 @@ p {
 
 .score-card-progress-circle {
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -347,7 +347,7 @@ p {
   font-size: 2rem;
   font-weight: 400;
   color: var(--color-primary-dark);
-  top: 50%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;

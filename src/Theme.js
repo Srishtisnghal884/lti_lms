@@ -5,14 +5,18 @@ export const customizations = (mode) => ({
     mode: mode, 
     ...(mode === 'light'
       ? {
-          primary: orange,
+          primary: {
+            main: "#f15c2d"
+          },
           background: {
             default: '#171010ff',
             paper: '#fff',
           },
         }
       : {
-          primary: orange,
+          primary: {
+            main: "#f15c2d"
+          },
            background: {
             default: '#ffff',
             paper: "#ffff"

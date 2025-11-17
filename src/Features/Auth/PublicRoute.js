@@ -13,5 +13,5 @@ export const PublicRoute = ({ redirectTo = '/' }) => {
   const isAuthenticated = !!role;  
 
   // If the user is authenticated (role exists), redirect them.
-  return isAuthenticated ? <Navigate to={'/dashboard/results'} replace /> : <Outlet />;
+  return isAuthenticated ? <Navigate to={'/dashboard/career-choice'} replace /> : <Outlet />;
 };

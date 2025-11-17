@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import ErrorGif from '../Assets/Images/404.gif';
+import { useTheme } from '@emotion/react';
 
 const NotFound404 = () => {
+  const theme = useTheme()
   return (
     <Box
       sx={{
@@ -18,7 +20,7 @@ const NotFound404 = () => {
         <img src={ErrorGif} alt='error' />
       </Box>
       <Box>
-        <Typography variant='h5' color='#ff9800' textAlign='center'>
+        <Typography variant='h5' color={theme.palette.primary.main} textAlign='center'>
           Oops! Requested resource does not exist
         </Typography>
       </Box>

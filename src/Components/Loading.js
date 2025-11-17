@@ -4,7 +4,7 @@ import React from 'react';
 const Loading = (open) => {
   return (
     <Backdrop
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: "#ffff !important" }}
       open={open.open}
     >
       <Box

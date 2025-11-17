@@ -47,7 +47,7 @@ export const UserProfile = () => {
             variant='h6'
             sx={{
               fontWeight: '500',
-              color: '#f25d2c' // theme.palette.primary.main,
+              color: theme.palette.primary.main // theme.palette.primary.main,
             }}
           >
             {getGreeting} 
@@ -55,14 +55,14 @@ export const UserProfile = () => {
         </Grid>
         <Grid item xs={12}>
           <Box>
-            <Typography variant='subtitle1' sx={{ fontWeight: '500', color: '#f25d2c' }}>
+            <Typography variant='subtitle1' sx={{ fontWeight: '500', color: theme.palette.primary.main }}>
               {localData?.name}
             </Typography>
           </Box>
           {/* <Box>
             <Typography
               variant='body2'
-              sx={{ color: '#f25d2c' }}
+              sx={{ color: theme.palette.primary.main }}
               // sx={{ color: theme.palette.text.secondary }}
             >
               {localData?.email}
@@ -75,15 +75,15 @@ export const UserProfile = () => {
 
       <Grid container spacing={1}>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
+          {/* <Button
             variant='contained'
             color='primary'
-             sx={{ color: '#ffff', backgroundColor: '#f25d2c' }}
+             sx={{ color: '#ffff', backgroundColor: theme.palette.primary.main }}
             // sx={{ color: theme.palette.primary.contrastText }}
             onClick={handleLogout}
           >
             Logout
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
     </Paper>

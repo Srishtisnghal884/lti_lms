@@ -148,7 +148,7 @@ export const NavBar = () => {
               sx={{
                 width: 32,
                 height: 32,
-                color: '#f25d2c',
+                color: theme.palette.primary.main,
                 backgroundColor: 'inherit',
               }}
             />

@@ -190,11 +190,7 @@
             {
                 "name": "Strategic Coaching",
                 "assessment_name": "SC_HRM_Strategic Coaching"
-            },
-            {
-                "name": "Conducting Interviews",
-                "assessment_name": "SC_HRM_Conducting Interviews"
-            },
+            }, 
             {
                 "name": "Performance Management",
                 "assessment_name": "SC_HRM_Performance Management"
@@ -346,19 +342,11 @@
             {
                 "name": "SQL",
                 "assessment_name": "SC_IT_SQL"
-            },
-            {
-                "name": "Java",
-                "assessment_name": "SC_IT_Java"
-            },
+            }, 
             {
                 "name": ".NET/.NET Core",
                 "assessment_name": "SC_IT_.NET/.NET Core"
-            },
-            {
-                "name": "PHP",
-                "assessment_name": "SC_IT_PHP"
-            },
+            }, 
             {
                 "name": "Business Analysis",
                 "assessment_name": "SC_IT_Business Analysis"
@@ -474,11 +462,7 @@
             {
                 "name": "Ruby on rails",
                 "assessment_name": "SC_IT_Ruby on rails"
-            },
-            {
-                "name": "C/C++",
-                "assessment_name": "SC_IT_C/C++"
-            },
+            }, 
             {
                 "name": "Rest API",
                 "assessment_name": "SC_IT_Rest API"

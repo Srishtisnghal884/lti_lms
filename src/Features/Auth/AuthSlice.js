@@ -38,9 +38,8 @@ export const authSlice = createSlice({
       const decodeToken = jwtDecode(accessToken);
       console.log("decodeToken --->>>>>>>>", decodeToken)
       // const decodeToken = isAuthenticated;
-      const role = decodeToken.roleId;
-      // const classAssigned = decodeToken.access.classAssigned;
-      const user = decodeToken.userId;
+      const role = decodeToken?.roleId || 3;
+      const user = decodeToken?.userId;
 
       state.token = accessToken;
       state.role = role;

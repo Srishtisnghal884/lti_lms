@@ -3,9 +3,11 @@ import LandingLayoutPage from "../../Components/LandingPageLayout";
 import "./profile.css";
 import { Avatar } from "@mui/material";
 import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
+import { useTheme } from "@emotion/react";
 
 const ProfilePage = () => {
   const localData = getUserDataFromLocalStorage();
+  const theme = useTheme()
   
   return (
     <>
@@ -14,7 +16,7 @@ const ProfilePage = () => {
           <div className="profile-card"> 
             <Avatar
               className="profile-img"
-              sx={{ bgcolor: "#ff9800", fontSize: "3.25rem !important" }}
+              sx={{ bgcolor: theme.palette.primary.main, fontSize: "3.25rem !important" }}
             > 
               {localData?.name?.split("")[0]}
             </Avatar>
