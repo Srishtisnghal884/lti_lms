@@ -77,10 +77,7 @@ export default function CareerChoice() {
     items: r?.items,
   }));
 
-  const startQuickCheck = () => {
-    setModalOpen(false);
-    setOpenConfirmStartAssessment(true);
-  };
+
 
   //1. check candidate already invite for assessments
   const startAssessment = async (roleName, skillName) => {
@@ -105,8 +102,18 @@ export default function CareerChoice() {
     setOpenConfirmStartAssessment(true);
   };
 
+    const startQuickCheck = () => {
+      setOpenConfirmStartAssessment(true);
+      console.log("check log modalSkill 123132", modalSkill);
+      startAssessment('1',modalSkill)
+      setSelectedSkill(modalSkill)
+      // setModalOpen(false);
+    
+  };
   //2. Invite Candidate for exam
   const handleClickGo = async () => {
+    console.log(selectedSkill, "......selectedSkill");
+    
     try {
       const result = await inviteCandidate({
         email: localData?.email,
@@ -116,7 +123,7 @@ export default function CareerChoice() {
         assessment: selectedSkill,
       });
       const { data } = result;
-      console.log("check log inviteCandidate", data);
+      console.log("check log inviteCandidate 5656", data);
       if (!!data?.status) {
         newWindow = window.open("", "_blank", "width=800,height=600");
         console.log("check log checkCandidateEligibility", result);
@@ -203,6 +210,7 @@ function startWindowCheckPolling() {
 
   //3. Frequently check exam done or not when user want to try to attempt exam (candidate details)
   async function checkExamStatus() {
+    
     const payloadExam = {
       email: localData?.email,
       assessment: selectedSkill,
