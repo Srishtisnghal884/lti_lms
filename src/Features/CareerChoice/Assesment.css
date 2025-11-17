@@ -530,3 +530,17 @@
     font-weight: 400 !important;
     /* You might need to adjust this to fit your existing theme */
 }
+.scorecard-box h3{
+    background-color: #f15c2db5;
+    font-size: 16px;
+    padding: 8px 0px;
+    margin: 0;
+}
+.scorecard-box{
+overflow: hidden;
+height: auto !important;
+}
+.scorecard-box .result-score{ 
+    height: 80px;
+
+}
