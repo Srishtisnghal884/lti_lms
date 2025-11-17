@@ -32,6 +32,9 @@ export default function CareerChoice() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCat, setModalCat] = useState(AssessmentData[0].id);
   const [modalSkill, setModalSkill] = useState(AssessmentData[0].items[0]);
+  const [modalTouched, setModalTouched] = useState({ cat: false, skill: false });
+  const [modalErrors, setModalErrors] = useState({});
+  const [modalSubmitting, setModalSubmitting] = useState(false);
   const [checkCandidateEligibility, { isLoading }] =
     useCheckCandidateEligibilityMutation();
   const [inviteCandidate, { isLoadingInviteCandidate }] =
@@ -102,18 +105,28 @@ export default function CareerChoice() {
     setOpenConfirmStartAssessment(true);
   };
 
-    const startQuickCheck = () => {
-      setOpenConfirmStartAssessment(true);
-      console.log("check log modalSkill 123132", modalSkill);
-      startAssessment('1',modalSkill)
-      setSelectedSkill(modalSkill)
-      // setModalOpen(false);
-    
+  const startQuickCheck = async () => {
+    const errors = {};
+    if (!modalCat || !modalTouched.cat) errors.cat = "Please select a major section.";
+    if (!modalSkill || !modalTouched.skill) errors.skill = "Please select a specific skill.";
+    setModalErrors(errors);
+    if (Object.keys(errors).length) return;
+
+    // mark submitting so UI can be disabled
+    try {
+      setModalSubmitting(true);
+      // call the eligibility check flow and wait for it
+      await startAssessment('1', modalSkill);
+      setSelectedSkill(modalSkill);
+      setModalOpen(false);
+    } catch (err) {
+      console.error('startQuickCheck error', err);
+    } finally {
+      setModalSubmitting(false);
+    }
   };
   //2. Invite Candidate for exam
   const handleClickGo = async () => {
-    console.log(selectedSkill, "......selectedSkill");
-    
     try {
       const result = await inviteCandidate({
         email: localData?.email,
@@ -263,6 +276,32 @@ function startWindowCheckPolling() {
     candidateEligibilityData?.data?.data?.previousResultData
   );
 
+  const isModalValid = Boolean(modalCat && modalSkill && modalTouched.cat && modalTouched.skill);
+  const modalBusy = Boolean(
+    modalSubmitting ||
+      isLoading ||
+      isLoadingInviteCandidate ||
+      isLoadingCheckExam ||
+      isLoadingDeleteCandidate ||
+      isLoadingResult ||
+      loader
+  );
+
+  // reset modal-local state to initial defaults
+  const resetModalState = () => {
+    setModalCat(AssessmentData[0].id);
+    setModalSkill(AssessmentData[0].items[0]);
+    setModalTouched({ cat: false, skill: false });
+    setModalErrors({});
+    setModalSubmitting(false);
+  };
+
+  const closeModal = () => {
+    if (modalBusy) return; // do not close while busy
+    resetModalState();
+    setModalOpen(false);
+  };
+
   if (
     isLoadingCheckExam ||
     isLoadingInviteCandidate ||
@@ -351,7 +390,7 @@ function startWindowCheckPolling() {
             role="dialog"
             aria-labelledby="mTitle"
             onClick={(e) => {
-              if (e.target.classList?.contains("backdrop")) setModalOpen(false);
+              if (e.target.classList?.contains("backdrop") && !modalBusy) setModalOpen(false);
             }}
           >
             <div className="backdrop" />
@@ -363,7 +402,8 @@ function startWindowCheckPolling() {
                   type="button"
                   title="Close"
                   aria-label="Close"
-                  onClick={() => setModalOpen(false)}
+                  onClick={() => !modalBusy && setModalOpen(false)}
+                  disabled={modalBusy}
                 >
                   ✕
                 </button>
@@ -379,8 +419,14 @@ function startWindowCheckPolling() {
                       value={modalCat}
                       onChange={(e) => {
                         setModalCat(e);
+                        setModalTouched((p) => ({ ...p, cat: true }));
                       }}
                     />
+                    {modalErrors?.cat && (
+                      <p className="error" style={{ color: "#d32f2f", marginTop: 6 }}>
+                        {modalErrors.cat}
+                      </p>
+                    )}
                   </div>
                   <div className="field">
                     <SearchableSelect
@@ -395,8 +441,16 @@ function startWindowCheckPolling() {
                           value: s?.assessment_name,
                         }))}
                       value={modalSkill}
-                      onChange={setModalSkill}
+                      onChange={(v) => {
+                        setModalSkill(v);
+                        setModalTouched((p) => ({ ...p, skill: true }));
+                      }}
                     />
+                    {modalErrors?.skill && (
+                      <p className="error" style={{ color: "#d32f2f", marginTop: 6 }}>
+                        {modalErrors.skill}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <p className="help">
@@ -408,7 +462,8 @@ function startWindowCheckPolling() {
                 <button
                   className="btn btn-outline"
                   type="button"
-                  onClick={() => setModalOpen(false)}
+                  onClick={() => !modalBusy && setModalOpen(false)}
+                  disabled={modalBusy}
                 >
                   Cancel
                 </button>
@@ -416,9 +471,13 @@ function startWindowCheckPolling() {
                   className="btn btn-primary"
                   type="button"
                   id="mStart"
-                  onClick={startQuickCheck}
+                  onClick={() => {
+                    if (modalBusy) return;
+                    startQuickCheck();
+                  }}
+                  disabled={!isModalValid || modalBusy}
                 >
-                  Start Check
+                  {modalBusy ? <>Start Check</> : "Start Check"}
                 </button>
               </footer>
             </div>

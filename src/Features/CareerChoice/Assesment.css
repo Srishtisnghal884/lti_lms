@@ -542,5 +542,13 @@ height: auto !important;
 }
 .scorecard-box .result-score{ 
     height: 80px;
-
+}
+.dialog .field{
+    position: relative;
+}
+.dialog .field .error{
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    margin: 0;
 }
