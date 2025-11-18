@@ -24,6 +24,8 @@ import { CalendarContainer } from '../Features/Student/CalendarContainer';
 import EmployabilityPage from '../Pages/EmployabilityPage';
 import { Courses } from '../Features/Teachers/Course';
 import { StudentList } from '../Features/Teachers/StudentList';
+import AdminDashboard from '../Features/Admin/AdminDashboard';
+import AdminStudentListPage from '../Features/Admin/AdminStudentList';
 
 const DashboardRoutes = () => {
   return (
@@ -31,12 +33,16 @@ const DashboardRoutes = () => {
       <Route element={<PersistLogin />}>
         {/* --------- Admin Routes ------- */}
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Admin} />}>
-          <Route path='/' element={<StudentDashboard />} />
-          <Route path='admin/users' element={<UsersData />} />
+          <Route path='/admin/dashbaord' element={<AdminDashboard />} />
+          <Route path='/admin/users' element={<UsersData />} />
+         
           <Route path='admin/:classId/timetable' element={<AdminTimeTable />} />
           <Route
             path='/admin/:classId/staffInfo'
             element={<StaffContainer />}
+          />
+          <Route path='/admin/studentList'
+            element={<AdminStudentListPage />}
           />
         </Route>
       

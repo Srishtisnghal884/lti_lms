@@ -158,6 +158,7 @@ export const SidebarWrapper = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              marginTop: 'auto',
             }}
           >
             <StyledBox onClick={handleDrawer}>

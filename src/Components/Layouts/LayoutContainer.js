@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { styled } from '@mui/system';
+import { styled, textAlign } from '@mui/system';
 import { alpha } from '@mui/material/styles';
-import { Hidden } from '@mui/material';
+import { Hidden,Box,Card } from '@mui/material';
 
 import {
   selectLgView,
@@ -15,6 +15,7 @@ import { drawerWidth, fullDrawerWidth } from './DrawerWidth';
 import DashboardRoutes from '../../Routes/DashboardRoutes';
 import { selectCurrentRole, setCredentials } from '../../Features/Auth/AuthSlice';
 import { LandingPage } from './LandingPage';
+
  
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'openWide' && prop !== 'isFullScreen', 
@@ -77,6 +78,7 @@ export const LayoutContainer = () => {
               {!isFullScreenRoute && <LandingPage />}
               <DashboardRoutes />
               <Outlet />
+            
             </Main>
           </Hidden>
         </>

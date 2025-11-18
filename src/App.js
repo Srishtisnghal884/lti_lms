@@ -45,7 +45,7 @@ const App = () => {
             <Route path="/auth/*" element={<AuthRoutes />} />
             <Route path="/" element={<MainLandingPage/>} />
           </Route>
-          <Route path="/dashboard/*" element={<LayoutContainer />} />
+          <Route path="/*" element={<LayoutContainer />} />
           <Route path="/404" element={<NotFound404 />} />
             <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
                 <Route path="/dashboard/career-choice" element={<CareerChoice />} />

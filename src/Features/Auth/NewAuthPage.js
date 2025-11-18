@@ -182,8 +182,8 @@ const LoginFormModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "srishtisinghal884@gmail.com",
-      password: "Student123@#",
+      email: "",
+      password: "",
     },
     validationSchema: LoginValidationSchema,
     onSubmit: (values) => { 
@@ -192,26 +192,54 @@ const LoginFormModal = () => {
   });
 
   // Auth Login Function
-  const loginUser = (credentials) => {  
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("email", credentials.email);
-    urlencoded.append("password", credentials.password);  
+  // const loginUser = (credentials) => {  
+  //   const urlencoded = new URLSearchParams();
+  //   urlencoded.append("email", credentials.email);
+  //   urlencoded.append("password", credentials.password);  
     
-    login(urlencoded)
-      .unwrap()
-      .then((data) => {  
-        localStorage.setItem('userData', JSON.stringify(data.user));
-        dispatch(setCredentials(data.tokens.access))
-      })
-      .then(() => navigate('/dashboard/career-choice'))
-      .catch((error) => {
-        const errorMessage =
-          error?.error?.message ||
-          error?.data?.error?.message ||
-          'An error occurred.';
-        toast.error(errorMessage); // Show error message using toast
-      });
-  };
+  //   login(urlencoded)
+  //     .unwrap()
+  //     .then((data) => {  
+  //       localStorage.setItem('userData', JSON.stringify(data.user));
+  //       dispatch(setCredentials(data.tokens.access))
+  //     })
+  //     .then(() => navigate('/dashboard/career-choice'))
+  //     .catch((error) => {
+  //       const errorMessage =
+  //         error?.error?.message ||
+  //         error?.data?.error?.message ||
+  //         'An error occurred.';
+  //       toast.error(errorMessage); // Show error message using toast
+  //     });
+  // };
+
+  const loginUser = (credentials) => {  
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("email", credentials.email);
+  urlencoded.append("password", credentials.password);  
+    
+  login(urlencoded)
+    .unwrap()
+    .then((data) => {  
+      localStorage.setItem('userData', JSON.stringify(data.user));
+      dispatch(setCredentials(data.tokens.access));
+
+      const role = data.user.role_id;
+      if (role == 1) {
+        navigate('/admin/dashbaord');
+      } else {
+        navigate('/dashboard/career-choice');
+      }
+    })
+    .catch((error) => {
+      const errorMessage =
+        error?.error?.message ||
+        error?.data?.error?.message ||
+        'An error occurred.';
+      toast.error(errorMessage);
+    });
+};
+
 
   //   For viewing or hiding password input field
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -281,7 +309,7 @@ const LoginFormModal = () => {
           margin: '0 !important',
         }}}
       >
-        <Tab label="Sign up" {...a11yProps(0)} />
+        {/* <Tab label="Sign up" {...a11yProps(0)} /> */}
         <Tab label="Log in" {...a11yProps(1)} /> 
       </Tabs>
 

@@ -24,6 +24,7 @@ import {
 } from '../../Features/Auth/AuthSlice';
 import { PageTitle } from '../PageTitle';
 import { getAuthDataFromLocalStorage } from '../../common/getDataFromLocal';
+// import { UploadLogo } from '../UploadLogo';
 
 export const LandingPage = () => {
   const dispatch = useDispatch();
@@ -69,7 +70,10 @@ export const LandingPage = () => {
           marginBottom: 0,
         }}
       > 
-          <PageTitle title={`Welcome`} /> 
+         <div>
+           <PageTitle title={`Welcome`} /> 
+        
+         </div>
       </Box> 
     </>
   );

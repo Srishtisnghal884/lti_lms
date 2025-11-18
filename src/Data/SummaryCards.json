@@ -1,22 +1,21 @@
 [
   {
-    "title": "No of Assessment",
+    "title": "No of Students",
     "icon": "Assignment",
-    "color": "#f44336"
+    "color": "#f15c2d",
+    "count": "1200"
   },
   {
-    "title": "Given Assessament",
+    "title": "Total Courses",
     "icon": "LibraryBooks",
-    "color": "#03a9f4"
+    "color": "#03a9f4",
+    "count": "12"
   },
+
   {
-    "title": "Result",
-    "icon": "TaskAlt",
-    "color": "#4caf50"
-  },
-  {
-    "title": "Students",
+    "title": "Students Taking Exam",
     "icon": "LocalLibrary",
-    "color": "#e91e63"
+    "color": "#e91e63",
+    "count": "1000"
   }
 ]
