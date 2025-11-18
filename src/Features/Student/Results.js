@@ -55,11 +55,14 @@ export const Results = () => {
   }, [data]);
  
   // Flatten and map rows for DataGrid
-  const rows = items.map((row, index) => {
+  const rows = items.map((row, index) => { 
+    const zeroBasedPage = page - 1;
+    const serialNoStart = zeroBasedPage * rowsPerPage;
+
     const flat = {
       ...row,
-      serialNo: page * rowsPerPage + index,
-      id: row.id ?? `${page}-${index}`, // ensure unique id
+      serialNo: serialNoStart + index + 1 , 
+      id: row.id ?? `${page}-${index}`,  
       assessmentName:
         row.assessment_info?.name ?? row["assessment_info.name"] ?? "",
       score: row.result_info?.score ?? row["result_info.score"] ?? "",
@@ -73,13 +76,13 @@ export const Results = () => {
 
   // Columns - use flattened fields
   const columns = [
-    // {
-    //   Header: "S. No.",
-    //   accessor: "serialNo",
-    //   render: (row) => {
-    //     return <>{row?.serialNo ?? "_"}</>;
-    //   },
-    // },
+    {
+      Header: "S. No.",
+      accessor: "serialNo",
+      render: (row) => {
+        return <>{row?.serialNo ?? "_"}</>;
+      },
+    },
     {
       Header: "Date",
       accessor: "started_at",
@@ -260,7 +263,7 @@ export const Results = () => {
             component="div"
             count={data?.totalRecords}
             rowsPerPage={rowsPerPage}
-            page={page}
+            page={page - 1}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />

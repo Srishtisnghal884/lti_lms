@@ -29,9 +29,15 @@ export default function CareerChoice() {
   const [search, setSearch] = useState("");
   const [selectedRole, setSelectedRole] = useState(null);
   const [selectedSkill, setSelectedSkill] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
   const [modalCat, setModalCat] = useState(AssessmentData[0].id);
   const [modalSkill, setModalSkill] = useState(AssessmentData[0].items[0]);
+  const [modalTouched, setModalTouched] = useState({
+    cat: false,
+    skill: false,
+  });
+  const [modalErrors, setModalErrors] = useState({});
+  const [modalSubmitting, setModalSubmitting] = useState(false);
   const [checkCandidateEligibility, { isLoading }] =
     useCheckCandidateEligibilityMutation();
   const [inviteCandidate, { isLoadingInviteCandidate }] =
@@ -48,7 +54,8 @@ export default function CareerChoice() {
   const [candidateEligibilityData, setCandidateEligibilityData] =
     useState(null);
   const [loader, setLoader] = useState(false);
-  const [breakExamExecution, setBreakExamExecution] = useState(false)
+  const [breakExamExecution, setBreakExamExecution] = useState(false);
+  const [isLoadingInvite, setIsLoadingInvite] = useState(false);
 
   let newWindow = null;
   const firstPillRef = useRef(null);
@@ -77,8 +84,6 @@ export default function CareerChoice() {
     items: r?.items,
   }));
 
-
-
   //1. check candidate already invite for assessments
   const startAssessment = async (roleName, skillName) => {
     const payload = {
@@ -102,18 +107,32 @@ export default function CareerChoice() {
     setOpenConfirmStartAssessment(true);
   };
 
-    const startQuickCheck = () => {
-      setOpenConfirmStartAssessment(true);
-      console.log("check log modalSkill 123132", modalSkill);
-      startAssessment('1',modalSkill)
-      setSelectedSkill(modalSkill)
-      // setModalOpen(false);
-    
+  const startQuickCheck = async () => {
+    const errors = {};
+    if (!modalCat || !modalTouched.cat)
+      errors.cat = "Please select a major section.";
+    if (!modalSkill || !modalTouched.skill)
+      errors.skill = "Please select a specific skill.";
+    setModalErrors(errors);
+    if (Object.keys(errors).length) return;
+
+    // mark submitting so UI can be disabled
+    try {
+      setModalSubmitting(true);
+      // call the eligibility check flow and wait for it
+      await startAssessment('1', modalSkill);
+      setSelectedSkill(modalSkill);
+      setModalOpen(false);
+    } catch (err) {
+      console.error('startQuickCheck error', err);
+    } finally {
+      setModalSubmitting(false);
+    }
   };
+
   //2. Invite Candidate for exam
   const handleClickGo = async () => {
-    console.log(selectedSkill, "......selectedSkill");
-    
+    setIsLoadingInvite(true);
     try {
       const result = await inviteCandidate({
         email: localData?.email,
@@ -125,6 +144,7 @@ export default function CareerChoice() {
       const { data } = result;
       console.log("check log inviteCandidate 5656", data);
       if (!!data?.status) {
+        setIsLoadingInvite(false);
         newWindow = window.open("", "_blank", "width=800,height=600");
         console.log("check log checkCandidateEligibility", result);
         newWindow.location.href = data.data.inviteUrl;
@@ -147,70 +167,31 @@ export default function CareerChoice() {
   };
 
   const pollingRef = useRef(null);
-function startWindowCheckPolling() {
-  setLoader(true); 
-  pollingRef.current = setInterval(async () => {
+  function startWindowCheckPolling() {
     setLoader(true);
+    pollingRef.current = setInterval(async () => {
+      setLoader(true);
 
-    if (!breakExamExecution) {
-      await checkExamStatus();
-    } else {
-      console.log("Exam completed → Polling stopped");
-      clearInterval(pollingRef.current);
-      return;
-    }
+      if (!breakExamExecution) {
+        await checkExamStatus();
+      } else {
+        console.log("Exam completed → Polling stopped");
+        clearInterval(pollingRef.current);
+        return;
+      }
 
-    if (newWindow && newWindow.closed) {
-      setLoader(false);
-      clearInterval(pollingRef.current);
-    } else if (!newWindow) {
-      setLoader(false);
-      clearInterval(pollingRef.current);
-    }
-  }, 5000);
-}
-
-  // function startWindowCheckPolling() {
-  //   setLoader(true);
-  //   const timer = setInterval(async () => {
-  //     setLoader(true);
-  //     console.log("check exam is open ", breakExamExecution);
-  //     if( !breakExamExecution && !isLoadingResult ){
-  //     console.log("check exam status  ", breakExamExecution);
-  //       const examRes = await checkExamStatus();
-  //       const {status , assessmentName} = examRes;
-  //       console.log(status ,"status , assessmentName" ,assessmentName);
-  //     }
-      
-  //     if (newWindow && newWindow.closed) {
-  //       // if (status === "completed" && !!newWindow.closed) { 
-  //       //   console.log(status ,"...................", assessmentName, "New examwindow has been closed.", examRes);
-          
-  //       //   debugger
-  //       //   await fetchAssessmentDetailsResultInPdf({
-  //       //     email: localData?.email,
-  //       //     assessment: assessmentName,
-  //       //   }).unwrap();;
-  //       //   window.location.replace(
-  //       //     `/user-result?assessment=${assessmentName}`
-  //       //   );
-  //       // }
-  //       setLoader(false);
-  //       clearInterval(timer);
-  //     } else if (!newWindow) {
-  //       setLoader(false);
-  //       // This case handles potential blockers if newWindow couldn't open
-  //       clearInterval(timer);
-  //       console.log(
-  //         "New examwindow reference is null. Could not start tracking."
-  //       );
-  //     }
-  //   }, 5000);
-  // }
+      if (newWindow && newWindow.closed) {
+        setLoader(false);
+        clearInterval(pollingRef.current);
+      } else if (!newWindow) {
+        setLoader(false);
+        clearInterval(pollingRef.current);
+      }
+    }, 5000);
+  }
 
   //3. Frequently check exam done or not when user want to try to attempt exam (candidate details)
   async function checkExamStatus() {
-    
     const payloadExam = {
       email: localData?.email,
       assessment: selectedSkill,
@@ -221,14 +202,11 @@ function startWindowCheckPolling() {
     const { data } = examData;
     const status = data?.status;
 
-    console.log(
-      data?.status,
-      "check log  examData.......",
-      examData, 
-    ); 
-    if (status === "completed") { //TODO add more checks to verify that test is actually completed
+    console.log(data?.status, "check log  examData.......", examData);
+    if (status === "completed") {
+      //TODO add more checks to verify that test is actually completed
       setBreakExamExecution(true)
-         // stop polling immediately
+      // stop polling immediately
       if (pollingRef.current) {
         clearInterval(pollingRef.current);
       }
@@ -240,13 +218,12 @@ function startWindowCheckPolling() {
       window.location.replace(
         `/user-result?assessment=${data?.assessment_name}`
       );
-
-    }  
+    }
     return {
       status: data?.status,
       assessmentName: examData?.data?.assessment_name,
-    }; 
-  } 
+    };
+  }
 
   function getLatestAndPreviousAttempts(dataArray) {
     if (!Array.isArray(dataArray)) return {};
@@ -262,6 +239,34 @@ function startWindowCheckPolling() {
   const scoreData = getLatestAndPreviousAttempts(
     candidateEligibilityData?.data?.data?.previousResultData
   );
+
+  const isModalValid = Boolean(
+    modalCat && modalSkill && modalTouched.cat && modalTouched.skill
+  );
+  const modalBusy = Boolean(
+    modalSubmitting ||
+      isLoading ||
+      isLoadingInviteCandidate ||
+      isLoadingCheckExam ||
+      isLoadingDeleteCandidate ||
+      isLoadingResult ||
+      loader
+  );
+
+  // reset modal-local state to initial defaults
+  const resetModalState = () => {
+    setModalCat(AssessmentData[0].id);
+    setModalSkill(AssessmentData[0].items[0]);
+    setModalTouched({ cat: false, skill: false });
+    setModalErrors({});
+    setModalSubmitting(false);
+  };
+
+  const closeModal = () => {
+    if (modalBusy) return; // do not close while busy
+    resetModalState();
+    setModalOpen(false);
+  };
 
   if (
     isLoadingCheckExam ||
@@ -351,7 +356,8 @@ function startWindowCheckPolling() {
             role="dialog"
             aria-labelledby="mTitle"
             onClick={(e) => {
-              if (e.target.classList?.contains("backdrop")) setModalOpen(false);
+              if (e.target.classList?.contains("backdrop") && !modalBusy)
+                setModalOpen(false);
             }}
           >
             <div className="backdrop" />
@@ -363,7 +369,8 @@ function startWindowCheckPolling() {
                   type="button"
                   title="Close"
                   aria-label="Close"
-                  onClick={() => setModalOpen(false)}
+                  onClick={() => !modalBusy && setModalOpen(false)}
+                  disabled={modalBusy}
                 >
                   ✕
                 </button>
@@ -379,8 +386,17 @@ function startWindowCheckPolling() {
                       value={modalCat}
                       onChange={(e) => {
                         setModalCat(e);
+                        setModalTouched((p) => ({ ...p, cat: true }));
                       }}
                     />
+                    {modalErrors?.cat && (
+                      <p
+                        className="error"
+                        style={{ color: "#d32f2f", marginTop: 6 }}
+                      >
+                        {modalErrors.cat}
+                      </p>
+                    )}
                   </div>
                   <div className="field">
                     <SearchableSelect
@@ -395,8 +411,19 @@ function startWindowCheckPolling() {
                           value: s?.assessment_name,
                         }))}
                       value={modalSkill}
-                      onChange={setModalSkill}
+                      onChange={(v) => {
+                        setModalSkill(v);
+                        setModalTouched((p) => ({ ...p, skill: true }));
+                      }}
                     />
+                    {modalErrors?.skill && (
+                      <p
+                        className="error"
+                        style={{ color: "#d32f2f", marginTop: 6 }}
+                      >
+                        {modalErrors.skill}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <p className="help">
@@ -408,7 +435,8 @@ function startWindowCheckPolling() {
                 <button
                   className="btn btn-outline"
                   type="button"
-                  onClick={() => setModalOpen(false)}
+                  onClick={() => !modalBusy && setModalOpen(false)}
+                  disabled={modalBusy}
                 >
                   Cancel
                 </button>
@@ -416,9 +444,13 @@ function startWindowCheckPolling() {
                   className="btn btn-primary"
                   type="button"
                   id="mStart"
-                  onClick={startQuickCheck}
+                  onClick={() => {
+                    if (modalBusy) return;
+                    startQuickCheck();
+                  }}
+                  disabled={!isModalValid || modalBusy}
                 >
-                  Start Check
+                  {modalBusy ? <>Start Check</> : "Start Check"}
                 </button>
               </footer>
             </div>
@@ -455,10 +487,10 @@ function startWindowCheckPolling() {
               <div className="body">
                 {candidateEligibilityData?.data?.data?.attempts === 0 && (
                   <>
-                    <h4 style={{m: 0}}>
+                    <h4 style={{ m: 0 }}>
                       Candidate is eligible to take the test
                     </h4>
-                    <ul style={{m: 0}}>
+                    <ul style={{ m: 0 }}>
                       <li>
                         Please enable pop-ups in your browser to ensure all
                         features of this application work smoothly.
@@ -487,7 +519,7 @@ function startWindowCheckPolling() {
                       justifySelf: "center",
                     }}
                   >
-                    <ul style={{m: "0 !important"}}>
+                    <ul style={{ m: "0 !important" }}>
                       <li>
                         Please enable pop-ups in your browser to ensure all
                         features of this application work smoothly.
@@ -506,11 +538,14 @@ function startWindowCheckPolling() {
                         40 minutes
                       </li>
                     </ul>
-                    <div className="" style={{
+                    <div
+                      className=""
+                      style={{
                         display: "flex",
                         gap: "10px",
                         justifySelf: "center",
-                      }}>
+                      }}
+                    >
                       {candidateEligibilityData?.data?.data?.previousResultData?.map(
                         (item) => {
                           return (
@@ -552,13 +587,16 @@ function startWindowCheckPolling() {
                         }
                       )}
                     </div>
-                    <Typography variant="inherit" sx={{ py: "10px", textAlign: 'center' }}>
+                    <Typography
+                      variant="inherit"
+                      sx={{ py: "10px", textAlign: "center" }}
+                    >
                       Would you like to take the assessment again?
                     </Typography>
                   </div>
                 )}
                 {candidateEligibilityData?.data?.data?.attempts === 2 && (
-                  <> 
+                  <>
                     <Typography variant="subtitle1">
                       You have reached the maximum number of attempts
                     </Typography>
@@ -610,13 +648,19 @@ function startWindowCheckPolling() {
               </div>
               <footer className="go-btn">
                 {candidateEligibilityData?.data?.data?.attempts !== 2 && (
-                  <Button
-                    sx={{ color: theme.palette.primary.main }}
-                    variant="contained"
-                    onClick={handleClickGo}
-                  >
-                    Go
-                  </Button>
+                  <>
+                    {!isLoadingInvite ? (
+                      <Button
+                        sx={{ color: theme.palette.primary.main }}
+                        variant="contained"
+                        onClick={handleClickGo}
+                      >
+                        Go
+                      </Button>
+                    ) : (
+                      <CircularProgress />
+                    )}
+                  </>
                 )}
               </footer>
             </div>
