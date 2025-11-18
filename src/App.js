@@ -19,6 +19,8 @@ import { PublicRoute } from "./Features/Auth/PublicRoute";
 import DiagnosticAssessment from "./Pages/diagnosticAssessment/diagnosticAssessment";
 import EmployabilityAdvantagePage from "./Pages/EmployabilityPage";
 import MainLandingPage from "./Features/Auth/LandingPage";
+import RequireAuth from "./Features/Auth/RequireAuth";
+import ROLES_LIST from "./Data/Roles.json"; 
 
 const App = () => {
   const [mode, setMode] = useState("light");
@@ -45,9 +47,11 @@ const App = () => {
           </Route>
           <Route path="/dashboard/*" element={<LayoutContainer />} />
           <Route path="/404" element={<NotFound404 />} />
-          <Route path="/dashboard/career-choice" element={<CareerChoice />} />
-          <Route path="/user-profile" element={<ProfilePage />} />
-          <Route path="/user-result" element={<ResultPage />} />
+            <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
+                <Route path="/dashboard/career-choice" element={<CareerChoice />} />
+                <Route path="/user-profile" element={<ProfilePage />} />
+                <Route path="/user-result" element={<ResultPage />} />
+            </Route>
           <Route path="/help" element={<HelpVideos />} />
           <Route
             path="/diagnostic-assessment"
