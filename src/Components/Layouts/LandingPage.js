@@ -71,8 +71,7 @@ export const LandingPage = () => {
         }}
       > 
          <div>
-           <PageTitle title={`Welcome`} /> 
-        
+           {/* <PageTitle title={`Welcome`} />  */}
          </div>
       </Box> 
     </>

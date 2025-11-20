@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import * as icons from "@mui/icons-material";
@@ -29,12 +29,7 @@ export const SideNavLinks = ({ openWide }) => {
   const mobScreenView = useSelector(selectMobView);
   const theme = useTheme();
 
-  const location = useLocation()
-  const [focusedItem, setFocusedItem] = useState(location.pathname);
-
-  useEffect(() => {
-    setFocusedItem(location.pathname)
-  }, [location.pathname])
+  const location = useLocation();
 
 
   const StyledListItemButton = styled(ListItemButton)(({ focused }) => ({
@@ -63,10 +58,7 @@ export const SideNavLinks = ({ openWide }) => {
     }),
   }));
 
-  const handleItemClick = (item) => {
-    setFocusedItem(item);
-  };
-  console.log("location....", location, "focusedItem", focusedItem);
+  // active state is derived from current location.pathname
 
   const NavLinks = NavbarLinks.filter((user) => user.type === `${role}`);
 
@@ -79,7 +71,7 @@ export const SideNavLinks = ({ openWide }) => {
 
   return (
     <>
-      <Box sx={{ mt: '40px' }}>
+      <Box sx={{ mt: '20px' }}>
         {NavLinks.map((data) =>
           data.content.map((item) => (
             <div key={item.division}>
@@ -92,7 +84,10 @@ export const SideNavLinks = ({ openWide }) => {
                 {item.section.map((navLinks) => {
                   const Icon = icons[navLinks.icon];
                   const to = replaceUrlPlaceholders(navLinks.to, classId, role);
-                  const isFocused = focusedItem == navLinks.title;
+                  const normalizedTo = to.startsWith("/") ? to : `/${to}`;
+                  const isFocused =
+                    location.pathname === normalizedTo ||
+                    location.pathname.startsWith(normalizedTo + "/");
                   return (
                     <StyledListItemButton
                       key={navLinks.title}
@@ -100,7 +95,6 @@ export const SideNavLinks = ({ openWide }) => {
                       component={Link}
                       focused={isFocused}
                       to={to}
-                      onClick={() => handleItemClick(navLinks.title)}
                     >
                       <ListItemIcon
                         sx={{

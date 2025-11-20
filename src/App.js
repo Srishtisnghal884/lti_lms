@@ -10,7 +10,7 @@ import NotFound404 from "./Pages/NotFound404";
 import { LayoutContainer } from "./Components/Layouts/LayoutContainer";
 import AuthRoutes from "./Routes/AuthRoutes";
 import Login from "./Features/Auth/Login";
-import CareerChoice from "../src/Features/CareerChoice/Assesment"; 
+import CareerChoice from "../src/Features/CareerChoice/Assesment";
 import ProfilePage from "./Pages/profile/ProfilePage";
 import HelpVideos from "./Pages/help/help";
 import ResultPage from "./Pages/result/ResultPage";
@@ -20,7 +20,8 @@ import DiagnosticAssessment from "./Pages/diagnosticAssessment/diagnosticAssessm
 import EmployabilityAdvantagePage from "./Pages/EmployabilityPage";
 import MainLandingPage from "./Features/Auth/LandingPage";
 import RequireAuth from "./Features/Auth/RequireAuth";
-import ROLES_LIST from "./Data/Roles.json"; 
+import ROLES_LIST from "./Data/Roles.json";
+import AdminDashboard from "./Features/Admin/AdminDashboard";
 
 const App = () => {
   const [mode, setMode] = useState("light");
@@ -43,21 +44,21 @@ const App = () => {
         <Routes>
           <Route element={<PublicRoute redirectTo="/result" />}>
             <Route path="/auth/*" element={<AuthRoutes />} />
-            <Route path="/" element={<MainLandingPage/>} />
+            <Route path="/" element={<MainLandingPage />} />
           </Route>
-          <Route path="/*" element={<LayoutContainer />} />
-          <Route path="/404" element={<NotFound404 />} />
-            <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
-                <Route path="/dashboard/career-choice" element={<CareerChoice />} />
-                <Route path="/user-profile" element={<ProfilePage />} />
-                <Route path="/user-result" element={<ResultPage />} />
-            </Route>
+          <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
+            <Route path="/career-choice" element={<CareerChoice />} />
+            <Route path="/user-profile" element={<ProfilePage />} />
+            <Route path="/user-result" element={<ResultPage />} />
+          </Route>
           <Route path="/help" element={<HelpVideos />} />
           <Route
             path="/diagnostic-assessment"
             element={<DiagnosticAssessment />}
-          /> 
-          <Route path="*" element={<Navigate replace to="/404" />} />
+          />
+          <Route path="/*" element={<LayoutContainer />} />
+          {/* <Route path="/404" element={<NotFound404 />} />
+          <Route path="**" element={<Navigate replace to="/404" />} /> */}
         </Routes>
       </Paper>
     </ThemeProvider>

@@ -78,7 +78,6 @@ export const LayoutContainer = () => {
               {!isFullScreenRoute && <LandingPage />}
               <DashboardRoutes />
               <Outlet />
-            
             </Main>
           </Hidden>
         </>

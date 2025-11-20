@@ -226,9 +226,14 @@ const LoginFormModal = () => {
 
       const role = data.user.role_id;
       if (role == 1) {
-        navigate('/admin/dashbaord');
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhh");
+        navigate('/', { replace: true });
+        
+        console.log("Check navigation");
+
+             
       } else {
-        navigate('/dashboard/career-choice');
+        navigate('/career-choice');
       }
     })
     .catch((error) => {
@@ -301,7 +306,7 @@ const LoginFormModal = () => {
     <div style={{ width: 400, maxWidth: "90vw" }}>
       <Tabs
         value={tabValue}
-        onChange={handleTabChange}
+        // onChange={handleTabChange}
         aria-label="login signup tabs"
         variant="fullWidth"
         sx={{ borderBottom: 1, borderColor: "divider" , 
@@ -319,7 +324,7 @@ const LoginFormModal = () => {
         ) : (
           <>
             <Box sx={{ p: 3 }}>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -331,16 +336,7 @@ const LoginFormModal = () => {
                   sx={{ marginRight: "15px", cursor: "pointer"  }}
                   onClick={() => handleSocialLogin("Facebook")}
                 >
-                  {/* <LoginSocialMicrosoft
-                    client_id={"MICROSOFT_CLIENT_ID"}
-                    scope="openid profile email"
-                    // NOTE: For Microsoft, you may also need a 'redirect_uri'
-                    // if the default one used by the library doesn't match your Azure setup.
-                    // redirect_uri="http://localhost:3000"
-                    onResolve={onResolve}
-                    onReject={onReject}
-                  >
-                  </LoginSocialMicrosoft> */}
+                  
                     <img
                       className="login-signup-sso-options-microsoft-icon"
                       width={"20"}
@@ -352,15 +348,7 @@ const LoginFormModal = () => {
                 <Box
                   sx={{ marginRight: "15px", cursor: "pointer" }} 
                 >
-                  {/* <LoginSocialGoogle
-                    client_id={
-                      "296440107125-1nchm9de4teqb3tuct4qkuc4gps93ntj.apps.googleusercontent.com"
-                    }
-                    scope="openid profile email"
-                    onResolve={onResolve}
-                    onReject={onReject}
-                  >
-                  </LoginSocialGoogle> */}
+                 
                     <img
                       className="login-signup-sso-options-facebook-icon"
                       width={"20"}
@@ -380,22 +368,15 @@ const LoginFormModal = () => {
                     src={FVImag}
                     alt=""
                   />
-                  {/* <LoginSocialFacebook
-                    provider="facebook"
-                    appId="826964239782619"
-                    scope="public_profile,email"
-                    callback={handleSocialLogin}
-                    onFailure={handleSocialLoginFailure}
-                  >
-                  </LoginSocialFacebook> */}
+                 
                 </Box>
-              </Box>
+              </Box> */}
 
-              <Divider sx={{ my: 2 }}>
+              {/* <Divider sx={{ my: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   or
                 </Typography>
-              </Divider>
+              </Divider> */}
 
               {/* Email and Password Form */}
               <Box

@@ -1,20 +1,20 @@
 [
   {
     "title": "No of Students",
-    "icon": "Assignment",
+    "icon": "Groups",
     "color": "#f15c2d",
     "count": "1200"
   },
   {
     "title": "Total Courses",
-    "icon": "LibraryBooks",
+    "icon": "MenuBook",
     "color": "#03a9f4",
     "count": "12"
   },
 
   {
     "title": "Students Taking Exam",
-    "icon": "LocalLibrary",
+    "icon": "School",
     "color": "#e91e63",
     "count": "1000"
   }

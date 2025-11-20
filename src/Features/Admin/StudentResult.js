@@ -8,10 +8,11 @@ import {
   Box,
   Typography,Skeleton
 } from "@mui/material";
-
+import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { useGetAdminStudentListQuery } from "./adminApiSlice";
+import { useGetAdminStudentResultListQuery } from "./adminApiSlice";
+import { CLOUDINARY_URL } from "../../Global";
 
 export default function AdminStudentList() {
   const [searchEmail, setSearchEmail] = useState("");
@@ -24,7 +25,7 @@ export default function AdminStudentList() {
   const [nameFilter, setNameFilter] = useState('');
   const [filtered, setFiltered] = useState([]);
   // ---------------------- API CALL ----------------------
-  const { data: apiData, isLoading, isError, refetch } = useGetAdminStudentListQuery({
+  const { data: apiData, isLoading, isError, refetch } = useGetAdminStudentResultListQuery({
     page,
     pageSize: rowsPerPage,
     name: nameFilter,
@@ -34,6 +35,12 @@ export default function AdminStudentList() {
   const handleView = (student) => {
     setSelectedStudent(student);
     setOpen(true);
+  };
+
+  const resultlist = (student) => {
+    if (!student.pdf_url) return; 
+    const fileUrl = `${CLOUDINARY_URL}/${student.pdf_url}`;
+  window.open(fileUrl, "_blank");
   };
 
   const applyFilters = () => {
@@ -74,9 +81,9 @@ export default function AdminStudentList() {
           <TableHead>
             <TableRow>
               <TableCell className="header-cell">S.NO</TableCell>
-              <TableCell className="header-cell">Student</TableCell>
               <TableCell className="header-cell">Email</TableCell>
-              <TableCell className="header-cell">Attempt Count</TableCell>
+              <TableCell className="header-cell">Main career Exam </TableCell>
+              <TableCell className="header-cell">Sub Career Exam</TableCell>
               <TableCell className="header-cell action-column">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -98,21 +105,21 @@ export default function AdminStudentList() {
               :
             apiData?.data?.map((s, i) => (
               <TableRow key={s.id} className="row">
-                <TableCell>{s.id} {i + 1}</TableCell>
-
+                <TableCell> {i + 1}</TableCell>
                 <TableCell className="student-info">
-                  <Avatar className="avatar">{s?.first_name?.charAt(0)}</Avatar>
-                  {s?.first_name}
-                  {s?.last_name}
+                  <Avatar className="avatar">{s["attempt.candidate_email"]?.charAt(0)}</Avatar>
+                  {s["attempt.candidate_email"]}
                 </TableCell>
 
-                <TableCell className="grade">{s.email}</TableCell>
-                <TableCell className="grade">{s.attemptCount}</TableCell>
-
+                <TableCell className="grade">{s['attempt.assessment_info.main_career']}</TableCell>
+                <TableCell className="grade">{s['attempt.assessment_info.sub_career']}</TableCell>
                 <TableCell>
                   <div className="actions">
                     <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
                       <VisibilityIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton className="edit-btn" size="small" onClick={() => resultlist(s)}>
+                      <DownloadIcon  fontSize="small" />
                     </IconButton>
                   </div>
                 </TableCell>

@@ -28,12 +28,12 @@
           {
             "title": "Results",
             "icon": "AssessmentOutlined",
-            "to": "results"
+            "to": "/results"
           },
           {
             "title": "Assessment",
             "icon": "AssignmentOutlined",
-            "to": "career-choice"
+            "to": "/career-choice"
           }
         ]
       }
@@ -48,7 +48,7 @@
           {
             "title": "Dashboard",
             "icon": "DashboardOutlined",
-            "to": "/admin/dashbaord"
+            "to": "/admin/dashboard"
           }
         ]
       },
@@ -56,14 +56,14 @@
         "division": "Class Info",
         "section": [
           {
-            "title": "Time Table",
-            "icon": "TableChartOutlined",
-            "to": ":userRoles/:classId/timetable"
+            "title": "Student List",
+            "icon": "Groups",
+            "to": "/admin/student-list"
           },
           {
-            "title": "Staff Info",
-            "icon": "CalendarMonthOutlined",
-            "to": ":userRoles/:classId/staffInfo"
+            "title": "Results",
+            "icon": "School",
+            "to": "/admin/student-result"
           }
         ]
       }
