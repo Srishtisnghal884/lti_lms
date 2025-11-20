@@ -226,9 +226,8 @@ const LoginFormModal = () => {
 
       const role = data.user.role_id;
       if (role == 1) {
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhh");
-        navigate('/', { replace: true });
-        
+        // navigate('/admin/dashboard', { replace: true });
+        window.location.href = '/admin/dashboard';
         console.log("Check navigation");
 
              
