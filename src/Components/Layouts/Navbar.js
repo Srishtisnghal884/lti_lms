@@ -14,6 +14,7 @@ import {
   AccountCircleOutlined,
   ChatOutlined,
   DarkModeOutlined,
+  Image,
   LightModeOutlined,
   Menu,
   NotificationsOutlined,
@@ -89,7 +90,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export const NavBar = () => {
-    const theme = useTheme();
+  const theme = useTheme();
   const dispatch = useDispatch();
   const open = useSelector(selectMobView);
   const darkMode = useSelector(selectTheme);
@@ -103,32 +104,37 @@ export const NavBar = () => {
   const handleThemeToggle = useCallback(() => {
     dispatch(toggleTheme());
   }, [dispatch]);
-
+  let logoData = JSON.parse(localStorage.getItem('userData'));
   return (
-    <AppBar position='fixed' sx={{background: "#ffff"}} elevation={0} open={open}> 
-      <Toolbar> 
+    <AppBar position='fixed' sx={{ background: "#ffff", zIndex: '10 !important' }} elevation={0} open={open}>
+      <Toolbar>
         <MenuIcon onClick={handleDrawer} />
         {/* <Box sx={{ flexGrow: 1 }} />  */}
 
-          <Typography
-              variant="h6"
-              component="h4"
-              sx={{
-                color: theme.palette.grey[700] ,
-                fontWeight: 500,
-                textAlign: "left",
-                width: "100%",
-                maxWidth: "400px",
-                mr:'auto',
-                mt: 2,
-                whiteSpace: "break-spaces",
-                "@media (max-width: 900px)": {
-                  textAlign: "left",
-                },
-              }}
-            >
-              Employability <br/> Advantage
-            </Typography>
+        <Typography
+          variant="h6"
+          component="h4"
+          sx={{
+            color: theme.palette.grey[700],
+            fontWeight: 500,
+            textAlign: "left",
+            width: "100%",
+            maxWidth: "400px",
+            mr: 'auto',
+            mt: 2,
+            whiteSpace: "break-spaces",
+            "@media (max-width: 900px)": {
+              textAlign: "left",
+            },
+          }}
+        >
+
+          {logoData?.logo ? (
+            <img style={{ width: "auto", height: "40px" }} src={logoData.logo} alt="Logo" />
+          ) : (
+            <>Employability <br /> Advantage</>
+          )}
+        </Typography>
 
         {/* <Box sx={{ flexGrow: 1 }} />  */}
 

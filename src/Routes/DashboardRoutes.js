@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import PersistLogin from '../Features/Auth/persistLogin';
 import RequireAuth from '../Features/Auth/RequireAuth';
 import TeacherDashboard from '../Features/Teachers/TeacherDashboard';
@@ -20,10 +20,14 @@ import { UsersData } from '../Features/Admin/GetUsers';
 import ROLES_LIST from '../Data/Roles.json';
 import { AdminTimeTable } from '../Features/Admin/Timetable/AdminTimetable';
 import { StaffContainer } from '../Features/Admin/StaffTable/AdminStaffContainer';
-import { CalendarContainer } from '../Features/Student/CalendarContainer'; 
+import { CalendarContainer } from '../Features/Student/CalendarContainer';
 import EmployabilityPage from '../Pages/EmployabilityPage';
 import { Courses } from '../Features/Teachers/Course';
 import { StudentList } from '../Features/Teachers/StudentList';
+import AdminDashboard from '../Features/Admin/AdminDashboard';
+import AdminStudentListPage from '../Features/Admin/AdminStudentList';
+import StudentResult from '../Features/Admin/StudentResult';
+import NotFound404 from '../Pages/NotFound404';
 
 const DashboardRoutes = () => {
   return (
@@ -31,15 +35,19 @@ const DashboardRoutes = () => {
       <Route element={<PersistLogin />}>
         {/* --------- Admin Routes ------- */}
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Admin} />}>
-          <Route path='/' element={<StudentDashboard />} />
-          <Route path='admin/users' element={<UsersData />} />
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/student-result' element={<StudentResult />} />
+          <Route path='/admin/users' element={<UsersData />} />
+
           <Route path='admin/:classId/timetable' element={<AdminTimeTable />} />
           <Route
             path='/admin/:classId/staffInfo'
             element={<StaffContainer />}
           />
+          <Route path='/admin/student-list'
+            element={<AdminStudentListPage />}
+          />
         </Route>
-      
         {/* --------- Teacher Routes ------- */}
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Teacher} />}>
           <Route path='teacher/:classId' element={<TeacherDashboard />} />
@@ -72,17 +80,17 @@ const DashboardRoutes = () => {
         </Route>
 
         {/* ------- Student Routes ----------- */}
-          <Route
-            path='/employability'
-            element={<EmployabilityPage />}
-          />
-          <Route path='/results' element={<Results />} />
-          <Route path='/courses' element={<Courses />} />
-          <Route path='/students' element={<StudentList />} />
+        <Route
+          path='/employability'
+          element={<EmployabilityPage />}
+        />
+        <Route path='/results' element={<Results />} />
+        <Route path='/courses' element={<Courses />} />
+        <Route path='/students' element={<StudentList />} />
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Student} />}>
-          <Route path='/' element={<StudentDashboard />} />   
+          <Route path='/' element={<StudentDashboard />} />
         </Route>
-          {/* <Route path='/dashboard/results' element={<Results />} /> */}
+        {/* <Route path='/dashboard/results' element={<Results />} /> */}
       </Route>
     </Routes>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Divider, Drawer, Fab, Hidden, Typography } from '@mui/material';
+import { Box, Button, Divider, Drawer, Fab, Hidden, Typography } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import MuiDrawer from '@mui/material/Drawer';
@@ -79,6 +79,20 @@ export const SidebarWrapper = () => {
     dispatch(toggleLgView());
     dispatch(toggleMobView());
   };
+  const userRole = localStorage.getItem("userRole")
+  console.log(userRole,"userRoleuserRoleuserRole");
+  
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("persist");
+
+    // OR clear everything:
+    // localStorage.clear();
+
+    window.location.href = "/login";  // redirect to login page
+  };
 
   return (
     <>
@@ -119,12 +133,12 @@ export const SidebarWrapper = () => {
           PaperProps={{
             sx: {
               borderRight: 'none',
-              background: 'white' //'#ebebebff'
+              background: 'white', mt: '80px', height: 'calc(100vh - 80px)' //'#ebebebff'
             },
           }}
         >
-          <DrawerHeader> 
-            {/* <Typography
+          {/* <DrawerHeader> 
+            <Typography
               variant="h6"
               component="h4"
               sx={{
@@ -141,37 +155,51 @@ export const SidebarWrapper = () => {
               }}
             >
               Employability  Advantage
-            </Typography> */}
-            {/* <div>
+            </Typography> <div>
               <img src={"/ECAIcon.png"} alt='logo' height='32' width='32' />
-            </div> */}
-          </DrawerHeader>
+            </div> 
+          </DrawerHeader>*/}
 
           <Divider variant='middle' />
 
           {/* --- Nav Links--- */}
-          <SideNavLinks openWide={openWide}/>
-
-          {/* ----- Side bar Toggle Arrow Button -----  */}
-          <Box
+          <SideNavLinks openWide={openWide} />
+          {userRole == 1 ? (
+           <Box 
+              sx={{padding:'0 5px',  marginTop: "auto", mb:2 }}
+           >
+             <Button
+              variant="contained"
+              // color="error"
+              onClick={handleLogout}
+              sx={{bg:'var(--themecolor)',width:'100%'}}
+            >
+              Logout
+            </Button>
+           </Box>
+          ): ( <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              marginTop: 'auto',
             }}
           >
             <StyledBox onClick={handleDrawer}>
               {openWide ? (
-                <Fab sx={{backgroundColor: theme.palette.primary.main}} size='small'>
+                <Fab sx={{ backgroundColor: theme.palette.primary.main }} size='small'>
                   <KeyboardArrowLeft />
                 </Fab>
               ) : (
-                <Fab sx={{backgroundColor: theme.palette.primary.main}}  size='small'>
+                <Fab sx={{ backgroundColor: theme.palette.primary.main }} size='small'>
                   <KeyboardArrowRight />
                 </Fab>
               )}
             </StyledBox>
-          </Box>
+          </Box>)} 
+
+          {/* ----- Side bar Toggle Arrow Button -----  */}
+         
         </DrawerWide>
       </Hidden>
     </>

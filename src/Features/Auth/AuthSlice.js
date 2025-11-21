@@ -32,7 +32,7 @@ export const authSlice = createSlice({
       console.log("action,,,,,", action)
      const { token } = action.payload;  
     //  const isAuthenticated =  getAuthDataFromLocalStorage();
-    console.log( "token...", token); 
+    console.log( "token...", token);
 
       const accessToken = token;
       const decodeToken = jwtDecode(accessToken);

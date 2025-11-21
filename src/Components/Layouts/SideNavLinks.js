@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import * as icons from "@mui/icons-material";
@@ -12,6 +12,7 @@ import {
   ListSubheader,
   ListItemIcon,
   Typography,
+  Box
 } from "@mui/material";
 import styled from "@emotion/styled";
 
@@ -28,12 +29,7 @@ export const SideNavLinks = ({ openWide }) => {
   const mobScreenView = useSelector(selectMobView);
   const theme = useTheme();
 
-  const location = useLocation() 
-  const [focusedItem, setFocusedItem] = useState(location.pathname);
-  
-  useEffect(() => {
-    setFocusedItem(location.pathname)
-  }, [location.pathname])
+  const location = useLocation();
 
 
   const StyledListItemButton = styled(ListItemButton)(({ focused }) => ({
@@ -45,12 +41,12 @@ export const SideNavLinks = ({ openWide }) => {
       color: "#ffff !important",
       backgroundColor: theme.palette.primary.main,
       borderRadius: "10px",
-      margin: "5px", 
+      margin: "5px",
       // Target nested elements on hover
       "& .MuiListItemIcon-root, & .MuiTypography-root": {
         color: "#ffff",
-      }, 
-    }, 
+      },
+    },
     ...(focused && {
       color: "#ffff !important",
       backgroundColor: theme.palette.primary.main,
@@ -58,14 +54,11 @@ export const SideNavLinks = ({ openWide }) => {
       margin: "5px",
       "& .MuiListItemIcon-root, & .MuiTypography-root": {
         color: "#ffff",
-      }, 
+      },
     }),
   }));
-  
- const handleItemClick = (item) => {
-   setFocusedItem(item);
-  };
-  console.log("location....", location, "focusedItem", focusedItem);
+
+  // active state is derived from current location.pathname
 
   const NavLinks = NavbarLinks.filter((user) => user.type === `${role}`);
 
@@ -78,71 +71,75 @@ export const SideNavLinks = ({ openWide }) => {
 
   return (
     <>
-      {NavLinks.map((data) =>
-        data.content.map((item) => (
-          <div key={item.division}>
-            <List
-            sx={{paddingTop: '30px'}}
-              key={item.division}
-              component="nav"
-              aria-labelledby="nested-list-subheader"
-            >
-              {item.section.map((navLinks) => {
-                const Icon = icons[navLinks.icon];
-                const to = replaceUrlPlaceholders(navLinks.to, classId, role); 
-                const isFocused = focusedItem == navLinks.title; 
-                return (
-                  <StyledListItemButton
-                    key={navLinks.title}
-                    variant="sidenav"
-                    component={Link}
-                    focused={isFocused}
-                    to={to}
-                    onClick={() => handleItemClick(navLinks.title)}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        justifyContent: "center",
-                        color: "#a0a5b9",
-                        
-                        "&:hover": {
-                          color: "#ffff !important",
-                        },
-                        ...(isFocused && {
-                          color: "#ffff !important",
-                        }),
-                      }}
-                    > 
-                        <Icon sx={{ fontSize: "1.3rem" }}>{navLinks.icon}</Icon>
-                     
-                    </ListItemIcon>
-                      {openWide && (
-                    <Typography 
-                      sx={{
-                        fontSize: "14px !important",
-                        fontWeight: "100",
-                        lineHeight: "10px",
-                        color: "#a0a5b9",
-                        mb: "2px",
-                        "&:hover": {
-                          color: "#ffff !important",
-                        },
-                        ...(isFocused && {
-                          color: "#ffff !important",
-                        }),
-                      }}
+      <Box sx={{ mt: '20px' }}>
+        {NavLinks.map((data) =>
+          data.content.map((item) => (
+            <div key={item.division}>
+              <List
+                sx={{ paddingTop: '0px', paddingBottom: '0px' }}
+                key={item.division}
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+              >
+                {item.section.map((navLinks) => {
+                  const Icon = icons[navLinks.icon];
+                  const to = replaceUrlPlaceholders(navLinks.to, classId, role);
+                  const normalizedTo = to.startsWith("/") ? to : `/${to}`;
+                  const isFocused =
+                    location.pathname === normalizedTo ||
+                    location.pathname.startsWith(normalizedTo + "/");
+                  return (
+                    <StyledListItemButton
+                      key={navLinks.title}
+                      variant="sidenav"
+                      component={Link}
+                      focused={isFocused}
+                      to={to}
                     >
-                      {navLinks.title}
-                    </Typography>  
+                      <ListItemIcon
+                        sx={{
+                          justifyContent: "center",
+                          color: "#a0a5b9",
+
+                          "&:hover": {
+                            color: "#ffff !important",
+                          },
+                          ...(isFocused && {
+                            color: "#ffff !important",
+                          }),
+                        }}
+                      >
+                        <Icon sx={{ fontSize: "1.3rem" }}>{navLinks.icon}</Icon>
+
+                      </ListItemIcon>
+                      {openWide && (
+                        <Typography
+                          sx={{
+                            fontSize: "14px !important",
+                            fontWeight: "100",
+                            lineHeight: "10px",
+                            color: "#a0a5b9",
+                            mb: "2px",
+                            "&:hover": {
+                              color: "#ffff !important",
+                            },
+                            ...(isFocused && {
+                              color: "#ffff !important",
+                            }),
+                          }}
+                        >
+                          {navLinks.title}
+                        </Typography>
                       )}
-                  </StyledListItemButton>
-                );
-              })}
-            </List>
-            <Divider variant="middle" />
-          </div>
-        ))
-      )}
+                    </StyledListItemButton>
+                  );
+                })}
+              </List>
+            </div>
+          ))
+        )}
+        <Divider variant="middle" />
+      </Box>
     </>
   );
 };

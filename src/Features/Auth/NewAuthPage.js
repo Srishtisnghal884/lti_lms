@@ -182,8 +182,8 @@ const LoginFormModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "srishtisinghal884@gmail.com",
-      password: "Student123@#",
+      email: "",
+      password: "",
     },
     validationSchema: LoginValidationSchema,
     onSubmit: (values) => { 
@@ -192,26 +192,58 @@ const LoginFormModal = () => {
   });
 
   // Auth Login Function
-  const loginUser = (credentials) => {  
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("email", credentials.email);
-    urlencoded.append("password", credentials.password);  
+  // const loginUser = (credentials) => {  
+  //   const urlencoded = new URLSearchParams();
+  //   urlencoded.append("email", credentials.email);
+  //   urlencoded.append("password", credentials.password);  
     
-    login(urlencoded)
-      .unwrap()
-      .then((data) => {  
-        localStorage.setItem('userData', JSON.stringify(data.user));
-        dispatch(setCredentials(data.tokens.access))
-      })
-      .then(() => navigate('/dashboard/career-choice'))
-      .catch((error) => {
-        const errorMessage =
-          error?.error?.message ||
-          error?.data?.error?.message ||
-          'An error occurred.';
-        toast.error(errorMessage); // Show error message using toast
-      });
-  };
+  //   login(urlencoded)
+  //     .unwrap()
+  //     .then((data) => {  
+  //       localStorage.setItem('userData', JSON.stringify(data.user));
+  //       dispatch(setCredentials(data.tokens.access))
+  //     })
+  //     .then(() => navigate('/dashboard/career-choice'))
+  //     .catch((error) => {
+  //       const errorMessage =
+  //         error?.error?.message ||
+  //         error?.data?.error?.message ||
+  //         'An error occurred.';
+  //       toast.error(errorMessage); // Show error message using toast
+  //     });
+  // };
+
+  const loginUser = (credentials) => {  
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("email", credentials.email);
+  urlencoded.append("password", credentials.password);  
+    
+  login(urlencoded)
+    .unwrap()
+    .then((data) => {  
+      localStorage.setItem('userData', JSON.stringify(data.user));
+      dispatch(setCredentials(data.tokens.access));
+
+      const role = data.user.role_id;
+      if (role == 1) {
+        // navigate('/admin/dashboard', { replace: true });
+        window.location.href = '/admin/dashboard';
+        console.log("Check navigation");
+
+             
+      } else {
+        navigate('/career-choice');
+      }
+    })
+    .catch((error) => {
+      const errorMessage =
+        error?.error?.message ||
+        error?.data?.error?.message ||
+        'An error occurred.';
+      toast.error(errorMessage);
+    });
+};
+
 
   //   For viewing or hiding password input field
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -273,7 +305,7 @@ const LoginFormModal = () => {
     <div style={{ width: 400, maxWidth: "90vw" }}>
       <Tabs
         value={tabValue}
-        onChange={handleTabChange}
+        // onChange={handleTabChange}
         aria-label="login signup tabs"
         variant="fullWidth"
         sx={{ borderBottom: 1, borderColor: "divider" , 
@@ -281,7 +313,7 @@ const LoginFormModal = () => {
           margin: '0 !important',
         }}}
       >
-        <Tab label="Sign up" {...a11yProps(0)} />
+        {/* <Tab label="Sign up" {...a11yProps(0)} /> */}
         <Tab label="Log in" {...a11yProps(1)} /> 
       </Tabs>
 
@@ -291,7 +323,7 @@ const LoginFormModal = () => {
         ) : (
           <>
             <Box sx={{ p: 3 }}>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -303,16 +335,7 @@ const LoginFormModal = () => {
                   sx={{ marginRight: "15px", cursor: "pointer"  }}
                   onClick={() => handleSocialLogin("Facebook")}
                 >
-                  {/* <LoginSocialMicrosoft
-                    client_id={"MICROSOFT_CLIENT_ID"}
-                    scope="openid profile email"
-                    // NOTE: For Microsoft, you may also need a 'redirect_uri'
-                    // if the default one used by the library doesn't match your Azure setup.
-                    // redirect_uri="http://localhost:3000"
-                    onResolve={onResolve}
-                    onReject={onReject}
-                  >
-                  </LoginSocialMicrosoft> */}
+                  
                     <img
                       className="login-signup-sso-options-microsoft-icon"
                       width={"20"}
@@ -324,15 +347,7 @@ const LoginFormModal = () => {
                 <Box
                   sx={{ marginRight: "15px", cursor: "pointer" }} 
                 >
-                  {/* <LoginSocialGoogle
-                    client_id={
-                      "296440107125-1nchm9de4teqb3tuct4qkuc4gps93ntj.apps.googleusercontent.com"
-                    }
-                    scope="openid profile email"
-                    onResolve={onResolve}
-                    onReject={onReject}
-                  >
-                  </LoginSocialGoogle> */}
+                 
                     <img
                       className="login-signup-sso-options-facebook-icon"
                       width={"20"}
@@ -352,22 +367,15 @@ const LoginFormModal = () => {
                     src={FVImag}
                     alt=""
                   />
-                  {/* <LoginSocialFacebook
-                    provider="facebook"
-                    appId="826964239782619"
-                    scope="public_profile,email"
-                    callback={handleSocialLogin}
-                    onFailure={handleSocialLoginFailure}
-                  >
-                  </LoginSocialFacebook> */}
+                 
                 </Box>
-              </Box>
+              </Box> */}
 
-              <Divider sx={{ my: 2 }}>
+              {/* <Divider sx={{ my: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   or
                 </Typography>
-              </Divider>
+              </Divider> */}
 
               {/* Email and Password Form */}
               <Box

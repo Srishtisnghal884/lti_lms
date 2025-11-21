@@ -131,40 +131,94 @@ export default function CareerChoice() {
   };
 
   //2. Invite Candidate for exam
-  const handleClickGo = async () => {
-    setIsLoadingInvite(true);
-    try {
-      const result = await inviteCandidate({
-        email: localData?.email,
-        first_name: localData?.name,
-        last_name: "Test",
-        full_name: `${localData?.name} t`,
-        assessment: selectedSkill,
-      });
-      const { data } = result;
-      console.log("check log inviteCandidate 5656", data);
-      if (!!data?.status) {
-        setIsLoadingInvite(false);
-        newWindow = window.open("", "_blank", "width=800,height=600");
-        console.log("check log checkCandidateEligibility", result);
+  // const handleClickGo = async () => {
+  //   setIsLoadingInvite(true);
+  //   try {
+  //     const result = await inviteCandidate({
+  //       email: localData?.email,
+  //       first_name: localData?.name,
+  //       last_name: "Test",
+  //       full_name: `${localData?.name} t`,
+  //       assessment: selectedSkill,
+  //     });
+  //     const { data } = result;
+  //     console.log("check log inviteCandidate 5656", data);
+  //     if (!!data?.status) {
+  //       setIsLoadingInvite(false);
+  //       newWindow = window.open("", "_blank", "width=800,height=600");
+  //       console.log("check log checkCandidateEligibility", result);
+  //       newWindow.location.href = data.data.inviteUrl;
+  //       if (newWindow) {
+  //         newWindow.focus();
+  //         setLoader(true);
+  //         startWindowCheckPolling();
+  //       } else {
+  //         alert(
+  //           "Popup blocked! Please allow popups to attemp the asseessment."
+  //         );
+  //         document.getElementById("popupBlockedMessage").style.display =
+  //           "block";
+  //         document.getElementById("mainContent").style.display = "none";
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log("error....", error);
+  //   }
+  // };
+const handleClickGo = async () => {
+  setIsLoadingInvite(true);
+  try {
+    const result = await inviteCandidate({
+      email: localData?.email,
+      first_name: localData?.name,
+      last_name: "Test",
+      full_name: `${localData?.name} t`,
+      assessment: selectedSkill,
+    });
+
+    const { data } = result;
+    console.log("check log inviteCandidate 5656", data);
+
+    if (!!data?.status) {
+      setIsLoadingInvite(false);
+
+      // Try to open the popup
+      // const newWindow = window.open("", "_blank", "width=800,height=600");
+//       const newWindow = window.open(
+//   "",
+//   "_blank",
+//   `width=${window.screen.availWidth},height=${window.screen.availHeight},left=0,top=0`
+// );
+const newWindow = window.open(
+  "",
+  "_blank",
+  `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+);
+
+newWindow.moveTo(0, 0);
+newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
+
+      if (newWindow) {
+        // Popup opened successfully
         newWindow.location.href = data.data.inviteUrl;
-        if (newWindow) {
-          newWindow.focus();
-          setLoader(true);
-          startWindowCheckPolling();
-        } else {
-          alert(
-            "Popup blocked! Please allow popups to attemp the asseessment."
-          );
-          document.getElementById("popupBlockedMessage").style.display =
-            "block";
-          document.getElementById("mainContent").style.display = "none";
-        }
+        newWindow.focus();
+        setLoader(true);
+        startWindowCheckPolling();
+      } else {
+        // Popup blocked
+        alert("Popup blocked! Please allow popups to attempt the assessment.");
+        // Optional: Show custom message and hide main content
+        document.getElementById("popupBlockedMessage").style.display = "block";
+        document.getElementById("mainContent").style.display = "none";
+
+        // Redirect after alert
+        window.location.href = "/other-page"; // change to your redirect URL
       }
-    } catch (error) {
-      console.log("error....", error);
     }
-  };
+  } catch (error) {
+    console.log("error....", error);
+  }
+};
 
   const pollingRef = useRef(null);
   function startWindowCheckPolling() {
@@ -471,7 +525,7 @@ export default function CareerChoice() {
             <div className="backdrop" />
             <div className="dialog" role="document">
               <header>
-                <h4 className="text-[14px]" style={{ textAlign: "center" }}>
+                <h4 className="text-[14px]" style={{ margin:"0px",textAlign: "center" }}>
                   Important
                 </h4>
                 <button
@@ -487,7 +541,7 @@ export default function CareerChoice() {
               <div className="body">
                 {candidateEligibilityData?.data?.data?.attempts === 0 && (
                   <>
-                    <h4 style={{ m: 0 }}>
+                    <h4 style={{ margin: 0 }}>
                       Candidate is eligible to take the test
                     </h4>
                     <ul style={{ m: 0 }}>

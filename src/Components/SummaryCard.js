@@ -9,7 +9,6 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-
 export const SummaryCard = ({ item }) => {
   // Theme
   const theme = useTheme();
@@ -37,7 +36,7 @@ export const SummaryCard = ({ item }) => {
       sx={{
         p: 3,
         borderLeft: `0.25rem solid ${item.color}`,
-        backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1a2027',
+        backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#fff',
       }}
     >
       <Grid container spacing={1}>
@@ -45,46 +44,27 @@ export const SummaryCard = ({ item }) => {
 
         <Grid item xs={10}>
           {/* ---Title--- */}
-          <Typography
+          <Typography 
             sx={{
               color: item.color,
               textTransform: 'uppercase',
               fontSize: '1rem',
               fontWeight: '600',
+              minHeight: '3rem',
             }}
           >
             {item.title}
           </Typography>
-
-          {/* ---- Row 2---- */}
-          <Grid
-            item
-            xs
-            container
-            direction='row'
-            spacing={2}
-            sx={{ display: 'flex', alignItems: 'center' }}
+          <Typography variant='h5'
+            sx={{
+              color: item.color,
+              textTransform: 'uppercase',
+              fontWeight: '600',
+              mt: 1,
+            }}
           >
-            <Grid item xs='auto'>
-              {/* ---- Progress---- */}
-              <Typography
-                sx={{
-                  color: item.color,
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                }}
-              >
-                {item.progress}%
-              </Typography>
-            </Grid>
-            {/* ----Progress bar---- */}
-            <Grid item xs>
-              <BorderLinearProgress
-                variant='determinate'
-                value={parseInt(item.progress)}
-              />
-            </Grid>
-          </Grid>
+            {item.count}
+          </Typography>
         </Grid>
 
         {/* -----Column 2------ */}
@@ -95,16 +75,18 @@ export const SummaryCard = ({ item }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            color: '#565656',
           }}
         >
           {
             // Card Icon
-            <Icon fontSize='large' color='disabled'>
+            <Icon fontSize='large' color='#ddd'>
               {item.icon}
             </Icon>
           }
         </Grid>
       </Grid>
+      
     </Paper>
   );
 };

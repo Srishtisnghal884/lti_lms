@@ -292,7 +292,7 @@ const ResultPage = () => {
                     areas you need to work on to improve your employability.
                   </p>
 
-                  <div className="flex items-center gap-3 bg-success-20 border-success-30 rounded-xl p-4">
+                  {/* <div className="flex items-center gap-3 bg-success-20 border-success-30 rounded-xl p-4">
                     <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center flex-shrink-0">
                       <span className="text-success-foreground font-bold text-sm">
                         B
@@ -301,16 +301,16 @@ const ResultPage = () => {
                     <p className="text-primary-foreground font-semibold">
                       You now have access to new unlocked areas
                     </p>
-                  </div>
+                  </div> */}
 
-                  <p className="text-primary-foreground-90 text-lg">
+                  {/* <p className="text-primary-foreground-90 text-lg">
                     Start today. Gain skills. Build resume value.
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-primary-foreground mb-6">
+                {/* <h2 className="text-2xl font-bold text-primary-foreground mb-6">
                   This is your path to getting job ready
                 </h2>
 
@@ -324,7 +324,7 @@ const ResultPage = () => {
                       locked={tool.locked}
                     />
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
 

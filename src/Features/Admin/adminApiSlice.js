@@ -2,6 +2,20 @@ import { apiSlice } from '../../App/api/apiSlice';
 
 export const adminApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getAdminDashboard: builder.query({
+      query: () => `admin/statics`,
+      // providesTags: ['dashboard'],
+    }),
+    getAdminStudentList: builder.query({
+      query: ({ page = 1, pageSize = 10, email = "" }) =>
+        `admin/student-list/${page}/${pageSize}/?searchEmail=${email}`,
+      providesTags: ['StudentList'],
+    }),
+    getAdminStudentResultList: builder.query({
+      query: ({ page = 1, pageSize = 10, email = "" }) =>
+        `admin/studentResultList/${page}/${pageSize}/?searchEmail=${email}`,
+      providesTags: ['StudentList'],
+    }),
     getUsers: builder.query({
       query: () => `dashboard/admin/users`,
       providesTags: ['users'],
@@ -49,6 +63,19 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['staffdata'],
     }),
+    addLogoImage: builder.mutation({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("logo", file); // BINARY FILE
+
+        return {
+          url: `admin/upload-logo`,
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["staffdata"],
+    }),
 
     updateStaffData: builder.mutation({
       query: ({ classId, id, data }) => ({
@@ -71,6 +98,9 @@ export const adminApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetAdminDashboardQuery,
+  useGetAdminStudentListQuery,
+  useGetAdminStudentResultListQuery,
   useGetUsersQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
@@ -79,6 +109,7 @@ export const {
 
   useUpdateTimetableMutation,
 
+  useAddLogoImageMutation,
   useAddStaffDataMutation,
   useUpdateStaffDataMutation,
   useDeleteStaffDataMutation,
