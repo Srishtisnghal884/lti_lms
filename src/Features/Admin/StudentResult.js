@@ -115,9 +115,9 @@ export default function AdminStudentList() {
                 <TableCell className="grade">{s['attempt.assessment_info.sub_career']}</TableCell>
                 <TableCell>
                   <div className="actions">
-                    <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
+                    {/* <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
                       <VisibilityIcon fontSize="small" />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton className="edit-btn" size="small" onClick={() => resultlist(s)}>
                       <DownloadIcon  fontSize="small" />
                     </IconButton>
