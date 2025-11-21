@@ -27,6 +27,7 @@ import { StudentList } from '../Features/Teachers/StudentList';
 import AdminDashboard from '../Features/Admin/AdminDashboard';
 import AdminStudentListPage from '../Features/Admin/AdminStudentList';
 import StudentResult from '../Features/Admin/StudentResult';
+import StudentDetailsResult from '../Features/Admin/StudentDetailsResult';
 import NotFound404 from '../Pages/NotFound404';
 
 const DashboardRoutes = () => {
@@ -36,6 +37,7 @@ const DashboardRoutes = () => {
         {/* --------- Admin Routes ------- */}
         <Route element={<RequireAuth allowedRoles={ROLES_LIST.Admin} />}>
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/student-details' element={<StudentDetailsResult />} />
           <Route path='/admin/student-result' element={<StudentResult />} />
           <Route path='/admin/users' element={<UsersData />} />
 

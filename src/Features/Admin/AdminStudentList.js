@@ -8,11 +8,13 @@ import {
   Box,
   Typography,Skeleton
 } from "@mui/material";
-
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useGetAdminStudentListQuery } from "./adminApiSlice";
-
+import { useNavigate } from "react-router-dom";
+import DownloadIcon from '@mui/icons-material/Download';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 export default function AdminStudentList() {
   const [searchEmail, setSearchEmail] = useState("");
   const [page, setPage] = useState(1);
@@ -23,6 +25,8 @@ export default function AdminStudentList() {
   const [emailFilter, setEmailFilter] = useState('');
   const [nameFilter, setNameFilter] = useState('');
   const [filtered, setFiltered] = useState([]);
+  const navigate = useNavigate();
+
   // ---------------------- API CALL ----------------------
   const { data: apiData, isLoading, isError, refetch } = useGetAdminStudentListQuery({
     page,
@@ -35,7 +39,38 @@ export default function AdminStudentList() {
     setSelectedStudent(student);
     setOpen(true);
   };
+ const handleStudentView = (student) => {
+  setSelectedStudent(student);  
+  navigate('/admin/student-details', { state: student });
+  setOpen(true);
+};
+ const { data: allData } = useGetAdminStudentListQuery({
+    page: 1,
+    pageSize: 1000000, // fetch all records dynamically
+    name: nameFilter,
+    email: emailFilter,
+  });
+const exportToExcel = () => {
+    if (!allData?.data?.length) {
+      console.log(allData);
 
+      console.warn("No data to export");
+      return;
+    }
+    const exportData = allData.data.map((s, index) => ({
+      "S.NO": index + 1,
+      "Email": s.email,
+      "Name": s?.first_name + s?.last_name,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "StudentList.xlsx");
+  };
   const applyFilters = () => {
     setPage(1);
     refetch();
@@ -61,8 +96,15 @@ export default function AdminStudentList() {
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <h2 className="table-title">Result List</h2>
           <div> <Button
+                      variant="contained"
+                      startIcon={<DownloadIcon  sx={{color:"#fff"}} />}
+                      onClick={exportToExcel}
+                      style={{ marginRight: 10, backgroundColor: 'green', color: "#fff" }}
+                    >
+                      Export Excel
+                    </Button><Button
             variant="contained"
-            startIcon={<FilterListIcon />}
+            startIcon={<FilterListIcon  sx={{color:"#fff"}} />}
             onClick={() => setDrawerOpen(true)}
             style={{ backgroundColor: 'var(--themecolor)', color: "#fff" }}
           >
@@ -111,7 +153,10 @@ export default function AdminStudentList() {
 
                 <TableCell>
                   <div className="actions">
-                    <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
+                    {/* <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
+                      <VisibilityIcon fontSize="small" />
+                    </IconButton> */}
+                    <IconButton className="edit-btn" size="small" onClick={() => handleStudentView(s)}>
                       <VisibilityIcon fontSize="small" />
                     </IconButton>
                   </div>

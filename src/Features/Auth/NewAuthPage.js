@@ -23,6 +23,7 @@ import Loading from "../../Components/Loading";
 import GImag from "../../Assets/Images/google-icon.svg";
 import FVImag from "../../Assets/Images/fv.svg";
 import MicrosoftImag from "../../Assets/Images/microsoft-icon.svg"; 
+
 // import {
 //   LoginSocialFacebook,
 //   LoginSocialMicrosoft,
@@ -234,14 +235,18 @@ const LoginFormModal = () => {
       } else {
         navigate('/career-choice');
       }
+ 
     })
     .catch((error) => {
-      const errorMessage =
+      console.log(error,"lllllllllsdsdfs");
+      
+      const errorMessage = error?.message ||
         error?.error?.message ||
         error?.data?.error?.message ||
         'An error occurred.';
       toast.error(errorMessage);
     });
+
 };
 
 
