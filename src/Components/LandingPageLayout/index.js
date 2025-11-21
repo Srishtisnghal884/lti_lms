@@ -48,12 +48,13 @@ const LandingLayoutPage = ({ children }) => {
                 Home
               </Link>
             </li> */}
+             <li>
+              <Link to={"/career-choice"}>Home </Link>
+            </li>
             <li>
               <Link to={"/results"}>Results</Link>
             </li>
-            <li>
-              <Link to={"/career-choice"}>Assessment </Link>
-            </li>
+           
             {/* <li>  
               <Link to={"/user-profile"}>Profile</Link>
             </li>
