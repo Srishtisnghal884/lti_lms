@@ -544,7 +544,7 @@ newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
                     <h4 style={{ margin: 0 }}>
                       Candidate is eligible to take the test
                     </h4>
-                    <ul style={{ m: 0 }}>
+                    <ul style={{ margin: "0px" }}>
                       <li>
                         Please enable pop-ups in your browser to ensure all
                         features of this application work smoothly.
