@@ -138,7 +138,7 @@ const ScoreCard = ({ score, category, isLoading }) => {
 
   return (
     <div className="score-card" style={{ textAlign: "center" }}>
-      <h3 className="score-card-header">Your Diagnostic Score</h3>
+      <h3 className="score-card-header">Your Skill Score</h3>
       <div className="score-card-progress-container">
         {isLoading && score?.score ? (
           <Skeleton />
