@@ -118,7 +118,7 @@ const exportToExcel = () => {
               <TableCell className="header-cell">S.NO</TableCell>
               <TableCell className="header-cell">Student</TableCell>
               <TableCell className="header-cell">Email</TableCell>
-              <TableCell className="header-cell">Attempt Count</TableCell>
+              {/* <TableCell className="header-cell">Attempt Count</TableCell> */}
               <TableCell className="header-cell action-column">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -133,7 +133,7 @@ const exportToExcel = () => {
                       <Skeleton width="60%" sx={{ display: "inline-block", ml: 1 }} />
                     </TableCell>
                     <TableCell><Skeleton width="80%" /></TableCell>
-                    <TableCell><Skeleton width="40%" /></TableCell>
+                    {/* <TableCell><Skeleton width="40%" /></TableCell> */}
                     <TableCell><Skeleton width={30} /></TableCell>
                   </TableRow>
                 ))
@@ -149,7 +149,7 @@ const exportToExcel = () => {
                 </TableCell>
 
                 <TableCell className="grade">{s.email}</TableCell>
-                <TableCell className="grade">{s.attemptCount}</TableCell>
+                {/* <TableCell className="grade">{s.attemptCount}</TableCell> */}
 
                 <TableCell>
                   <div className="actions">
