@@ -22,7 +22,8 @@ import MainLandingPage from "./Features/Auth/LandingPage";
 import RequireAuth from "./Features/Auth/RequireAuth";
 import ROLES_LIST from "./Data/Roles.json";
 import AdminDashboard from "./Features/Admin/AdminDashboard";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const [mode, setMode] = useState("light");
   const darkMode = useSelector(selectTheme);
@@ -39,6 +40,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer position="top-right" />
       <CssBaseline enableColorScheme />
       <Paper style={{ borderRadius: "0", minHeight: "100vh" }} elevation={0}>
         <Routes>

@@ -28,8 +28,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       api.dispatch(setCredentials(accessToken));
       result = await baseQuery(args, api, extraOptions);
     } else {
-      console.log("jwt expiresadasdsa");
-
       if (refreshResult?.error?.status === 401) {
         refreshResult.error.data.message =
           'Your login has expired. Please try again later.';
@@ -37,11 +35,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       return refreshResult;
     }
   } else {
-    console.log("jwt expiresadasdsa", result?.error?.data?.message);
     if (result?.error?.data?.message === "jwt expired") {
       localStorage.clear();
-
-      // Redirect to login page
       window.location.href = '/auth/login';
     }
   }

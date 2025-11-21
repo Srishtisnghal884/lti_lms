@@ -11,6 +11,11 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         `admin/student-list/${page}/${pageSize}/?searchEmail=${email}`,
       providesTags: ['StudentList'],
     }),
+    getAdminStudentDetailsList: builder.query({
+      query: ({ page = 1, pageSize = 10, email = "" }) =>
+        `admin/studentDetailsResultList/${page}/${pageSize}/?searchEmail=${email}`,
+      providesTags: ['StudentList'],
+    }),
     getAdminStudentResultList: builder.query({
       query: ({ page = 1, pageSize = 10, email = "" }) =>
         `admin/studentResultList/${page}/${pageSize}/?searchEmail=${email}`,
@@ -99,6 +104,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAdminDashboardQuery,
+  useGetAdminStudentDetailsListQuery,
   useGetAdminStudentListQuery,
   useGetAdminStudentResultListQuery,
   useGetUsersQuery,

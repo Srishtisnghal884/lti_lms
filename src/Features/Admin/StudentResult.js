@@ -6,16 +6,16 @@ import {
   Dialog, DialogContent, DialogTitle, TextField,
   Pagination, Drawer, Button, FormControl, InputLabel, Select, MenuItem,
   Box,
-  Typography,Skeleton
+  Typography, Skeleton
 } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useGetAdminStudentResultListQuery } from "./adminApiSlice";
 import { CLOUDINARY_URL } from "../../Global";
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 export default function AdminStudentList() {
-  const [searchEmail, setSearchEmail] = useState("");
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -31,16 +31,22 @@ export default function AdminStudentList() {
     name: nameFilter,
     email: emailFilter,
   });
-
+  // Fetch all data for Excel export
+  const { data: allData } = useGetAdminStudentResultListQuery({
+    page: 1,
+    pageSize: 1000000, // fetch all records dynamically
+    name: nameFilter,
+    email: emailFilter,
+  });
   const handleView = (student) => {
     setSelectedStudent(student);
     setOpen(true);
   };
 
   const resultlist = (student) => {
-    if (!student.pdf_url) return; 
+    if (!student.pdf_url) return;
     const fileUrl = `${CLOUDINARY_URL}/${student.pdf_url}`;
-  window.open(fileUrl, "_blank");
+    window.open(fileUrl, "_blank");
   };
 
   const applyFilters = () => {
@@ -56,10 +62,33 @@ export default function AdminStudentList() {
     refetch();
     setDrawerOpen(false);
   };
- const paginatedData = filtered.slice(
+  const paginatedData = filtered.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
   );
+  const exportToExcel = () => {
+    if (!allData?.data?.length) {
+      console.log(allData);
+
+      console.warn("No data to export");
+      return;
+    }
+    const exportData = allData.data.map((s, index) => ({
+      "S.NO": index + 1,
+      "Email": s["attempt.candidate_email"],
+      "Main Career Exam": s["attempt.assessment_info.main_career"],
+      "Sub Career Exam": s["attempt.assessment_info.sub_career"],
+      "PDF Link": s.pdf_url ? `${CLOUDINARY_URL}/${s.pdf_url}` : "N/A",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "StudentResults.xlsx");
+  };
 
   return (
     <div className="student-list-table-wrapper">
@@ -67,14 +96,23 @@ export default function AdminStudentList() {
       <TableContainer component={Paper} className="student-table-container">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <h2 className="table-title">Result List</h2>
-          <div> <Button
+          <div> 
+             <Button
             variant="contained"
-            startIcon={<FilterListIcon />}
-            onClick={() => setDrawerOpen(true)}
-            style={{ backgroundColor: 'var(--themecolor)', color: "#fff" }}
+            startIcon={<DownloadIcon  sx={{color:"#fff"}} />}
+            onClick={exportToExcel}
+            style={{ marginRight: 10, backgroundColor: 'green', color: "#fff" }}
           >
-            Filter
-          </Button></div>
+            Export Excel
+          </Button>
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon sx={{color:"#fff"}} />}
+              onClick={() => setDrawerOpen(true)}
+              style={{ backgroundColor: 'var(--themecolor)', color: "#fff" }}
+            >
+              Filter
+            </Button></div>
         </Box>
 
         <Table className="student-table">
@@ -89,59 +127,61 @@ export default function AdminStudentList() {
           </TableHead>
 
           <TableBody>
-             {isLoading
+            {isLoading
               ? Array.from(new Array(rowsPerPage)).map((_, i) => (
-                  <TableRow key={i} className="row">
-                    <TableCell ><Skeleton width={30} /></TableCell>
-                    <TableCell className="student-info">
-                      <Skeleton variant="circular" width={40} height={40} />
-                      <Skeleton width="60%" sx={{ display: "inline-block", ml: 1 }} />
-                    </TableCell>
-                    <TableCell><Skeleton width="80%" /></TableCell>
-                    <TableCell><Skeleton width="40%" /></TableCell>
-                    <TableCell><Skeleton width={30} /></TableCell>
-                  </TableRow>
-                ))
+                <TableRow key={i} className="row">
+                  <TableCell ><Skeleton width={30} /></TableCell>
+                  <TableCell className="student-info">
+                    <Skeleton variant="circular" width={40} height={40} />
+                    <Skeleton width="60%" sx={{ display: "inline-block", ml: 1 }} />
+                  </TableCell>
+                  <TableCell><Skeleton width="80%" /></TableCell>
+                  <TableCell><Skeleton width="40%" /></TableCell>
+                  <TableCell><Skeleton width={30} /></TableCell>
+                </TableRow>
+              ))
               :
-            apiData?.data?.map((s, i) => (
-              <TableRow key={s.id} className="row">
-                <TableCell> {i + 1}</TableCell>
-                <TableCell className="student-info">
-                  <Avatar className="avatar">{s["attempt.candidate_email"]?.charAt(0)}</Avatar>
-                  {s["attempt.candidate_email"]}
-                </TableCell>
+              apiData?.data?.map((s, i) => (
+                <TableRow key={s.id} className="row">
+                  <TableCell> {i + 1}</TableCell>
+                  <TableCell className="student-info">
+                    <Avatar className="avatar">{s["attempt.candidate_email"]?.charAt(0)}</Avatar>
+                    {s["attempt.candidate_email"]}
+                  </TableCell>
 
-                <TableCell className="grade">{s['attempt.assessment_info.main_career']}</TableCell>
-                <TableCell className="grade">{s['attempt.assessment_info.sub_career']}</TableCell>
-                <TableCell>
-                  <div className="actions">
-                    {/* <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
+                  <TableCell className="grade">{s['attempt.assessment_info.main_career']}</TableCell>
+                  <TableCell className="grade">{s['attempt.assessment_info.sub_career']}</TableCell>
+                  <TableCell>
+                    <div className="actions">
+                      {/* <IconButton className="edit-btn" size="small" onClick={() => handleView(s)}>
                       <VisibilityIcon fontSize="small" />
                     </IconButton> */}
-                    <IconButton className="edit-btn" size="small" onClick={() => resultlist(s)}>
-                      <DownloadIcon  fontSize="small" />
-                    </IconButton>
-                  </div>
-                </TableCell>
+                      <IconButton className="edit-btn" size="small" onClick={() => resultlist(s)}>
+                        <DownloadIcon fontSize="small" />
+                      </IconButton>
+                    </div>
+                  </TableCell>
 
-              </TableRow>
-            ))}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
 
       {/* PAGINATION */}
       <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-        <Pagination sx={{"& .MuiButtonBase-root ":{
-          color:'#000', "&.Mui-selected":{
-            opacity:'1',
-            color:'#fff'
+        <Pagination sx={{
+          "& .MuiButtonBase-root ": {
+            color: '#000', "&.Mui-selected": {
+              opacity: '1',
+              color: '#fff'
+            }
           }
-        }}}
-          count={apiData?.totalPages || 1}  
+        }}
+          count={apiData?.totalPages || 1}
           page={Number(apiData?.currentPage) || 1}
-          onChange={(e, v) => setPage(v)}   
-        color="primary"
+          onChange={(e, v) => setPage(v)}
+          color="primary"
         />
       </div>
 
