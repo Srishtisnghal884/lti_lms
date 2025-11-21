@@ -369,6 +369,10 @@ export const Results = () => {
       id: stableId,
       assessmentName:
         row.assessment_info?.name ?? row["assessment_info.name"] ?? "",
+      examName:
+        row.assessment_info?.name ?? row["assessment_info.sub_career"] ?? "",
+      mainExam:
+        row.assessment_info?.name ?? row["assessment_info.main_career"] ?? "",
       score: row.result_info?.score ?? row["result_info.score"] ?? "",
       percentile:
         row.result_info?.percentile ?? row["result_info.percentile"] ?? "",
@@ -396,8 +400,23 @@ export const Results = () => {
         );
       },
     },
+    
     {
-      Header: "AssessmentName",
+      Header: "Main career ",
+      accessor: "mainExam",
+      render: (row) => {
+        return <>{row?.mainExam ?? "_"}</>;
+      },
+    },
+    {
+      Header: "Sub career ",
+      accessor: "examName",
+      render: (row) => {
+        return <>{row?.examName ?? "_"}</>;
+      },
+    },
+    {
+      Header: "Assessment Name",
       accessor: "assessmentName",
       render: (row) => {
         return <>{row?.assessmentName ?? "_"}</>;

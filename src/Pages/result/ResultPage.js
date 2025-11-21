@@ -138,7 +138,7 @@ const ScoreCard = ({ score, category, isLoading }) => {
 
   return (
     <div className="score-card" style={{ textAlign: "center" }}>
-      <h3 className="score-card-header">Your Skill Score</h3>
+      <h3 className="score-card-header">Your Skill Assessment Score</h3>
       <div className="score-card-progress-container">
         {isLoading && score?.score ? (
           <Skeleton />
@@ -280,7 +280,9 @@ const ResultPage = () => {
             <div className="space-y-6">
               <div>
                 <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6">
-                  {scoreData?.assessment}
+                  {scoreData?.main_career}
+                  <br/>
+                  {scoreData?.sub_career}
                 </h1>
                 <div className="space-y-4">
                   <h2 className="text-2xl font-semibold text-primary-foreground">

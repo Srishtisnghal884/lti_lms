@@ -65,7 +65,7 @@ export default function CareerChoice() {
     const q = (search || "").toLowerCase();
     return AssessmentData.filter((r) => r?.name?.toLowerCase().includes(q));
   }, [search]);
-
+const [examCheckingLoading, setExamCheckingLoading] = useState(false);
   const activeRole = selectedRole ?? AssessmentData[0];
   // const filteredSkills = useMemo(() => {
   //   const q = (search || "").toLowerCase();
@@ -165,60 +165,168 @@ export default function CareerChoice() {
   //     console.log("error....", error);
   //   }
   // };
-const handleClickGo = async () => {
+
+
+// const handleClickGo = async () => {
+//   setIsLoadingInvite(true);
+//   try {
+//     const result = await inviteCandidate({
+//       email: localData?.email,
+//       first_name: localData?.name,
+//       last_name: "Test",
+//       full_name: `${localData?.name} t`,
+//       assessment: selectedSkill,
+//     });
+
+//     const { data } = result;
+//     console.log("check log inviteCandidate 5656", data);
+
+//     if (!!data?.status) {
+//       setIsLoadingInvite(false);
+
+//       // Try to open the popup
+//       // const newWindow = window.open("", "_blank", "width=800,height=600");
+// //       const newWindow = window.open(
+// //   "",
+// //   "_blank",
+// //   `width=${window.screen.availWidth},height=${window.screen.availHeight},left=0,top=0`
+// // );
+// const newWindow = window.open(
+//   "",
+//   "_blank",
+//   `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+// );
+
+// newWindow.moveTo(0, 0);
+// newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
+
+//       if (newWindow) {
+//         // Popup opened successfully
+//         newWindow.location.href = data.data.inviteUrl;
+//         newWindow.focus();
+//         setLoader(true);
+//         startWindowCheckPolling();
+//       } else {
+//         // Popup blocked
+//         alert("Popup blocked! Please allow popups to attempt the assessment.");
+//         // Optional: Show custom message and hide main content
+//         document.getElementById("popupBlockedMessage").style.display = "block";
+//         document.getElementById("mainContent").style.display = "none";
+
+//         // Redirect after alert
+//         window.location.href = "/other-page"; // change to your redirect URL
+//       }
+//     }
+//   } catch (error) {
+//     console.log("error....", error);
+//   }
+// };
+
+  const popupRef = useRef(null);
+  const handleClickGo = async () => {
   setIsLoadingInvite(true);
+
   try {
     const result = await inviteCandidate({
       email: localData?.email,
       first_name: localData?.name,
-      last_name: "Test",
-      full_name: `${localData?.name} t`,
+      last_name: "-",
+      full_name: `${localData?.name}`,
       assessment: selectedSkill,
     });
 
     const { data } = result;
-    console.log("check log inviteCandidate 5656", data);
 
-    if (!!data?.status) {
+    if (data?.status) {
       setIsLoadingInvite(false);
+      const win = window.open(
+        "",
+        "_blank",
+        `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+      );
 
-      // Try to open the popup
-      // const newWindow = window.open("", "_blank", "width=800,height=600");
-//       const newWindow = window.open(
-//   "",
-//   "_blank",
-//   `width=${window.screen.availWidth},height=${window.screen.availHeight},left=0,top=0`
-// );
-const newWindow = window.open(
-  "",
-  "_blank",
-  `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
-);
-
-newWindow.moveTo(0, 0);
-newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
-
-      if (newWindow) {
-        // Popup opened successfully
-        newWindow.location.href = data.data.inviteUrl;
-        newWindow.focus();
-        setLoader(true);
-        startWindowCheckPolling();
-      } else {
-        // Popup blocked
-        alert("Popup blocked! Please allow popups to attempt the assessment.");
-        // Optional: Show custom message and hide main content
-        document.getElementById("popupBlockedMessage").style.display = "block";
-        document.getElementById("mainContent").style.display = "none";
-
-        // Redirect after alert
-        window.location.href = "/other-page"; // change to your redirect URL
+      if (!win) {
+        alert("Popup blocked! Allow popups.");
+        return;
       }
+
+      popupRef.current = win; 
+      win.location.href = data.data.inviteUrl;
+handleCheckExam();
+      startPopupCloseWatcher();
     }
-  } catch (error) {
-    console.log("error....", error);
+  } catch (err) {
+    console.log("error:", err);
   }
 };
+function startPopupCloseWatcher() {
+  const interval = setInterval(async () => {
+    const win = popupRef.current;
+
+    if (win && win.closed) {
+      console.log("🔴 Popup window CLOSED");
+
+      clearInterval(interval);
+
+      await checkExamAfterWindowClose(); 
+    }
+  }, 1000);
+}
+async function checkExamAfterWindowClose() {
+  console.log("🟡 Checking exam status because window closed...");
+setExamCheckingLoading(true); // ← show loader
+  try {
+    const res = await checkExam({
+      email: localData?.email,
+      assessment: selectedSkill,
+    }).unwrap();
+
+    console.log("🟢 Exam status:", res);
+
+    if (res?.data?.status === "completed") {
+      await fetchAssessmentDetailsResultInPdf({
+        email: localData?.email,
+        assessment: res?.data?.assessment_name,
+      }).unwrap();
+
+      window.location.replace(
+        `/user-result?assessment=${res?.data?.assessment_name}`
+      );
+    }
+  } catch (error) {
+    console.error("❌ Error checking exam:", error);
+  }finally {
+    setExamCheckingLoading(false); 
+  }
+}
+async function handleCheckExam() {
+  console.log("📡 Running checkExam API...");
+
+  setExamCheckingLoading(true);
+  try {
+    const res = await checkExam({
+      email: localData?.email,
+      assessment: selectedSkill,
+    }).unwrap();
+
+    console.log("📘 Exam status:", res);
+
+    if (res?.data?.status === "completed") {
+      await fetchAssessmentDetailsResultInPdf({
+        email: localData?.email,
+        assessment: res?.data?.assessment_name,
+      }).unwrap();
+
+      window.location.replace(
+        `/user-result?assessment=${res?.data?.assessment_name}`
+      );
+    }
+  } catch (err) {
+    console.error("❌ Error running checkExam:", err);
+  }finally {
+    setExamCheckingLoading(false); // ← hide loader
+  }
+}
 
   const pollingRef = useRef(null);
   function startWindowCheckPolling() {
@@ -228,6 +336,7 @@ newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
 
       if (!breakExamExecution) {
         await checkExamStatus();
+        console.log("Exam not completed → Continuing polling");
       } else {
         console.log("Exam completed → Polling stopped");
         clearInterval(pollingRef.current);
@@ -333,6 +442,7 @@ newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
   }
   return (
     <LandingLayoutPage>
+      {examCheckingLoading && <Loading open={true} />}
       <div className="assessment-box">
         <main className="app rc-wrap">
           <section className="card" id="widget">
@@ -544,7 +654,7 @@ newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
                     <h4 style={{ margin: 0 }}>
                       Candidate is eligible to take the test
                     </h4>
-                    <ul style={{ m: 0 }}>
+                    <ul style={{ margin: "0px" }}>
                       <li>
                         Please enable pop-ups in your browser to ensure all
                         features of this application work smoothly.
