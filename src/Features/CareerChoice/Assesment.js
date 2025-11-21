@@ -183,7 +183,20 @@ const handleClickGo = async () => {
       setIsLoadingInvite(false);
 
       // Try to open the popup
-      const newWindow = window.open("", "_blank", "width=800,height=600");
+      // const newWindow = window.open("", "_blank", "width=800,height=600");
+//       const newWindow = window.open(
+//   "",
+//   "_blank",
+//   `width=${window.screen.availWidth},height=${window.screen.availHeight},left=0,top=0`
+// );
+const newWindow = window.open(
+  "",
+  "_blank",
+  `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+);
+
+newWindow.moveTo(0, 0);
+newWindow.resizeTo(window.screen.availWidth, window.screen.availHeight);
 
       if (newWindow) {
         // Popup opened successfully
@@ -512,7 +525,7 @@ const handleClickGo = async () => {
             <div className="backdrop" />
             <div className="dialog" role="document">
               <header>
-                <h4 className="text-[14px]" style={{ textAlign: "center" }}>
+                <h4 className="text-[14px]" style={{ margin:"0px",textAlign: "center" }}>
                   Important
                 </h4>
                 <button
@@ -528,7 +541,7 @@ const handleClickGo = async () => {
               <div className="body">
                 {candidateEligibilityData?.data?.data?.attempts === 0 && (
                   <>
-                    <h4 style={{ m: 0 }}>
+                    <h4 style={{ margin: 0 }}>
                       Candidate is eligible to take the test
                     </h4>
                     <ul style={{ m: 0 }}>

@@ -26,15 +26,16 @@
         "division": "Addons",
         "section": [ 
           {
+            "title": "Home",
+            "icon": "AssignmentOutlined",
+            "to": "/career-choice"
+          },
+          {
             "title": "Results",
             "icon": "AssessmentOutlined",
             "to": "/results"
-          },
-          {
-            "title": "Assessment",
-            "icon": "AssignmentOutlined",
-            "to": "/career-choice"
           }
+          
         ]
       }
     ]

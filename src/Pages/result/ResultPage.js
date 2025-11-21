@@ -310,7 +310,7 @@ const ResultPage = () => {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-primary-foreground mb-6">
+                {/* <h2 className="text-2xl font-bold text-primary-foreground mb-6">
                   This is your path to getting job ready
                 </h2>
 
@@ -324,7 +324,7 @@ const ResultPage = () => {
                       locked={tool.locked}
                     />
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
 
