@@ -261,16 +261,24 @@ const ResultPage = () => {
   useEffect(() => {
     downloadAssessmentDetailsPdf();
   }, [assessment]);
+  
+  let logoData = JSON.parse(localStorage.getItem('userData'));
 
   if (isLoading) return <Loading open={true} />;
+
   return (
     <LandingLayoutPage>
       <div className="result-layout min-h-screen bg-primary relative overflow-hidden">
         <div className="Content-container">
           <div id="menu-and-logo-container">
             <div className="header-logo">
-              Employability <br />
-              Advantage
+              {/* Employability <br />
+              Advantage */}
+              {logoData?.logo ? (
+            <img style={{ width: "auto", height: "40px" }} src={logoData.logo} alt="Logo" />
+          ) : (
+            <>Employability <br /> Advantage</>
+          )}
             </div>
           </div>
         </div>
