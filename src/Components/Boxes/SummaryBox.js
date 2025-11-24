@@ -48,7 +48,7 @@ const dashboardStats = data?.data
       // progress: progress,
     };
   });
-console.log("updatedCardsData", updatedCardsData);
+// console.log("updatedCardsData", updatedCardsData);
 
   return (
     <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
