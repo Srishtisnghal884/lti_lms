@@ -68,7 +68,6 @@ export default function AdminStudentList() {
   );
   const exportToExcel = () => {
     if (!allData?.data?.length) {
-      console.log(allData);
 
       console.warn("No data to export");
       return;
