@@ -1,4 +1,5 @@
 import { CancelRounded } from "@mui/icons-material";
+import Loading from "../../Components/Loading";
 
 export const Step2 =({
   role,
@@ -14,6 +15,7 @@ export const Step2 =({
 }) => {
   return (
     <>
+    <Loading open={isLoading} />
       <div className="title pop">
         <div>
           <h2>{role.name}</h2>
