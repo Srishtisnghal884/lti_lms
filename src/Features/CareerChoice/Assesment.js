@@ -32,6 +32,8 @@ export default function CareerChoice() {
     const [modalOpen, setModalOpen] = useState(false);
   const [modalCat, setModalCat] = useState(AssessmentData[0].id);
   const [modalSkill, setModalSkill] = useState(AssessmentData[0].items[0]);
+  const [popupBlockedVisible, setPopupBlockedVisible] = useState(false);
+
   const [modalTouched, setModalTouched] = useState({
     cat: false,
     skill: false,
@@ -223,7 +225,23 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
 // };
 
   const popupRef = useRef(null);
+  
+  function isPopupBlocked() {
+    const test = window.open("", "", "width=100,height=100,left=-10000,top=-10000");
+
+    if (!test || test.closed || typeof test.closed === "undefined") {
+      return true; // Blocked
+    }
+    test.close(); // Allowed, close it
+    return false;
+  }
   const handleClickGo = async () => {
+
+    if (isPopupBlocked()) {
+      console.log("Popups blocked!");
+      return;
+    }
+
   setIsLoadingInvite(true);
 
   try {
@@ -246,7 +264,8 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
       );
 
       if (!win) {
-        alert("Popup blocked! Allow popups.");
+        // alert("Popup blocked! Allow popups.");
+        setPopupBlockedVisible(true);
         return;
       }
 
@@ -264,7 +283,7 @@ function startPopupCloseWatcher() {
     const win = popupRef.current;
 
     if (win && win.closed) {
-      // console.log("🔴 Popup window CLOSED");
+      console.log("🔴 Popup window CLOSED");
 
       clearInterval(interval);
 
@@ -273,7 +292,7 @@ function startPopupCloseWatcher() {
   }, 1000);
 }
 async function checkExamAfterWindowClose() {
-  // console.log("🟡 Checking exam status because window closed...");
+  console.log("🟡 Checking exam status because window closed...");
 setExamCheckingLoading(true); // ← show loader
   try {
     const res = await checkExam({
@@ -281,7 +300,7 @@ setExamCheckingLoading(true); // ← show loader
       assessment: selectedSkill,
     }).unwrap();
 
-    // console.log("🟢 Exam status:", res);
+    console.log("🟢 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -294,13 +313,13 @@ setExamCheckingLoading(true); // ← show loader
       );
     }
   } catch (error) {
-    // console.error("❌ Error checking exam:", error);
+    console.error("❌ Error checking exam:", error);
   }finally {
     setExamCheckingLoading(false); 
   }
 }
 async function handleCheckExam() {
-  // console.log("📡 Running checkExam API...");
+  console.log("📡 Running checkExam API...");
 
   setExamCheckingLoading(true);
   try {
@@ -309,7 +328,7 @@ async function handleCheckExam() {
       assessment: selectedSkill,
     }).unwrap();
 
-    // console.log("📘 Exam status:", res);
+    console.log("📘 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -336,9 +355,9 @@ async function handleCheckExam() {
 
       if (!breakExamExecution) {
         await checkExamStatus();
-        // console.log("Exam not completed → Continuing polling");
+        console.log("Exam not completed → Continuing polling");
       } else {
-        // console.log("Exam completed → Polling stopped");
+        console.log("Exam completed → Polling stopped");
         clearInterval(pollingRef.current);
         return;
       }
@@ -365,7 +384,7 @@ async function handleCheckExam() {
     const { data } = examData;
     const status = data?.status;
 
-    // console.log(data?.status, "check log  examData.......", examData);
+    console.log(data?.status, "check log  examData.......", examData);
     if (status === "completed") {
       //TODO add more checks to verify that test is actually completed
       setBreakExamExecution(true)
@@ -425,6 +444,83 @@ async function handleCheckExam() {
     setModalSubmitting(false);
   };
 
+      const safariInstructions = () => (
+    <>
+      <Typography variant="body1" sx={{fontSize:"18px", mt: 2, color: "#000" }} >Safari — how to allow popups</Typography>
+      <ul>
+        <li style={{color:"#000"}}>
+          <b>macOS Safari:</b> Click the Safari address bar → "Settings for This
+          Website" → Pop-up Windows → choose <b>Allow</b>.
+        </li>
+        <li style={{color:"#000"}}>
+          <b>iOS Safari (iPhone/iPad):</b> Settings → Safari → turn off{" "}
+          <b>Block Pop-ups</b>.
+        </li>
+        <li style={{color:"#000"}}>
+          If you use content blockers (adblockers), temporarily disable them for
+          this site.
+        </li>
+      </ul>
+    </>
+  );
+
+  // const genericInstructions = () => (
+  //   <>
+  //     <Typography variant="body1" sx={{ mt: 2, color: "#000" }}>Allow popups for this site</Typography>
+  //     <ul className="" style={{color:"#000"}}>
+  //       <li style={{color:"#000"}}>
+  //         Look for a popup-blocked icon in the address bar and allow popups for
+  //         this site.
+  //       </li>
+  //       <li style={{color:"#000"}}>Or open browser settings and enable popups for this site.</li>
+  //       <li style={{color:"#000"}}>Disable adblocker/content blockers for this site, if present.</li>
+  //     </ul>
+  //   </>
+  // );
+    const isSafari = () => {
+    const ua = navigator.userAgent;
+    return /Safari/.test(ua) && !/Chrome|Chromium|Edg|OPR/.test(ua);
+  };
+   const handlePopupBlockedOk = async () => {
+
+
+
+  setIsLoadingInvite(true);
+
+  try {
+    const result = await inviteCandidate({
+      email: localData?.email,
+      first_name: localData?.name,
+      last_name: "-",
+      full_name: `${localData?.name}`,
+      assessment: selectedSkill,
+    });
+
+    const { data } = result;
+
+    if (data?.status) {
+      setIsLoadingInvite(false);
+      const win = window.open(
+        "",
+        "_blank",
+        `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+      );
+
+      if (!win) {
+        // alert("Popup blocked! Allow popups.");
+        setPopupBlockedVisible(true);
+        return;
+      }
+
+      popupRef.current = win; 
+      win.location.href = data.data.inviteUrl;
+handleCheckExam();
+      startPopupCloseWatcher();
+    }
+  } catch (err) {
+    console.log("error:", err);
+  }
+};
   const closeModal = () => {
     if (modalBusy) return; // do not close while busy
     resetModalState();
@@ -440,6 +536,77 @@ async function handleCheckExam() {
   ) {
     return <Loading open={true} />;
   }
+
+  //  const handlePopupBlockedOk = async (ev) => {
+  //   // 1) Open the placeholder synchronously in the button click (counts as user gesture)
+  //   // const placeholder = tryOpenPlaceholder();
+
+  //   // // If still blocked, show helpful UI and return early (do NOT await inviteCandidate)
+  //   // if (!placeholder) {
+  //   //   setPopupBlockedReason("still_blocked");
+  //   //   setPopupBlockedVisible(true);
+  //   //   alert(
+  //   //     "Popup still blocked. Please allow popups for this site in your browser settings, then click OK again."
+  //   //   );
+  //   //   return;
+  //   // }
+
+  //   // 2) Now that popup exists, close the blocked modal (optional but tidy)
+  //   setPopupBlockedVisible(false);
+  //   setIsLoadingInvite(true);
+    
+
+  //   // 3) Call inviteCandidate to get the real URL and navigate the placeholder
+  //   try {
+  //     const result = await inviteCandidate({
+  //       email: localData?.email,
+  //       first_name: localData?.name,
+  //       last_name: "-",
+  //       full_name: `${localData?.name}`,
+  //       assessment: selectedSkill,
+  //     });
+
+  //     const { data } = result;
+  //     if (data?.status && data.data?.inviteUrl) {
+  //       try {
+  //         // navigate the already-opened window to the invite URL
+  //         popupRef.current.location.href = data.data.inviteUrl;
+  //         try {
+  //           popupRef.current.focus();
+  //         } catch (e) { }
+  //         // start your existing watchers
+  //         handleCheckExam();
+  //         startPopupCloseWatcher();
+  //       } catch (navErr) {
+  //         // If navigation fails (rare), attempt fallback: close placeholder and open a real link via anchor
+  //         try {
+  //           popupRef.current?.close();
+  //         } catch (e) { }
+  //         const a = document.createElement("a");
+  //         a.href = data.data.inviteUrl;
+  //         a.target = "_blank";
+  //         a.rel = "noopener noreferrer";
+  //         document.body.appendChild(a);
+  //         a.click();
+  //         document.body.removeChild(a);
+  //       }
+  //     } else {
+  //       // API did not return URL
+  //       try {
+  //         popupRef.current?.close();
+  //       } catch (e) { }
+  //       alert("Failed to get invite URL. Please try again.");
+  //     }
+  //   } catch (err) {
+  //     console.error("invite error after OK:", err);
+  //     try {
+  //       popupRef.current?.close();
+  //     } catch (e) { }
+  //     alert("Error starting the flow. Check console.");
+  //   } finally {
+  //     setIsLoadingInvite(false);
+  //   }
+  // };
   return (
     <LandingLayoutPage>
       {examCheckingLoading && <Loading open={true} />}
@@ -772,7 +939,7 @@ async function handleCheckExam() {
                       }}
                     >
                       {Object.entries(scoreData)?.map(([key = "", value]) => {
-                        // console.log(key, "key.....value", value);
+                        console.log(key, "key.....value", value);
                         return (
                           <div
                             className="scorecard-box"
@@ -831,6 +998,89 @@ async function handleCheckExam() {
           </section>
         </main>
       </div>
+      {popupBlockedVisible && (
+            <div
+              style={{
+                position: "fixed",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(0,0,0,0.7)",
+                zIndex: 9999,
+              }}
+            >
+              <div
+                style={{
+                  width: 560,
+                  maxWidth: "96%",
+                  background: "#fff",
+                  colr: "#000",
+                  borderRadius: 8,
+                  padding: 20,
+                }}
+              >
+                <Typography variant="h3" sx={{fontSize:"20px !important", m:0,color:'#000'}}>Popup blocked</Typography >
+                <Typography variant="body1" sx={{ mt: 2, color: "#000" }}>
+                  The browser blocked the popup window required to continue the
+                  assessment. Please allow popups for this site and then click
+                  OK.
+                </Typography>
+
+                <div style={{ marginBottom: 12,marginTop:'10px' }}>
+                  {isSafari() ? safariInstructions() : "  "}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    justifyContent: "flex-end",
+                    marginTop: 50,
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      setPopupBlockedVisible(false);
+                    }}
+                     style={{
+                      padding: "8px 14px",
+                      background: "#6E6E6C",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 4,
+                    }}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={handlePopupBlockedOk}
+                    style={{
+                      padding: "8px 14px",
+                      background: "var(--themecolor)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 4,
+                    }}
+                  >
+                    OK (Allow popups then click)
+                  </button>
+                </div>
+
+                {/* <div style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
+                  <Typography variant="body1" sx={{ mt: 2, color: "#000" }}>
+                    <b>Tip:</b> On macOS Safari: right-click the address bar →
+                    Settings for This Website → Pop-up Windows → Allow.
+                  </Typography>
+                </div> */}
+              </div>
+            </div>
+          )}
     </LandingLayoutPage>
   );
 }
+
+
+
+
