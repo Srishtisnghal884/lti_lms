@@ -51,7 +51,7 @@ export default function StudentDetailsResultD() {
 
       <TableContainer component={Paper} className="student-table-container">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <h2 className="table-title">{location.state?.email}</h2>
+          <h2 className="table-title">Email :- {location.state?.email}</h2>
 
         </Box>
 
