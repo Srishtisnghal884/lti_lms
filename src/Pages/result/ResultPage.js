@@ -245,7 +245,7 @@ const ResultPage = () => {
 
         setCheckFinalStarted(true);
         const { data, status } = assessmentDetails;
-        console.log(data, ".... assessment data", status);
+        // console.log(data, ".... assessment data", status);
         if (status === 200) {
           setScoreData(data);
         }

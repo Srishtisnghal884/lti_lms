@@ -229,8 +229,6 @@ const LoginFormModal = () => {
       if (role == 1) {
         // navigate('/admin/dashboard', { replace: true });
         window.location.href = '/admin/dashboard';
-        console.log("Check navigation");
-
              
       } else {
         navigate('/career-choice');
@@ -238,7 +236,6 @@ const LoginFormModal = () => {
  
     })
     .catch((error) => {
-      console.log(error,"lllllllllsdsdfs");
       
       const errorMessage = error?.message ||
         error?.error?.message ||
@@ -304,7 +301,6 @@ const LoginFormModal = () => {
     console.error("Google Login Failure:", error);
   }, []);
 
-  console.log("formik..........", formik)
 
   return (
     <div style={{ width: 400, maxWidth: "90vw" }}>

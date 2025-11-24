@@ -264,7 +264,7 @@ function startPopupCloseWatcher() {
     const win = popupRef.current;
 
     if (win && win.closed) {
-      console.log("🔴 Popup window CLOSED");
+      // console.log("🔴 Popup window CLOSED");
 
       clearInterval(interval);
 
@@ -273,7 +273,7 @@ function startPopupCloseWatcher() {
   }, 1000);
 }
 async function checkExamAfterWindowClose() {
-  console.log("🟡 Checking exam status because window closed...");
+  // console.log("🟡 Checking exam status because window closed...");
 setExamCheckingLoading(true); // ← show loader
   try {
     const res = await checkExam({
@@ -281,7 +281,7 @@ setExamCheckingLoading(true); // ← show loader
       assessment: selectedSkill,
     }).unwrap();
 
-    console.log("🟢 Exam status:", res);
+    // console.log("🟢 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -294,13 +294,13 @@ setExamCheckingLoading(true); // ← show loader
       );
     }
   } catch (error) {
-    console.error("❌ Error checking exam:", error);
+    // console.error("❌ Error checking exam:", error);
   }finally {
     setExamCheckingLoading(false); 
   }
 }
 async function handleCheckExam() {
-  console.log("📡 Running checkExam API...");
+  // console.log("📡 Running checkExam API...");
 
   setExamCheckingLoading(true);
   try {
@@ -309,7 +309,7 @@ async function handleCheckExam() {
       assessment: selectedSkill,
     }).unwrap();
 
-    console.log("📘 Exam status:", res);
+    // console.log("📘 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -336,9 +336,9 @@ async function handleCheckExam() {
 
       if (!breakExamExecution) {
         await checkExamStatus();
-        console.log("Exam not completed → Continuing polling");
+        // console.log("Exam not completed → Continuing polling");
       } else {
-        console.log("Exam completed → Polling stopped");
+        // console.log("Exam completed → Polling stopped");
         clearInterval(pollingRef.current);
         return;
       }
@@ -365,7 +365,7 @@ async function handleCheckExam() {
     const { data } = examData;
     const status = data?.status;
 
-    console.log(data?.status, "check log  examData.......", examData);
+    // console.log(data?.status, "check log  examData.......", examData);
     if (status === "completed") {
       //TODO add more checks to verify that test is actually completed
       setBreakExamExecution(true)
@@ -772,7 +772,7 @@ async function handleCheckExam() {
                       }}
                     >
                       {Object.entries(scoreData)?.map(([key = "", value]) => {
-                        console.log(key, "key.....value", value);
+                        // console.log(key, "key.....value", value);
                         return (
                           <div
                             className="scorecard-box"
