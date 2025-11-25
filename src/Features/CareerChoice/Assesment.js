@@ -1007,7 +1007,7 @@ handleCheckExam();
                 alignItems: "center",
                 justifyContent: "center",
                 background: "rgba(0,0,0,0.7)",
-                zIndex: 9999,
+                zIndex: 99,
               }}
             >
               <div
