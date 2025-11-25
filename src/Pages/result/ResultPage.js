@@ -136,6 +136,18 @@ const ScoreCard = ({ score, category, isLoading }) => {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
+  const filePath = score?.file_path || "";
+
+  let finalUrl = "";
+
+  if (filePath) {
+    const parts = filePath.split("/");
+    const fileName = parts.pop(); // last segment (PDF name)
+    const encodedFileName = encodeURIComponent(fileName);
+    const baseUrl = parts.join("/");
+    finalUrl = `${baseUrl}/${encodedFileName}?no_cache=1`;
+  }
+
   return (
     <div className="score-card" style={{ textAlign: "center" }}>
       <h3 className="score-card-header">Your Skill Assessment Score</h3>
@@ -177,7 +189,7 @@ const ScoreCard = ({ score, category, isLoading }) => {
         <div className="score-card-score-text">{score?.score ?? 0}</div>
       </div>
 
-      <a href={`${score?.file_path}?no_cache=1`} target="_blank">
+      <a href={finalUrl} target="_blank" rel="noopener noreferrer">
         <div
           style={{
             color: "black",
