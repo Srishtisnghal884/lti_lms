@@ -177,7 +177,7 @@ const ScoreCard = ({ score, category, isLoading }) => {
         <div className="score-card-score-text">{score?.score ?? 0}</div>
       </div>
 
-      <a href={score?.file_path} target="_blank">
+      <a href={`${score?.file_path}?no_cache=1`} target="_blank">
         <div
           style={{
             color: "black",
