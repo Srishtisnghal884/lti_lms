@@ -148,6 +148,18 @@ const ScoreCard = ({ score, category, isLoading }) => {
     const baseUrl = parts.join("/");
     finalUrl = `${baseUrl}/${encodedFileName}?no_cache=1`;
   }
+const handleDownload = async () => {
+  const response = await fetch(finalUrl);
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = score?.file_name || "result.pdf";
+  a.click();
+
+  window.URL.revokeObjectURL(url);
+};
 
   return (
     <div className="score-card" style={{ textAlign: "center" }}>
@@ -158,7 +170,6 @@ const ScoreCard = ({ score, category, isLoading }) => {
         ) : (
           <div className="score-card-progress-circle">
             <svg width="150" height="150" viewBox="0 0 150 150">
-              {/* Background Circle */}
               <circle
                 cx="75"
                 cy="75"
@@ -167,7 +178,6 @@ const ScoreCard = ({ score, category, isLoading }) => {
                 stroke="#e5e7eb"
                 strokeWidth="10"
               />
-              {/* Progress Circle (using stroke-dashoffset to show progress) */}
               <circle
                 cx="75"
                 cy="75"
@@ -190,7 +200,8 @@ const ScoreCard = ({ score, category, isLoading }) => {
         <div className="score-card-score-text">{score?.score ?? 0}</div>
       </div>
 
-      <a href={finalUrl} target="_blank" rel="noopener noreferrer">
+     
+  <div onClick={handleDownload} style={{ cursor: "pointer" }}>
         <div
           style={{
             color: "black",
@@ -205,7 +216,7 @@ const ScoreCard = ({ score, category, isLoading }) => {
           <Download fontSize="small" size="small" />
           <p style={{ color: "black", textAlign: "center" }}>Download Result</p>
         </div>
-      </a>
+    </div>
     </div>
   );
 };
