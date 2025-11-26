@@ -35,6 +35,7 @@ import { Messages } from './Messages';
 import { selectCurrentUser } from '../../Features/Auth/AuthSlice';
 import zIndex from '@mui/material/styles/zIndex';
 import { useTheme } from '@emotion/react';
+import MainLogo from '../../common/logo';
 
 const MenuIcon = ({ onClick }) => (
   <Hidden smUp>
@@ -110,32 +111,10 @@ export const NavBar = () => {
       <Toolbar>
         <MenuIcon onClick={handleDrawer} />
         {/* <Box sx={{ flexGrow: 1 }} />  */}
-
-        <Typography
-          variant="h6"
-          component="h4"
-          sx={{
-            color: theme.palette.grey[700],
-            fontWeight: 500,
-            textAlign: "left",
-            width: "100%",
-            maxWidth: "400px",
-            mr: 'auto',
-            mt: 2,
-            whiteSpace: "break-spaces",
-            "@media (max-width: 900px)": {
-              textAlign: "left",
-            },
-          }}
-        >
-
-          {logoData?.logo ? (
-            <img style={{ width: "auto", height: "40px" }} src={logoData.logo} alt="Logo" />
-          ) : (
-            <>Employability <br /> Advantage</>
-          )}
-        </Typography>
-
+        <Box sx={{mr: 'auto' }} >
+          <MainLogo height={50} width={'auto'} />
+        </Box>
+    
         {/* <Box sx={{ flexGrow: 1 }} />  */}
 
         <Divider orientation='vertical' variant='middle' flexItem />

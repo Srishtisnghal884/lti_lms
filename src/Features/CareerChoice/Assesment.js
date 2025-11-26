@@ -444,7 +444,7 @@ async function handleCheckExam() {
     setModalSubmitting(false);
   };
 
-      const safariInstructions = () => (
+  const safariInstructions = () => (
     <>
       <Typography variant="body1" sx={{fontSize:"18px", mt: 2, color: "#000" }} >Safari — how to allow popups</Typography>
       <ul>
@@ -477,49 +477,46 @@ async function handleCheckExam() {
   //     </ul>
   //   </>
   // );
-    const isSafari = () => {
+  const isSafari = () => {
     const ua = navigator.userAgent;
     return /Safari/.test(ua) && !/Chrome|Chromium|Edg|OPR/.test(ua);
   };
-   const handlePopupBlockedOk = async () => {
+  const handlePopupBlockedOk = async () => {
+    setIsLoadingInvite(true);
 
+      try {
+        const result = await inviteCandidate({
+          email: localData?.email,
+          first_name: localData?.name,
+          last_name: "-",
+          full_name: `${localData?.name}`,
+          assessment: selectedSkill,
+        });
 
+        const { data } = result;
 
-  setIsLoadingInvite(true);
+        if (data?.status) {
+          setIsLoadingInvite(false);
+          const win = window.open(
+            "",
+            "_blank",
+            `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
+          );
 
-  try {
-    const result = await inviteCandidate({
-      email: localData?.email,
-      first_name: localData?.name,
-      last_name: "-",
-      full_name: `${localData?.name}`,
-      assessment: selectedSkill,
-    });
+          if (!win) {
+            // alert("Popup blocked! Allow popups.");
+            setPopupBlockedVisible(true);
+            return;
+          }
 
-    const { data } = result;
-
-    if (data?.status) {
-      setIsLoadingInvite(false);
-      const win = window.open(
-        "",
-        "_blank",
-        `left=0,top=0,width=${window.screen.availWidth},height=${window.screen.availHeight}`
-      );
-
-      if (!win) {
-        // alert("Popup blocked! Allow popups.");
-        setPopupBlockedVisible(true);
-        return;
+          popupRef.current = win; 
+          win.location.href = data.data.inviteUrl;
+    handleCheckExam();
+          startPopupCloseWatcher();
+        }
+      } catch (err) {
+        console.log("error:", err);
       }
-
-      popupRef.current = win; 
-      win.location.href = data.data.inviteUrl;
-handleCheckExam();
-      startPopupCloseWatcher();
-    }
-  } catch (err) {
-    console.log("error:", err);
-  }
 };
   const closeModal = () => {
     if (modalBusy) return; // do not close while busy
@@ -678,7 +675,6 @@ handleCheckExam();
               )}
             </div>
           </section>
-
           {/* Dialog for skill check */}
           <section
             className={`modal ${modalOpen ? "open" : ""}`}

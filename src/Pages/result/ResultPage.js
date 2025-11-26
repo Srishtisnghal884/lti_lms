@@ -6,7 +6,8 @@ import { useFetchAssessmentDetailsResultInPdfMutation } from "../../Features/Car
 import { getUserDataFromLocalStorage } from "../../common/getDataFromLocal";
 import { Link, useSearchParams } from "react-router-dom";
 import Loading from "../../Components/Loading";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
+import MainLogo from "../../common/logo";
 
 const DescriptionIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -286,11 +287,7 @@ const ResultPage = () => {
             <div className="header-logo">
               {/* Employability <br />
               Advantage */}
-              {logoData?.logo ? (
-            <img style={{ width: "auto", height: "40px" }} src={logoData.logo} alt="Logo" />
-          ) : (
-            <>Employability <br /> Advantage</>
-          )}
+              <MainLogo  height={50} width={'auto'} />
             </div>
           </div>
         </div>
@@ -301,9 +298,11 @@ const ResultPage = () => {
               <div>
                 <h1 className="text-4xl md-text-5xl font-bold text-primary-foreground mb-6">
                   {scoreData?.main_career}
-                  <br/>
-                  {scoreData?.sub_career}
                 </h1>
+                  <Typography variant="h5" sx={{margin:'0px',fontSize:"24px"}} className=" font-bold text-primary-foreground mb-6">
+                  {scoreData?.sub_career}
+                </Typography>
+                
                 <div className="space-y-4">
                   <h2 className="text-2xl font-semibold text-primary-foreground">
                     Let's see how you fared!
