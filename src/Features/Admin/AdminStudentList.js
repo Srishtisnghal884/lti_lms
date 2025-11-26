@@ -93,7 +93,7 @@ const exportToExcel = () => {
 
       <TableContainer component={Paper} className="student-table-container">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <h2 className="table-title">Result List</h2>
+          <h2 className="table-title">Students' List</h2>
           <div> <Button
                       variant="contained"
                       startIcon={<DownloadIcon  sx={{color:"#fff"}} />}
@@ -144,7 +144,6 @@ const exportToExcel = () => {
                 <TableCell className="student-info">
                   <Avatar className="avatar">{s?.first_name?.charAt(0)}</Avatar>
                   {s?.first_name}
-                  {s?.last_name}
                 </TableCell>
 
                 <TableCell className="grade">{s.email}</TableCell>

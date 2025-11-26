@@ -156,7 +156,7 @@ export default function AdminStudentList() {
                       <VisibilityIcon fontSize="small" />
                     </IconButton> */}
                       <IconButton className="edit-btn" size="small" onClick={() => resultlist(s)}>
-                        <DownloadIcon fontSize="small" />
+                        <VisibilityIcon fontSize="small" />
                       </IconButton>
                     </div>
                   </TableCell>
