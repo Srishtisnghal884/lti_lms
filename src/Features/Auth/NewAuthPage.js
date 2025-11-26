@@ -23,6 +23,7 @@ import Loading from "../../Components/Loading";
 import GImag from "../../Assets/Images/google-icon.svg";
 import FVImag from "../../Assets/Images/fv.svg";
 import MicrosoftImag from "../../Assets/Images/microsoft-icon.svg"; 
+import MainLogo from "../../common/logo";
 
 // import {
 //   LoginSocialFacebook,
@@ -32,7 +33,7 @@ import MicrosoftImag from "../../Assets/Images/microsoft-icon.svg";
 
 const HIGH_FIVE_IMAGE =
   "https://portal.employabilityadvantage.com/assets/images/highFive.png";
-
+  let logoData = JSON.parse(localStorage.getItem('userData'));
 const AuthPage = () => {
   return (
     <Box
@@ -74,7 +75,7 @@ const AuthPage = () => {
             },
           }}
         >
-          Employability Advantage
+          <MainLogo height={70} width={'auto'} />
         </Typography>
         <Paper sx={{backgroundColor: "#182958"}} elevation={3}>
           <LoginFormModal />

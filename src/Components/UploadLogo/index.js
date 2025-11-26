@@ -36,6 +36,7 @@ export default function UploadLogo() {
       "userData",
       JSON.stringify({ ...userData, logo: uploadedLogoUrl })
     );  // <-- send only file
+    window.dispatchEvent(new Event("logoUpdated"));
       alert("Logo saved successfully!");
     } catch (err) {
       console.error(err);

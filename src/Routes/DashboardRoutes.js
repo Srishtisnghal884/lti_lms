@@ -29,6 +29,7 @@ import AdminStudentListPage from '../Features/Admin/AdminStudentList';
 import StudentResult from '../Features/Admin/StudentResult';
 import StudentDetailsResult from '../Features/Admin/StudentDetailsResult';
 import NotFound404 from '../Pages/NotFound404';
+import AdminAssessmentsList from '../Features/Admin/AssessmentsList';
 
 const DashboardRoutes = () => {
   return (
@@ -39,6 +40,7 @@ const DashboardRoutes = () => {
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/student-details' element={<StudentDetailsResult />} />
           <Route path='/admin/student-result' element={<StudentResult />} />
+          <Route path='/admin/assessments-list' element={<AdminAssessmentsList />} />
           <Route path='/admin/users' element={<UsersData />} />
 
           <Route path='admin/:classId/timetable' element={<AdminTimeTable />} />

@@ -19,7 +19,7 @@ const dashboardStats = data?.data
         count: data?.data?.totalStudents
       },
       {
-        title: "Total Asssessments",
+        title: "Total Assessments",
         icon: "MenuBook",
         color: "#03a9f4",
         count: data?.data?.totalAssessments

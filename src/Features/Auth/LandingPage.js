@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAuthenticationQuery } from "../CareerChoice/AuthSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./AuthSlice";
+import MainLogo from "../../common/logo";
 const HIGH_FIVE_IMAGE =
   "https://portal.employabilityadvantage.com/assets/images/highFive.png";
 
@@ -24,7 +25,7 @@ const MainLandingPage = () => {
       dispatch(setCredentials(data?.tokens?.access));
     }
   }, [data]);
-
+  let logoData = JSON.parse(localStorage.getItem('userData'));
   return (
     <>
       <Box
@@ -66,13 +67,12 @@ const MainLandingPage = () => {
               },
             }}
           >
-            Employability Advantage
+           <MainLogo height={60} width={'auto'} />
           </Typography>
           <Paper sx={{ backgroundColor: "#182958" }} elevation={3}>
             {/* <LoginFormModal /> */}
           </Paper>
         </Box>
-
         {/* Right Section: Image and Orange Hexagon */}
         <Box
           sx={{

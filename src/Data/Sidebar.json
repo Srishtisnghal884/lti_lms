@@ -57,6 +57,11 @@
         "division": "Class Info",
         "section": [
           {
+            "title": "Assessments",
+            "icon": "LibraryBooks",
+            "to": "/admin/assessments-list"
+          },
+          {
             "title": "Student List",
             "icon": "Groups",
             "to": "/admin/student-list"

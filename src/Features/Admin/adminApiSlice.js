@@ -6,6 +6,10 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       query: () => `admin/statics`,
       // providesTags: ['dashboard'],
     }),
+    getLogoIcon: builder.query({
+      query: () => `admin/get-logo`,
+      // providesTags: ['dashboard'],
+    }),
     getAdminStudentList: builder.query({
       query: ({ page = 1, pageSize = 10, email = "" }) =>
         `admin/student-list/${page}/${pageSize}/?searchEmail=${email}`,
@@ -19,6 +23,11 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     getAdminStudentResultList: builder.query({
       query: ({ page = 1, pageSize = 10, email = "" }) =>
         `admin/studentResultList/${page}/${pageSize}/?searchEmail=${email}`,
+      providesTags: ['StudentList'],
+    }),
+    getAssessmentList: builder.query({
+      query: ({ page = 1, pageSize = 10, email = "" }) =>
+        `admin/assessment-list/${page}/${pageSize}/?assessment=${email}`,
       providesTags: ['StudentList'],
     }),
     getUsers: builder.query({
@@ -104,9 +113,11 @@ export const adminApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAdminDashboardQuery,
+  useGetLogoIconQuery,
   useGetAdminStudentDetailsListQuery,
   useGetAdminStudentListQuery,
   useGetAdminStudentResultListQuery,
+  useGetAssessmentListQuery,
   useGetUsersQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
