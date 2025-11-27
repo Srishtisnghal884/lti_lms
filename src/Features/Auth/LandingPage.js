@@ -5,6 +5,7 @@ import { useAuthenticationQuery } from "../CareerChoice/AuthSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./AuthSlice";
 import MainLogo from "../../common/logo";
+import Loading from "../../Components/Loading";
 const HIGH_FIVE_IMAGE =
   "https://portal.employabilityadvantage.com/assets/images/highFive.png";
 
@@ -28,6 +29,7 @@ const MainLandingPage = () => {
   let logoData = JSON.parse(localStorage.getItem('userData'));
   return (
     <>
+    <Loading open={isLoading} />
       <Box
         sx={{
           display: "flex",
