@@ -481,7 +481,6 @@ export const Results = () => {
 
   if (isLoading) return <Loading open={isLoading} />;
   if (isError) return <Error error={error} />;
-  console.log("rowsss.", rows);
 
   // Render
   return (

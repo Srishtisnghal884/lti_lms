@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuthenticationQuery } from "../CareerChoice/AuthSlice";
@@ -12,21 +12,34 @@ const HIGH_FIVE_IMAGE =
 const MainLandingPage = () => {
   const [searchParams] = useSearchParams();
   const authToken = searchParams.get("auth");
-  console.log("auth....", authToken);
   const dispatch = useDispatch();
-
-  const { data, isLoading, isSuccess, isError, error } = useAuthenticationQuery(
-    { auth: authToken }
+  
+  // const { data, isLoading, isSuccess, isError, error } = useAuthenticationQuery(
+  //   { auth: authToken }
+  // );
+    const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useAuthenticationQuery(
+    { auth: authToken },
+    { skip: !authToken } // ✅ prevent call if no token
   );
 
   useEffect(() => {
-    console.log("auth data...", data); 
-    if (!!data?.tokens?.access?.token) {
-      localStorage.setItem("userData", JSON.stringify(data?.user));
-      dispatch(setCredentials(data?.tokens?.access));
-    }
-  }, [data]);
-  let logoData = JSON.parse(localStorage.getItem('userData'));
+  if (data?.tokens?.access?.token) {
+    localStorage.setItem("userData", JSON.stringify(data.user));
+    dispatch(setCredentials(data.tokens.access));
+  }
+}, [data, dispatch]);
+
+const logoData =
+  data?.user || JSON.parse(localStorage.getItem("userData"));
+
+
+if (isError) {
+}
   return (
     <>
     <Loading open={isLoading} />
@@ -62,7 +75,7 @@ const MainLandingPage = () => {
               fontWeight: 500,
               textAlign: "left",
               width: "100%",
-              maxWidth: "400px",
+              maxWidth: "600px",
               mb: 2,
               "@media (max-width: 900px)": {
                 textAlign: "center",
@@ -70,6 +83,74 @@ const MainLandingPage = () => {
             }}
           >
            <MainLogo height={60} width={'auto'} />
+           <br/>
+           
+              {/* <Button variant="contained" color="error"   onClick={() => {
+    window.location.href = "https://www.openlearning.com";
+  }}>
+                Unauthorized User
+              </Button> */}
+           {error?.data?.message === "Invalid or expired login token" ? (<>
+              <Typography
+                sx={{
+                  fontSize: "16px !important",
+                  color: "#fff",
+                  textAlign: "left",
+                  mt: 2,
+                }}
+              >
+               You do not have permission to view this page.{" "}
+                <Typography
+                  component="a"
+                  href="https://www.openlearning.com/employability-advantage/"
+                  sx={{
+                    fontSize: "16px !important",
+                    color: "#FFA726",
+                    textDecoration: "none",
+                    ml: 1,
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  Click here
+                </Typography>
+                </Typography>
+                </>
+            ):(<>  
+            <Button variant="contained" color="error" onClick={() => window.location.reload()}>
+                Retry
+              </Button>
+              <Typography
+                sx={{
+                  fontSize: "16px !important",
+                  color: "#fff",
+                  textAlign: "left",
+                  mt: 2,
+                }}
+              >
+                If the issue persists, please contact our Support Team for assistance.{" "}
+                <Typography
+                  component="a"
+                  href="https://employabilityadvantage.com/contact-us/"
+                  sx={{
+                    fontSize: "16px !important",
+                    color: "#FFA726",
+                    textDecoration: "none",
+                    ml: 1,
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  Click here
+                </Typography>
+              </Typography>
+              </>
+
+              )}
+           <br/>
+           {/* <Button  variant="contained"> Try Again</Button> */}
           </Typography>
           <Paper sx={{ backgroundColor: "#182958" }} elevation={3}>
             {/* <LoginFormModal /> */}

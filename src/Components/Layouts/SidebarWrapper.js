@@ -91,7 +91,7 @@ export const SidebarWrapper = () => {
     // OR clear everything:
     // localStorage.clear();
 
-    window.location.href = "/login";  // redirect to login page
+    window.location.href = "/auth/login";  // redirect to login page
   };
 
   return (

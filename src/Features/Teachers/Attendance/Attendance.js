@@ -103,7 +103,6 @@ export const Attendance = () => {
       absentees: absentees,
       attendancePercentage: attendancePercentage,
     };
-    console.log('data', attendanceObject);
     Attndnce(attendanceObject);
   };
 

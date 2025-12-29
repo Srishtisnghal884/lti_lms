@@ -23,6 +23,7 @@ import { SearchableSelect } from "./SearchableSelect";
 import { useTheme } from "@emotion/react";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function CareerChoice() {
   const [step, setStep] = useState(1);
@@ -58,6 +59,7 @@ export default function CareerChoice() {
   const [loader, setLoader] = useState(false);
   const [breakExamExecution, setBreakExamExecution] = useState(false);
   const [isLoadingInvite, setIsLoadingInvite] = useState(false);
+  const [isLoadingInviteBtn, setIsLoadingInviteBtn] = useState(false);
 
   let newWindow = null;
   const firstPillRef = useRef(null);
@@ -94,16 +96,14 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
     };
 
     const result = await checkCandidateEligibility(payload);
-    console.log("check log checkCandidateEligibility", result);
+    setIsLoadingInvite(false);
     setCandidateEligibilityData(result);
     if (result?.data?.data?.attempts == 1) {
       const deleteC = await deleteCandidate({
         email: localData?.email,
         assessment: skillName,
       });
-      console.log("check log delete...", deleteC);
       if (deleteC?.error?.data) {
-        console.log("check log result", deleteC?.error?.data?.message);
       }
     }
     setOpenConfirmStartAssessment(true);
@@ -238,11 +238,10 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
   const handleClickGo = async () => {
 
     if (isPopupBlocked()) {
-      console.log("Popups blocked!");
       return;
     }
 
-  setIsLoadingInvite(true);
+  setIsLoadingInviteBtn(true);
 
   try {
     const result = await inviteCandidate({
@@ -252,7 +251,6 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
       full_name: `${localData?.name}`,
       assessment: selectedSkill,
     });
-
     const { data } = result;
 
     if (data?.status) {
@@ -271,10 +269,14 @@ const [examCheckingLoading, setExamCheckingLoading] = useState(false);
 
       popupRef.current = win; 
       win.location.href = data.data.inviteUrl;
-handleCheckExam();
+      handleCheckExam();
       startPopupCloseWatcher();
+    }else{
+      setIsLoadingInviteBtn(false);
+      toast.error("You have already sent an invitation to this email. Re-inviting is not allowed.");
     }
   } catch (err) {
+    setIsLoadingInviteBtn(false);
     console.log("error:", err);
   }
 };
@@ -283,7 +285,6 @@ function startPopupCloseWatcher() {
     const win = popupRef.current;
 
     if (win && win.closed) {
-      console.log("🔴 Popup window CLOSED");
 
       clearInterval(interval);
 
@@ -292,7 +293,6 @@ function startPopupCloseWatcher() {
   }, 1000);
 }
 async function checkExamAfterWindowClose() {
-  console.log("🟡 Checking exam status because window closed...");
 setExamCheckingLoading(true); // ← show loader
   try {
     const res = await checkExam({
@@ -300,7 +300,6 @@ setExamCheckingLoading(true); // ← show loader
       assessment: selectedSkill,
     }).unwrap();
 
-    console.log("🟢 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -319,7 +318,6 @@ setExamCheckingLoading(true); // ← show loader
   }
 }
 async function handleCheckExam() {
-  console.log("📡 Running checkExam API...");
 
   setExamCheckingLoading(true);
   try {
@@ -328,7 +326,6 @@ async function handleCheckExam() {
       assessment: selectedSkill,
     }).unwrap();
 
-    console.log("📘 Exam status:", res);
 
     if (res?.data?.status === "completed") {
       await fetchAssessmentDetailsResultInPdf({
@@ -355,9 +352,7 @@ async function handleCheckExam() {
 
       if (!breakExamExecution) {
         await checkExamStatus();
-        console.log("Exam not completed → Continuing polling");
       } else {
-        console.log("Exam completed → Polling stopped");
         clearInterval(pollingRef.current);
         return;
       }
@@ -384,7 +379,6 @@ async function handleCheckExam() {
     const { data } = examData;
     const status = data?.status;
 
-    console.log(data?.status, "check log  examData.......", examData);
     if (status === "completed") {
       //TODO add more checks to verify that test is actually completed
       setBreakExamExecution(true)
@@ -515,6 +509,7 @@ async function handleCheckExam() {
           startPopupCloseWatcher();
         }
       } catch (err) {
+        setIsLoadingInvite(false);
         console.log("error:", err);
       }
 };
@@ -606,6 +601,7 @@ async function handleCheckExam() {
   // };
   return (
     <LandingLayoutPage>
+    <ToastContainer />
       {examCheckingLoading && <Loading open={true} />}
       <div className="assessment-box">
         <main className="app rc-wrap">
@@ -976,7 +972,7 @@ async function handleCheckExam() {
               <footer className="go-btn">
                 {candidateEligibilityData?.data?.data?.attempts !== 2 && (
                   <>
-                    {!isLoadingInvite ? (
+                    {!isLoadingInviteBtn ? (
                       <Button
                         sx={{ color: theme.palette.primary.main }}
                         variant="contained"
@@ -985,7 +981,8 @@ async function handleCheckExam() {
                         Go
                       </Button>
                     ) : (
-                      <CircularProgress />
+                      <> 
+                      <CircularProgress /></>
                     )}
                   </>
                 )}

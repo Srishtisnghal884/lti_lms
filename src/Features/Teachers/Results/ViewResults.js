@@ -13,7 +13,6 @@ import { UpdateResults } from './UpdateResult';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 
 export const ViewResults = ({ data }) => {
-  console.log(data);
   const { classId } = useParams(); // Retrieve classId from the URL parameters
 
   // mutation hook for deleting results

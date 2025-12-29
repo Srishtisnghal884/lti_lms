@@ -21,7 +21,15 @@ const baseQuery = fetchBaseQuery({
 // Refresh Token
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+  if (
+    result?.error?.status === 401
+  ) {
+    return result;
+  }
+
+
   if (result?.error?.status === 401) {
+    console.log("1",result?.error?.data?.message);
     const refreshResult = await baseQuery('/auth/refresh', api, extraOptions);
     const accessToken = refreshResult.data;
     if (accessToken) {
@@ -42,6 +50,37 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
   return result;
 };
+// const baseQueryWithReauth = async (args, api, extraOptions) => {
+//   let result = await baseQuery(args, api, extraOptions);
+
+//   // ✅ CASE 1: LTI / login token invalid → STOP HERE
+//   if (
+//     result?.error?.status === 401 &&
+//     result?.error?.data?.message === result?.error?.data?.message
+//   ) {
+//     return result; // ⛔ do NOT try refresh
+//   }
+
+//   // ✅ CASE 2: Access token expired → try refresh
+//   if (
+//     result?.error?.status === 401 &&
+//     result?.error?.data?.message === "jwt expired"
+//   ) {
+//     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
+
+//     if (refreshResult?.data?.access?.token) {
+//       api.dispatch(setCredentials(refreshResult.data.access));
+//       result = await baseQuery(args, api, extraOptions);
+//     } else {
+//       localStorage.clear();
+//       window.location.href = "/auth/login";
+//       return refreshResult;
+//     }
+//   }
+
+//   return result;
+// };
+
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,

@@ -17,7 +17,7 @@ const RequireAuth = ({ allowedRoles }) => {
     <Navigate to='/404' />
   ) : (
     // If token does not exist , navigate to login page
-    <Navigate to='/auth/login' />
+    <Navigate to='/' />
   );
 };
 

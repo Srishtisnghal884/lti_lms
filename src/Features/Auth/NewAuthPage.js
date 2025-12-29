@@ -399,7 +399,7 @@ const LoginFormModal = () => {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  placeholder="teacher123@gmail.com"
+                  placeholder="admin@employabilityadvantage.com"
                   error={formik.touched.email && Boolean(formik.errors.email)}
                 />
 
@@ -429,7 +429,7 @@ const LoginFormModal = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  placeholder="Teacher123@#"
+                  placeholder="12345678"
                   error={
                     formik.touched.password && Boolean(formik.errors.password)
                   }
